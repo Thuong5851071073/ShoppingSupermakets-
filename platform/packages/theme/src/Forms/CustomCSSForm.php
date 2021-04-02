@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Theme\Forms;
+namespace Platform\Theme\Forms;
 
-use Botble\Base\Forms\FormAbstract;
-use Botble\Base\Models\BaseModel;
-use Botble\Theme\Http\Requests\CustomCssRequest;
+use Platform\Base\Forms\FormAbstract;
+use Platform\Base\Models\BaseModel;
+use Platform\Theme\Http\Requests\CustomCssRequest;
 use File;
+use Theme;
 
 class CustomCSSForm extends FormAbstract
 {
@@ -15,7 +16,7 @@ class CustomCSSForm extends FormAbstract
     public function buildForm()
     {
         $css = null;
-        $file = public_path(config('packages.theme.general.themeDir') . '/' . setting('theme') . '/css/style.integration.css');
+        $file = public_path(config('packages.theme.general.themeDir') . '/' . Theme::getThemeName() . '/css/style.integration.css');
         if (File::exists($file)) {
             $css = get_file_data($file, false);
         }

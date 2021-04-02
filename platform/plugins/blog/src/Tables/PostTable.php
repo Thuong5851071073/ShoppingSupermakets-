@@ -1,17 +1,19 @@
 <?php
 
-namespace Botble\Blog\Tables;
+namespace Platform\Blog\Tables;
 
-use Illuminate\Support\Facades\Auth;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Blog\Exports\PostExport;
-use Botble\Blog\Models\Post;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
-use Botble\Blog\Repositories\Interfaces\PostInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use BaseHelper;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Blog\Exports\PostExport;
+use Platform\Blog\Models\Post;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Carbon\Carbon;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Auth;
+use RvMedia;
 use Yajra\DataTables\DataTables;
 
 class PostTable extends TableAbstract
@@ -59,7 +61,7 @@ class PostTable extends TableAbstract
         $this->categoryRepository = $categoryRepository;
         parent::__construct($table, $urlGenerator);
 
-        if (Auth::check() && !Auth::user()->hasAnyPermission(['posts.edit', 'posts.destroy'])) {
+        if (!Auth::user()->hasAnyPermission(['posts.edit', 'posts.destroy'])) {
             $this->hasOperations = false;
             $this->hasActions = false;
         }
@@ -73,26 +75,36 @@ class PostTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('name', function ($item) {
-                if (Auth::check() && !Auth::user()->hasPermission('posts.edit')) {
+                if (!Auth::user()->hasPermission('posts.edit')) {
                     return $item->name;
                 }
 
                 return Html::link(route('posts.edit', $item->id), $item->name);
             })
             ->editColumn('image', function ($item) {
-                if ($this->request()->input('action') === 'excel') {
-                    return get_object_image($item->image, 'thumb');
+                if ($this->request()->input('action') == 'csv') {
+                    return RvMedia::getImageUrl($item->image, null, false, RvMedia::getDefaultImage());
                 }
-                return Html::image(get_object_image($item->image, 'thumb'), $item->name, ['width' => 50]);
+
+                if ($this->request()->input('action') == 'excel') {
+                    return RvMedia::getImageUrl($item->image, 'thumb', false, RvMedia::getDefaultImage());
+                }
+
+                return Html::image(RvMedia::getImageUrl($item->image, 'thumb', false, RvMedia::getDefaultImage()),
+                    $item->name, ['width' => 50]);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('updated_at', function ($item) {
-                return implode(', ', $item->categories->pluck('name')->all());
+                $categories = '';
+                foreach ($item->categories as $category) {
+                    $categories .= Html::link(route('categories.edit', $category->id), $category->name) . ', ';
+                }
+                return rtrim($categories, ', ');
             })
             ->editColumn('author_id', function ($item) {
                 return $item->author ? $item->author->getFullName() : null;
@@ -106,7 +118,7 @@ class PostTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('posts.edit', 'posts.destroy', $item);
+                return $this->getOperations('posts.edit', 'posts.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -118,20 +130,30 @@ class PostTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->with(['categories'])
-            ->select([
-                'posts.id',
-                'posts.name',
-                'posts.image',
-                'posts.created_at',
-                'posts.status',
-                'posts.updated_at',
-                'posts.author_id',
-                'posts.author_type',
-            ]);
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $select = [
+            'posts.id',
+            'posts.name',
+            'posts.image',
+            'posts.created_at',
+            'posts.status',
+            'posts.updated_at',
+            'posts.author_id',
+            'posts.author_type',
+        ];
+
+        $query = $model
+            ->with([
+                'categories' => function ($query) {
+                    $query->select(['categories.id', 'categories.name']);
+                },
+                'author'     => function ($query) {
+                    $query->select(['id', 'first_name', 'last_name']);
+                },
+            ])
+            ->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**
@@ -159,25 +181,27 @@ class PostTable extends TableAbstract
                 'name'      => 'posts.updated_at',
                 'title'     => trans('plugins/blog::posts.categories'),
                 'width'     => '150px',
-                'class'     => 'no-sort',
+                'class'     => 'no-sort text-center',
                 'orderable' => false,
             ],
             'author_id'  => [
                 'name'      => 'posts.author_id',
                 'title'     => trans('plugins/blog::posts.author'),
                 'width'     => '150px',
-                'class'     => 'no-sort',
+                'class'     => 'no-sort text-center',
                 'orderable' => false,
             ],
             'created_at' => [
                 'name'  => 'posts.created_at',
                 'title' => trans('core/base::tables.created_at'),
                 'width' => '100px',
+                'class' => 'text-center',
             ],
             'status'     => [
                 'name'  => 'posts.status',
                 'title' => trans('core/base::tables.status'),
                 'width' => '100px',
+                'class' => 'text-center',
             ],
         ];
     }
@@ -246,12 +270,21 @@ class PostTable extends TableAbstract
     {
         switch ($key) {
             case 'posts.created_at':
-                $value = Carbon::createFromFormat('Y/m/d', $value)->toDateString();
+                if (!$value) {
+                    break;
+                }
+
+                $value = Carbon::createFromFormat(config('core.base.general.date_format.date'), $value)->toDateString();
+
                 return $query->whereDate($key, $operator, $value);
             case 'category':
+                if (!$value) {
+                    break;
+                }
+
                 return $query->join('post_categories', 'post_categories.post_id', '=', 'posts.id')
                     ->join('categories', 'post_categories.category_id', '=', 'categories.id')
-                    ->where('post_categories.category_id', $operator, $value);
+                    ->where('post_categories.category_id', $value);
         }
 
         return parent::applyFilterCondition($query, $key, $operator, $value);
@@ -275,6 +308,9 @@ class PostTable extends TableAbstract
      */
     public function getDefaultButtons(): array
     {
-        return ['excel', 'reload'];
+        return [
+            'export',
+            'reload',
+        ];
     }
 }

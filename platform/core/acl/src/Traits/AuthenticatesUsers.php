@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\ACL\Traits;
+namespace Platform\ACL\Traits;
 
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\Factory;
@@ -65,8 +65,6 @@ trait AuthenticatesUsers
      *
      * @param Request $request
      * @return void
-     *
-     * @throws ValidationException
      */
     protected function validateLogin(Request $request)
     {
@@ -155,8 +153,6 @@ trait AuthenticatesUsers
 
     /**
      * Get the failed login response instance.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws ValidationException
      */

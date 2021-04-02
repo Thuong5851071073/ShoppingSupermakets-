@@ -1,21 +1,22 @@
 <?php
 
-namespace Botble\Theme\Http\Controllers;
+namespace Platform\Theme\Http\Controllers;
 
 use Assets;
-use Botble\Base\Forms\FormBuilder;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Setting\Supports\SettingStore;
-use Botble\Theme\Forms\CustomCSSForm;
-use Botble\Theme\Http\Requests\CustomCssRequest;
-use Botble\Theme\Services\ThemeService;
+use Platform\Base\Forms\FormBuilder;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Setting\Supports\SettingStore;
+use Platform\Theme\Forms\CustomCSSForm;
+use Platform\Theme\Http\Requests\CustomCssRequest;
+use Platform\Theme\Services\ThemeService;
 use Exception;
 use File;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Theme;
 use ThemeOption;
 
 class ThemeController extends BaseController
@@ -52,26 +53,23 @@ class ThemeController extends BaseController
                 'vendor/core/packages/theme/js/theme-options.js',
             ]);
 
+        do_action(RENDERING_THEME_OPTIONS_PAGE);
+
         return view('packages/theme::options');
     }
 
     /**
      * @param Request $request
      * @param BaseHttpResponse $response
-     * @param SettingStore $settingStore
      * @return BaseHttpResponse
-     * @throws FileNotFoundException
      */
-    public function postUpdate(Request $request, BaseHttpResponse $response, SettingStore $settingStore)
+    public function postUpdate(Request $request, BaseHttpResponse $response)
     {
-        $sections = ThemeOption::constructSections();
-        foreach ($sections as $section) {
-            foreach ($section['fields'] as $field) {
-                $key = $field['attributes']['name'];
-                ThemeOption::setOption($key, $request->input($key, 0));
-            }
+        foreach ($request->except(['_token', 'ref_lang']) as $key => $value) {
+            ThemeOption::setOption($key, $value);
         }
-        $settingStore->save();
+
+        ThemeOption::saveOptions();
 
         return $response->setMessage(trans('core/base::notices.update_success_message'));
     }
@@ -81,6 +79,7 @@ class ThemeController extends BaseController
      * @param BaseHttpResponse $response
      * @param ThemeService $themeService
      * @return BaseHttpResponse
+     * @throws FileNotFoundException
      */
     public function postActivateTheme(Request $request, BaseHttpResponse $response, ThemeService $themeService)
     {
@@ -103,16 +102,16 @@ class ThemeController extends BaseController
         page_title()->setTitle(trans('packages/theme::theme.custom_css'));
 
         Assets::addStylesDirectly([
-            'vendor/core/libraries/codemirror/lib/codemirror.css',
-            'vendor/core/libraries/codemirror/addon/hint/show-hint.css',
+            'vendor/core/core/base/libraries/codemirror/lib/codemirror.css',
+            'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.css',
             'vendor/core/packages/theme/css/custom-css.css',
         ])
             ->addScriptsDirectly([
-                'vendor/core/libraries/codemirror/lib/codemirror.js',
-                'vendor/core/libraries/codemirror/lib/css.js',
-                'vendor/core/libraries/codemirror/addon/hint/show-hint.js',
-                'vendor/core/libraries/codemirror/addon/hint/anyword-hint.js',
-                'vendor/core/libraries/codemirror/addon/hint/css-hint.js',
+                'vendor/core/core/base/libraries/codemirror/lib/codemirror.js',
+                'vendor/core/core/base/libraries/codemirror/lib/css.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/anyword-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/css-hint.js',
                 'vendor/core/packages/theme/js/custom-css.js',
             ]);
 
@@ -122,12 +121,11 @@ class ThemeController extends BaseController
     /**
      * @param CustomCssRequest $request
      * @param BaseHttpResponse $response
-     * @param SettingStore $setting
      * @return BaseHttpResponse
      */
-    public function postCustomCss(CustomCssRequest $request, BaseHttpResponse $response, SettingStore $setting)
+    public function postCustomCss(CustomCssRequest $request, BaseHttpResponse $response)
     {
-        $file = public_path('themes/' . $setting->get('theme') . '/css/style.integration.css');
+        $file = public_path('themes/' . Theme::getThemeName() . '/css/style.integration.css');
         $css = $request->input('custom_css');
         $css = htmlspecialchars(htmlentities(strip_tags($css)));
         save_file_data($file, $css, false);

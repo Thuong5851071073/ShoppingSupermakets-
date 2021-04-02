@@ -1,15 +1,18 @@
 <?php
 
-namespace Botble\Api\Providers;
+namespace Platform\Api\Providers;
 
-use Botble\Api\Http\Middleware\ForceJsonResponseMiddleware;
+use Platform\Api\Http\Middleware\ForceJsonResponseMiddleware;
 use Illuminate\Support\ServiceProvider;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
 
 class ApiServiceProvider extends ServiceProvider
 {
     use LoadAndPublishDataTrait;
 
+    /**
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function register()
     {
         $this->app->make('router')->pushMiddlewareToGroup('api', ForceJsonResponseMiddleware::class);
@@ -22,8 +25,8 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->booted(function () {
             config([
-                'apidoc.routes.0.match.prefixes' => ['api/*'],
-                'apidoc.routes.0.apply.headers'  => [
+                'scribe.routes.0.match.prefixes' => ['api/*'],
+                'scribe.routes.0.apply.headers'  => [
                     'Authorization' => 'Bearer {token}',
                     'Api-Version'   => 'v1',
                 ],

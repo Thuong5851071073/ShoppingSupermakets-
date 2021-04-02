@@ -1,13 +1,13 @@
 <?php
 
-namespace Botble\Dashboard\Http\Controllers;
+namespace Platform\Dashboard\Http\Controllers;
 
 use Assets;
-use Botble\ACL\Repositories\Interfaces\UserInterface;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Dashboard\Repositories\Interfaces\DashboardWidgetInterface;
-use Botble\Dashboard\Repositories\Interfaces\DashboardWidgetSettingInterface;
+use Platform\ACL\Repositories\Interfaces\UserInterface;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Dashboard\Repositories\Interfaces\DashboardWidgetInterface;
+use Platform\Dashboard\Repositories\Interfaces\DashboardWidgetSettingInterface;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,8 +58,8 @@ class DashboardController extends BaseController
         page_title()->setTitle(trans('core/dashboard::dashboard.title'));
 
         Assets::addScripts(['blockui', 'sortable', 'equal-height', 'counterup'])
-            ->addScriptsDirectly('vendor/core/js/dashboard.js')
-            ->addStylesDirectly('vendor/core/css/dashboard.css');
+            ->addScriptsDirectly('vendor/core/core/dashboard/js/dashboard.js')
+            ->addStylesDirectly('vendor/core/core/dashboard/css/dashboard.css');
 
         do_action(DASHBOARD_ACTION_REGISTER_SCRIPTS);
 
@@ -69,7 +69,7 @@ class DashboardController extends BaseController
         $widgets = $this->widgetRepository->getModel()
             ->with([
                 'settings' => function (HasMany $query) use ($request) {
-                    $query->where('user_id', '=', $request->user()->getKey())
+                    $query->where('user_id', $request->user()->getKey())
                         ->select(['status', 'order', 'settings', 'widget_id'])
                         ->orderBy('order', 'asc');
                 },

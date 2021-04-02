@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Translation\Console;
+namespace Platform\Translation\Console;
 
-use Botble\Translation\Manager;
+use Platform\Translation\Manager;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -50,7 +50,7 @@ class ImportCommand extends Command
         $counter = $this->manager->importTranslations($replace);
         $this->info('Done importing, processed ' . $counter . ' items!');
 
-        return $counter;
+        return 0;
     }
 
     /**

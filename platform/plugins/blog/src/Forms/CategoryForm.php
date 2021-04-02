@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\Blog\Forms;
+namespace Platform\Blog\Forms;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Forms\FormAbstract;
-use Botble\Blog\Http\Requests\CategoryRequest;
-use Botble\Blog\Models\Category;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Base\Forms\FormAbstract;
+use Platform\Blog\Http\Requests\CategoryRequest;
+use Platform\Blog\Models\Category;
 
 class CategoryForm extends FormAbstract
 {
@@ -19,7 +19,7 @@ class CategoryForm extends FormAbstract
 
         $categories = [];
         foreach ($list as $row) {
-            if ($this->getModel() && $this->model->id === $row->id) {
+            if ($this->getModel() && ($this->model->id === $row->id || $this->model->id === $row->parent_id)) {
                 continue;
             }
 

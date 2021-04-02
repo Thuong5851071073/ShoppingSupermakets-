@@ -1,21 +1,22 @@
 <?php
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Supports\SortItemsWithChildrenHelper;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
-use Botble\Blog\Repositories\Interfaces\PostInterface;
-use Botble\Blog\Repositories\Interfaces\TagInterface;
-use Botble\Blog\Supports\PostFormat;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Base\Supports\SortItemsWithChildrenHelper;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Blog\Repositories\Interfaces\TagInterface;
+use Platform\Blog\Supports\PostFormat;
 use Illuminate\Support\Arr;
 
 if (!function_exists('get_featured_posts')) {
     /**
      * @param int $limit
+     * @param array $with
      * @return array
      */
-    function get_featured_posts($limit)
+    function get_featured_posts($limit, array $with = [])
     {
-        return app(PostInterface::class)->getFeatured($limit);
+        return app(PostInterface::class)->getFeatured($limit, $with);
     }
 }
 
@@ -33,13 +34,13 @@ if (!function_exists('get_latest_posts')) {
 
 if (!function_exists('get_related_posts')) {
     /**
-     * @param string $currentSlug
+     * @param int $id
      * @param int $limit
      * @return array
      */
-    function get_related_posts($currentSlug, $limit)
+    function get_related_posts($id, $limit)
     {
-        return app(PostInterface::class)->getRelated($currentSlug, $limit);
+        return app(PostInterface::class)->getRelated($id, $limit);
     }
 }
 
@@ -106,11 +107,12 @@ if (!function_exists('get_recent_posts')) {
 if (!function_exists('get_featured_categories')) {
     /**
      * @param int $limit
+     * @param array $with
      * @return array
      */
-    function get_featured_categories($limit)
+    function get_featured_categories($limit, array $with = [])
     {
-        return app(CategoryInterface::class)->getFeaturedCategories($limit);
+        return app(CategoryInterface::class)->getFeaturedCategories($limit, $with);
     }
 }
 
@@ -183,6 +185,7 @@ if (!function_exists('get_categories')) {
         $repo = app(CategoryInterface::class);
 
         $categories = $repo->getCategories(Arr::get($args, 'select', ['*']), [
+            'categories.created_at' => 'DESC',
             'categories.is_default' => 'DESC',
             'categories.order'      => 'ASC',
         ]);
@@ -192,7 +195,7 @@ if (!function_exists('get_categories')) {
         foreach ($categories as $category) {
             $indentText = '';
             $depth = (int)$category->depth;
-            for ($i = 0; $i < $depth; $i++) {
+            for ($index = 0; $index < $depth; $index++) {
                 $indentText .= $indent;
             }
             $category->indent_text = $indentText;

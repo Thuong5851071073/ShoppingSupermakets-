@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
 use BadMethodCallException;
 use JsonSerializable;
@@ -35,7 +35,6 @@ abstract class Enum implements JsonSerializable
      * Creates a new value of some type
      *
      * @param mixed $value
-     *
      * @throws UnexpectedValueException if incompatible type is given.
      */
     public function __construct($value)
@@ -46,7 +45,7 @@ abstract class Enum implements JsonSerializable
             return;
         }
 
-        if (!$this->isValid($value)) {
+        if ($value !== null && !$this->isValid($value)) {
             Log::error('Value ' . $value . ' is not part of the enum ' . get_called_class());
         }
 
@@ -64,8 +63,7 @@ abstract class Enum implements JsonSerializable
     /**
      * Check if is valid enum value
      *
-     * @param $value
-     *
+     * @param string|int $value
      * @return bool
      */
     public static function isValid($value)
@@ -187,7 +185,7 @@ abstract class Enum implements JsonSerializable
     /**
      * Return key for value
      *
-     * @param $value
+     * @param string|int $value
      *
      * @return mixed
      */
@@ -207,6 +205,7 @@ abstract class Enum implements JsonSerializable
     /**
      * Compares one Enum with another.
      *
+     * @param Enum|null $enum
      * @return bool True if Enums are equal, false if not equal
      */
     final public function equals(Enum $enum = null)

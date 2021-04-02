@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Support\Services\Cache;
+namespace Platform\Support\Services\Cache;
 
 use File;
 use Illuminate\Cache\CacheManager;
@@ -14,7 +14,7 @@ class Cache implements CacheInterface
     /**
      * @var string
      */
-    public $cacheGroup;
+    protected $cacheGroup;
 
     /**
      * @var CacheManager
@@ -57,7 +57,7 @@ class Cache implements CacheInterface
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return string
      */
     public function generateCacheKey($key)
@@ -92,7 +92,7 @@ class Cache implements CacheInterface
     /**
      * Store cache key to file
      *
-     * @param $key
+     * @param string $key
      * @return bool
      * @throws FileNotFoundException
      */

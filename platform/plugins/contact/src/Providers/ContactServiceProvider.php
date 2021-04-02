@@ -1,21 +1,21 @@
 <?php
 
-namespace Botble\Contact\Providers;
+namespace Platform\Contact\Providers;
 
+use EmailHandler;
 use Illuminate\Routing\Events\RouteMatched;
-use Botble\Base\Supports\Helper;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Contact\Models\ContactReply;
-use Botble\Contact\Repositories\Caches\ContactReplyCacheDecorator;
-use Botble\Contact\Repositories\Eloquent\ContactReplyRepository;
-use Botble\Contact\Repositories\Interfaces\ContactInterface;
-use Botble\Contact\Models\Contact;
-use Botble\Contact\Repositories\Caches\ContactCacheDecorator;
-use Botble\Contact\Repositories\Eloquent\ContactRepository;
-use Botble\Contact\Repositories\Interfaces\ContactReplyInterface;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Contact\Models\ContactReply;
+use Platform\Contact\Repositories\Caches\ContactReplyCacheDecorator;
+use Platform\Contact\Repositories\Eloquent\ContactReplyRepository;
+use Platform\Contact\Repositories\Interfaces\ContactInterface;
+use Platform\Contact\Models\Contact;
+use Platform\Contact\Repositories\Caches\ContactCacheDecorator;
+use Platform\Contact\Repositories\Eloquent\ContactRepository;
+use Platform\Contact\Repositories\Interfaces\ContactReplyInterface;
 use Event;
 use Illuminate\Support\ServiceProvider;
-use MailVariable;
 
 class ContactServiceProvider extends ServiceProvider
 {
@@ -56,16 +56,8 @@ class ContactServiceProvider extends ServiceProvider
                 'url'         => route('contacts.index'),
                 'permissions' => ['contacts.index'],
             ]);
-        });
 
-        MailVariable::setModule(CONTACT_MODULE_SCREEN_NAME)
-            ->addVariables([
-                'contact_name'    => __('Contact name'),
-                'contact_subject' => __('Contact subject'),
-                'contact_email'   => __('Contact email'),
-                'contact_phone'   => __('Contact phone'),
-                'contact_address' => __('Contact address'),
-                'contact_content' => __('Contact content'),
-            ]);
+            EmailHandler::addTemplateSettings(CONTACT_MODULE_SCREEN_NAME, config('plugins.contact.email'));
+        });
     }
 }

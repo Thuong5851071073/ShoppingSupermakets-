@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Widget;
+namespace Platform\Widget;
 
-use Botble\Widget\Contracts\ApplicationWrapperContract;
+use Platform\Widget\Contracts\ApplicationWrapperContract;
 use Illuminate\Support\Arr;
 
 class WidgetGroupCollection
@@ -45,10 +45,10 @@ class WidgetGroupCollection
     }
 
     /**
-     * @param $args
+     * @param array $args
      * @return $this|mixed
      */
-    public function setGroup($args)
+    public function setGroup(array $args)
     {
         if (isset($this->groups[$args['id']])) {
             $group = $this->groups[$args['id']];

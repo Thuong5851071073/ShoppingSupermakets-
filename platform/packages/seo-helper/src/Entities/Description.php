@@ -1,10 +1,10 @@
 <?php
 
-namespace Botble\SeoHelper\Entities;
+namespace Platform\SeoHelper\Entities;
 
-use Botble\SeoHelper\Contracts\Entities\DescriptionContract;
-use Botble\SeoHelper\Exceptions\InvalidArgumentException;
-use Botble\SeoHelper\Helpers\Meta;
+use Platform\SeoHelper\Contracts\Entities\DescriptionContract;
+use Platform\SeoHelper\Exceptions\InvalidArgumentException;
+use Platform\SeoHelper\Helpers\Meta;
 use Illuminate\Support\Str;
 
 class Description implements DescriptionContract
@@ -66,7 +66,7 @@ class Description implements DescriptionContract
      *
      * @param string $content
      *
-     * @return self
+     * @return $this
      */
     public function set($content)
     {
@@ -90,7 +90,7 @@ class Description implements DescriptionContract
      *
      * @param int $max
      *
-     * @return self
+     * @return $this
      * @throws InvalidArgumentException
      */
     public function setMax($max)
@@ -108,7 +108,7 @@ class Description implements DescriptionContract
      * @param string $content
      * @param int $max
      *
-     * @return self
+     * @return $this
      * @throws InvalidArgumentException
      */
     public static function make($content, $max = 386)
@@ -161,13 +161,13 @@ class Description implements DescriptionContract
     {
         if (!is_int($max)) {
             throw new InvalidArgumentException(
-                'The description maximum lenght must be integer.'
+                'The description maximum length must be integer.'
             );
         }
 
         if ($max <= 0) {
             throw new InvalidArgumentException(
-                'The description maximum lenght must be greater 0.'
+                'The description maximum length must be greater 0.'
             );
         }
     }

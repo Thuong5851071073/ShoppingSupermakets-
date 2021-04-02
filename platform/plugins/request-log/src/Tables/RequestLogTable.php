@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\RequestLog\Tables;
+namespace Platform\RequestLog\Tables;
 
-use Botble\RequestLog\Models\RequestLog;
+use Platform\RequestLog\Models\RequestLog;
 use Illuminate\Support\Facades\Auth;
-use Botble\RequestLog\Repositories\Interfaces\RequestLogInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\RequestLog\Repositories\Interfaces\RequestLogInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
@@ -52,7 +52,7 @@ class RequestLogTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('url', function ($item) {
                 return Html::link($item->url, $item->url, ['target' => '_blank'])->toHtml();
@@ -60,7 +60,7 @@ class RequestLogTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions(null, 'request-log.destroy', $item);
+                return $this->getOperations(null, 'request-log.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -72,15 +72,16 @@ class RequestLogTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->select([
-                'request_logs.id',
-                'request_logs.url',
-                'request_logs.status_code',
-                'request_logs.count',
-            ]);
+        $select = [
+            'request_logs.id',
+            'request_logs.url',
+            'request_logs.status_code',
+            'request_logs.count',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

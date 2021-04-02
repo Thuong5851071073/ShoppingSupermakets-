@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Base\Facades;
+namespace Platform\Base\Facades;
 
-use Botble\Base\Supports\EmailHandler;
+use Platform\Base\Supports\EmailHandler;
 use Illuminate\Support\Facades\Facade;
 
 class EmailHandlerFacade extends Facade
@@ -10,7 +10,6 @@ class EmailHandlerFacade extends Facade
 
     /**
      * @return string
-     *
      * @since 2.2
      */
     protected static function getFacadeAccessor()

@@ -1,16 +1,17 @@
 <?php
 
-namespace Botble\Theme\Services;
+namespace Platform\Theme\Services;
 
-use Botble\Base\Supports\Helper;
-use Botble\PluginManagement\Services\PluginService;
-use Botble\Setting\Repositories\Interfaces\SettingInterface;
-use Botble\Setting\Supports\SettingStore;
-use Botble\Theme\Events\ThemeRemoveEvent;
-use Botble\Widget\Repositories\Interfaces\WidgetInterface;
+use Platform\Base\Supports\Helper;
+use Platform\PluginManagement\Services\PluginService;
+use Platform\Setting\Repositories\Interfaces\SettingInterface;
+use Platform\Setting\Supports\SettingStore;
+use Platform\Theme\Events\ThemeRemoveEvent;
+use Platform\Widget\Repositories\Interfaces\WidgetInterface;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
+use Theme;
 
 class ThemeService
 {
@@ -74,7 +75,7 @@ class ThemeService
             return $validate;
         }
 
-        if ($theme == setting('theme')) {
+        if ($theme == Theme::getThemeName()) {
             return [
                 'error'   => true,
                 'message' => 'Theme "' . $theme . '" is activated already!',
@@ -116,7 +117,6 @@ class ThemeService
     /**
      * @param string $theme
      * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function validate(string $theme): array
     {
@@ -197,7 +197,7 @@ class ThemeService
             return $validate;
         }
 
-        if ($this->settingStore->get('theme') == $theme) {
+        if (Theme::getThemeName() == $theme) {
             return [
                 'error'   => true,
                 'message' => __('Cannot remove activated theme, please activate another theme before removing ":name"!',
@@ -224,7 +224,6 @@ class ThemeService
     /**
      * @param string $theme
      * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function removeAssets(string $theme): array
     {

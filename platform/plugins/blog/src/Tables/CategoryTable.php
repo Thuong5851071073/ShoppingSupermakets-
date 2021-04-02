@@ -1,13 +1,14 @@
 <?php
 
-namespace Botble\Blog\Tables;
+namespace Platform\Blog\Tables;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Blog\Models\Category;
+use BaseHelper;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Blog\Models\Category;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
 
@@ -62,13 +63,13 @@ class CategoryTable extends TableAbstract
                 return Html::link(route('categories.edit', $item->id), $item->indent_text . ' ' . $item->name);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('updated_at', function ($item) {
-                return date_from_database($item->updated_at, 'd-m-Y');
+                return BaseHelper::formatDate($item->updated_at);
             })
             ->editColumn('status', function ($item) {
                 if ($this->request()->input('action') === 'excel') {

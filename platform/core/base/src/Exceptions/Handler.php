@@ -1,9 +1,10 @@
 <?php
 
-namespace Botble\Base\Exceptions;
+namespace Platform\Base\Exceptions;
 
 use App\Exceptions\Handler as ExceptionHandler;
-use Botble\Base\Http\Responses\BaseHttpResponse;
+use BaseHelper;
+use Platform\Base\Http\Responses\BaseHttpResponse;
 use EmailHandler;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -20,6 +21,7 @@ use Log;
 use RvMedia;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Theme;
 use Throwable;
 use URL;
 
@@ -66,8 +68,8 @@ class Handler extends ExceptionHandler
                     return $response;
                 }
             }
-        } elseif (app()->isDownForMaintenance() && view()->exists('theme.' . setting('theme') . '::views.503')) {
-            return response()->view('theme.' . setting('theme') . '::views.503', ['exception' => $exception], 503);
+        } elseif (class_exists('Theme') && app()->isDownForMaintenance() && view()->exists(Theme::getThemeNamespace() . '::views.503')) {
+            return response()->view(Theme::getThemeNamespace() . '::views.503', ['exception' => $exception], 503);
         }
 
         return parent::render($request, $exception);
@@ -107,12 +109,12 @@ class Handler extends ExceptionHandler
         $code = $code == '403' ? '401' : $code;
         $code = $code == '503' ? '500' : $code;
 
-        if ($request->is(config('core.base.general.admin_dir') . '/*') || $request->is(config('core.base.general.admin_dir'))) {
+        if ($request->is(BaseHelper::getAdminPrefix() . '/*') || $request->is(BaseHelper::getAdminPrefix())) {
             return response()->view('core/base::errors.' . $code, [], $code);
         }
 
-        if (view()->exists('theme.' . setting('theme') . '::views.' . $code)) {
-            return response()->view('theme.' . setting('theme') . '::views.' . $code, [], $code);
+        if (class_exists('Theme') && view()->exists(Theme::getThemeNamespace() . '::views.' . $code)) {
+            return response()->view(Theme::getThemeNamespace() . '::views.' . $code, [], $code);
         }
 
         return false;
@@ -134,11 +136,6 @@ class Handler extends ExceptionHandler
 
                 if (config('core.base.general.error_reporting.via_slack',
                         false) == true && !$exception instanceof OAuthServerException) {
-                    config()->set([
-                        'logging.channels.slack.username' => 'Botble BOT',
-                        'logging.channels.slack.emoji'    => ':helmet_with_white_cross:',
-                    ]);
-
                     Log::channel('slack')
                         ->critical(URL::full() . "\n" . $exception->getFile() . ':' . $exception->getLine() . "\n" . $exception->getMessage());
                 }

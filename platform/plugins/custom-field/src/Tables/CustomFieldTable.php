@@ -1,12 +1,13 @@
 <?php
 
-namespace Botble\CustomField\Tables;
+namespace Platform\CustomField\Tables;
 
-use Botble\CustomField\Models\FieldGroup;
+use BaseHelper;
+use Platform\CustomField\Models\FieldGroup;
 use Illuminate\Support\Facades\Auth;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\CustomField\Repositories\Interfaces\FieldGroupInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\CustomField\Repositories\Interfaces\FieldGroupInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Validation\Rule;
@@ -66,10 +67,10 @@ class CustomFieldTable extends TableAbstract
                 return Html::link(route('custom-fields.edit', $item->id), $item->title);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('status', function ($item) {
                 return $item->status->toHtml();
@@ -77,7 +78,7 @@ class CustomFieldTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('custom-fields.edit', 'custom-fields.destroy', $item,
+                return $this->getOperations('custom-fields.edit', 'custom-fields.destroy', $item,
                     Html::link(
                         route('custom-fields.export', ['id' => $item->id]),
                         Html::tag('i', '', ['class' => 'fa fa-download'])->toHtml(),
@@ -99,16 +100,17 @@ class CustomFieldTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->select([
-                'field_groups.id',
-                'field_groups.title',
-                'field_groups.status',
-                'field_groups.order',
-                'field_groups.created_at',
-            ]);
+        $select = [
+            'field_groups.id',
+            'field_groups.title',
+            'field_groups.status',
+            'field_groups.order',
+            'field_groups.created_at',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Gallery;
+namespace Platform\Gallery;
 
-use Botble\Gallery\Repositories\Interfaces\GalleryMetaInterface;
+use Platform\Gallery\Repositories\Interfaces\GalleryMetaInterface;
 use Illuminate\Support\Arr;
 use Theme;
 
@@ -59,9 +59,9 @@ class Gallery
     }
 
     /**
-     * @param string $screen
      * @param \Illuminate\Http\Request $request
      * @param \Eloquent|false $data
+     * @throws \Exception
      */
     public function saveGallery($request, $data)
     {
@@ -88,8 +88,9 @@ class Gallery
     }
 
     /**
-     * @param string $screen
      * @param \Eloquent|false $data
+     * @return bool
+     * @throws \Exception
      */
     public function deleteGallery($data)
     {
@@ -110,15 +111,16 @@ class Gallery
     {
         Theme::asset()
             ->usePath(false)
-            ->add('lightgallery-css', 'vendor/core/plugins/gallery/css/lightgallery.min.css')
-            ->add('gallery-css', 'vendor/core/plugins/gallery/css/gallery.css');
+            ->add('lightgallery-css', asset('vendor/core/plugins/gallery/css/lightgallery.min.css'), [], [], '1.0.0')
+            ->add('gallery-css', asset('vendor/core/plugins/gallery/css/gallery.css'), [], [], '1.0.0');
 
         Theme::asset()
             ->container('footer')
-            ->add('lightgallery-js', 'vendor/core/plugins/gallery/js/lightgallery.min.js', ['jquery'])
-            ->add('imagesloaded', 'vendor/core/plugins/gallery/js/imagesloaded.pkgd.min.js', ['jquery'])
-            ->add('masonry', 'vendor/core/plugins/gallery/js/masonry.pkgd.min.js', ['jquery'])
-            ->add('gallery-js', 'vendor/core/plugins/gallery/js/gallery.js', ['jquery']);
+            ->usePath(false)
+            ->add('lightgallery-js', asset('vendor/core/plugins/gallery/js/lightgallery.min.js'), ['jquery'], [], '1.0.0')
+            ->add('imagesloaded', asset('vendor/core/plugins/gallery/js/imagesloaded.pkgd.min.js'), ['jquery'], [], '1.0.0')
+            ->add('masonry', asset('vendor/core/plugins/gallery/js/masonry.pkgd.min.js'), ['jquery'], [], '1.0.0')
+            ->add('gallery-js', asset('vendor/core/plugins/gallery/js/gallery.js'), ['jquery'], [], '1.0.0');
 
         return $this;
     }

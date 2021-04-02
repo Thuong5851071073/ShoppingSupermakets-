@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\ACL\Http\Controllers\Auth;
+namespace Platform\ACL\Http\Controllers\Auth;
 
 use Assets;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
 use Illuminate\Contracts\View\Factory;
-use Botble\ACL\Traits\SendsPasswordResetEmails;
+use Platform\ACL\Traits\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -49,8 +49,8 @@ class ForgotPasswordController extends BaseController
         page_title()->setTitle(trans('core/acl::auth.forgot_password.title'));
 
         Assets::addScripts(['jquery-validation'])
-            ->addScriptsDirectly('vendor/core/js/login.js')
-            ->addStylesDirectly('vendor/core/css/login.css')
+            ->addScriptsDirectly('vendor/core/core/acl/js/login.js')
+            ->addStylesDirectly('vendor/core/core/acl/css/login.css')
             ->removeStyles([
                 'select2',
                 'fancybox',

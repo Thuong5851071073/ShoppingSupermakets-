@@ -1,9 +1,8 @@
 <?php
 
-namespace Botble\Slug\Services;
+namespace Platform\Slug\Services;
 
-use Botble\Base\Models\BaseModel;
-use Botble\Slug\Repositories\Interfaces\SlugInterface;
+use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Support\Str;
 use SlugHelper;
 
@@ -33,38 +32,38 @@ class SlugService
         $slug = Str::slug($name);
         $index = 1;
         $baseSlug = $slug;
-        while ($this->checkIfExistedSlug($slug, $slugId, $model)) {
-            $slug = $baseSlug . '-' . $index++;
+
+        $prefix = null;
+        if (!empty($model)) {
+            $prefix = SlugHelper::getPrefix($model);
+        }
+
+        while ($this->checkIfExistedSlug($slug, $slugId, $prefix)) {
+            $slug = apply_filters(FILTER_SLUG_EXISTED_STRING, $baseSlug . '-' . $index++, $baseSlug, $index, $model);
         }
 
         if (empty($slug)) {
             $slug = time();
         }
 
-        return $slug;
+        return apply_filters(FILTER_SLUG_STRING, $slug, $model);
     }
 
     /**
      * @param string $slug
      * @param string $slugId
-     * @param BaseModel $model
+     * @param string $prefix
      * @return bool
      */
-    protected function checkIfExistedSlug($slug, $slugId, $model)
+    protected function checkIfExistedSlug($slug, $slugId, $prefix)
     {
-        $prefix = null;
-        if (!empty($model)) {
-            $prefix = SlugHelper::getPrefix($model);
-        }
-        $count = $this->slugRepository
-            ->getModel()
-            ->where([
-                'key'    => $slug,
-                'prefix' => $prefix,
-            ])
-            ->where('id', '!=', $slugId)
-            ->count();
-
-        return $count > 0;
+        return $this->slugRepository
+                ->getModel()
+                ->where([
+                    'key'    => $slug,
+                    'prefix' => $prefix,
+                ])
+                ->where('id', '!=', $slugId)
+                ->count() > 0;
     }
 }

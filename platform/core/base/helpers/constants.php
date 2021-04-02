@@ -1,25 +1,5 @@
 <?php
 
-// Use to change table heading of each module
-if (!defined('BASE_FILTER_TABLE_HEADINGS')) {
-    define('BASE_FILTER_TABLE_HEADINGS', 'table_headings');
-}
-
-// Use to change admin menu
-if (!defined('BASE_FILTER_ADMIN_MENU')) {
-    define('BASE_FILTER_ADMIN_MENU', 'admin_menu');
-}
-
-// Change data search result
-if (!defined('BASE_FILTER_SET_DATA_SEARCH')) {
-    define('BASE_FILTER_SET_DATA_SEARCH', 'set_data_search');
-}
-
-// Use in get list data function in each repository
-if (!defined('BASE_FILTER_GET_LIST_DATA')) {
-    define('BASE_FILTER_GET_LIST_DATA', 'get_list_data');
-}
-
 // Change data show in front page
 if (!defined('BASE_FILTER_BEFORE_GET_FRONT_PAGE_ITEM')) {
     define('BASE_FILTER_BEFORE_GET_FRONT_PAGE_ITEM', 'before_get_front_page_item');
@@ -43,7 +23,7 @@ if (!defined('BASE_ACTION_FORM_ACTIONS_TITLE')) {
 }
 
 if (!defined('BASE_LANGUAGE_FLAG_PATH')) {
-    define('BASE_LANGUAGE_FLAG_PATH', '/vendor/core/images/flags/');
+    define('BASE_LANGUAGE_FLAG_PATH', '/vendor/core/core/base/images/flags/');
 }
 
 if (!defined('BASE_FILTER_GROUP_PUBLIC_ROUTE')) {
@@ -68,14 +48,6 @@ if (!defined('BASE_ACTION_TOP_FORM_CONTENT_NOTIFICATION')) {
 
 if (!defined('BASE_FILTER_TOP_HEADER_LAYOUT')) {
     define('BASE_FILTER_TOP_HEADER_LAYOUT', 'base_filter_top_header_layout');
-}
-
-if (!defined('BASE_FILTER_TABLE_BUTTONS')) {
-    define('BASE_FILTER_TABLE_BUTTONS', 'base_filter_table_buttons');
-}
-
-if (!defined('BASE_FILTER_TABLE_QUERY')) {
-    define('BASE_FILTER_TABLE_QUERY', 'base_filter_table_query');
 }
 
 if (!defined('BASE_ACTION_ENQUEUE_SCRIPTS')) {
@@ -124,6 +96,14 @@ if (!defined('BASE_FILTER_BEFORE_GET_ADMIN_LIST_ITEM')) {
 
 if (!defined('BASE_FILTER_EMAIL_TEMPLATE')) {
     define('BASE_FILTER_EMAIL_TEMPLATE', 'base_filter_email_template');
+}
+
+if (!defined('BASE_FILTER_EMAIL_TEMPLATE_HEADER')) {
+    define('BASE_FILTER_EMAIL_TEMPLATE_HEADER', 'base_filter_email_template_header');
+}
+
+if (!defined('BASE_FILTER_EMAIL_TEMPLATE_FOOTER')) {
+    define('BASE_FILTER_EMAIL_TEMPLATE_FOOTER', 'base_filter_email_template_footer');
 }
 
 if (!defined('BASE_FILTER_AFTER_LOGIN_OR_REGISTER_FORM')) {

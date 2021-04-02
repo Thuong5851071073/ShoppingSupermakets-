@@ -1,10 +1,12 @@
 <?php
 
-namespace Botble\Contact\Providers;
+namespace Platform\Contact\Providers;
 
+use Html;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Botble\Contact\Repositories\Interfaces\ContactInterface;
+use Platform\Contact\Repositories\Interfaces\ContactInterface;
+use Theme;
 
 class HookServiceProvider extends ServiceProvider
 {
@@ -15,7 +17,6 @@ class HookServiceProvider extends ServiceProvider
     {
         add_filter(BASE_FILTER_TOP_HEADER_LAYOUT, [$this, 'registerTopHeaderNotification'], 120);
         add_filter(BASE_FILTER_APPEND_MENU_NAME, [$this, 'getUnReadCount'], 120, 2);
-        add_filter(BASE_FILTER_AFTER_SETTING_EMAIL_CONTENT, [$this, 'addContactSetting'], 99, 1);
 
         if (function_exists('add_shortcode')) {
             add_shortcode('contact-form', __('Contact form'), __('Add contact form'), [$this, 'form']);
@@ -46,8 +47,8 @@ class HookServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param $number
-     * @param $menuId
+     * @param int $number
+     * @param string $menuId
      * @return string
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -56,7 +57,7 @@ class HookServiceProvider extends ServiceProvider
         if ($menuId == 'cms-plugins-contact') {
             $unread = $this->app->make(ContactInterface::class)->countUnread();
             if ($unread > 0) {
-                return '<span class="badge badge-success">' . $unread . '</span>';
+                return Html::tag('span', (string)$unread, ['class' => 'badge badge-success'])->toHtml();
             }
         }
 
@@ -69,21 +70,25 @@ class HookServiceProvider extends ServiceProvider
      */
     public function form($shortcode)
     {
-        $view = 'plugins/contact::forms.contact';
+        $view = apply_filters(CONTACT_FORM_TEMPLATE_VIEW, 'plugins/contact::forms.contact');
+
+        if (defined('THEME_OPTIONS_MODULE_SCREEN_NAME')) {
+            $this->app->booted(function () {
+                Theme::asset()
+                    ->usePath(false)
+                    ->add('contact-css', asset('vendor/core/plugins/contact/css/contact-public.css'), [], [], '1.0.0');
+
+                Theme::asset()
+                    ->container('footer')
+                    ->usePath(false)
+                    ->add('contact-public-js', asset('vendor/core/plugins/contact/js/contact-public.js'),
+                        ['jquery'], [], '1.0.0');
+            });
+        }
 
         if ($shortcode->view && view()->exists($shortcode->view)) {
             $view = $shortcode->view;
         }
-        return view($view, ['header' => $shortcode->header])->render();
-    }
-
-    /**
-     * @param null $data
-     * @return string
-     * @throws \Throwable
-     */
-    public function addContactSetting($data = null)
-    {
-        return $data . view('plugins/contact::setting')->render();
+        return view($view)->render();
     }
 }

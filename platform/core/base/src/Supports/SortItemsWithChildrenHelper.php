@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
 use Exception;
 use Illuminate\Support\Arr;
@@ -95,7 +95,7 @@ class SortItemsWithChildrenHelper
     protected function processSort(int $parentId = 0): array
     {
         $result = [];
-        $filtered = $this->items->where($this->parentField, '=', $parentId);
+        $filtered = $this->items->where($this->parentField, $parentId);
         foreach ($filtered as $item) {
             if (is_object($item)) {
                 $item->{$this->childrenProperty} = $this->processSort($item->{$this->compareKey});

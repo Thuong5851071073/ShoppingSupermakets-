@@ -42,7 +42,7 @@ theme_option()
         'label'      => __('Copyright'),
         'attributes' => [
             'name'    => 'copyright',
-            'value'   => __('© 2020 Botble Technologies. All right reserved. Designed by Nghia Minh'),
+            'value'   => __('© 2020 Laravel Technologies. All right reserved.'),
             'options' => [
                 'class'        => 'form-control',
                 'placeholder'  => __('Change copyright'),
@@ -52,23 +52,24 @@ theme_option()
         'helper'     => __('Copyright on footer of site'),
     ])
     ->setField([
-        'id'         => 'theme-color',
+        'id'         => 'primary_font',
         'section_id' => 'opt-text-subsection-general',
-        'type'       => 'select',
-        'label'      => __('Theme color'),
+        'type'       => 'googleFonts',
+        'label'      => __('Primary font'),
         'attributes' => [
-            'name'    => 'theme_color',
-            'list'    => [
-                'red'   => 'Red',
-                'green' => 'Green',
-                'blue'  => 'Blue',
-            ],
-            'value'   => 'red',
-            'options' => [
-                'class' => 'form-control',
-            ],
+            'name'  => 'primary_font',
+            'value' => 'Roboto Slab',
         ],
-        'helper'     => __('Primary theme color'),
+    ])
+    ->setField([
+        'id'         => 'primary_color',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'customColor',
+        'label'      => __('Primary color'),
+        'attributes' => [
+            'name'  => 'primary_color',
+            'value' => '#d8403f',
+        ],
     ])
     ->setField([
         'id'         => 'top-banner',
@@ -129,6 +130,53 @@ theme_option()
             'options' => [
                 'class'       => 'form-control',
                 'placeholder' => 'https://youtube.com/@channel-url',
+            ],
+        ],
+    ])
+    ->setField([
+        'id'         => 'facebook_chat_enabled',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'select',
+        'label'      => __('Enable Facebook chat?'),
+        'attributes' => [
+            'name'    => 'facebook_chat_enabled',
+            'list'    => [
+                'yes' => 'Yes',
+                'no'  => 'No',
+            ],
+            'value'   => 'yes',
+            'options' => [
+                'class' => 'form-control',
+            ],
+        ],
+    ])
+    ->setField([
+        'id'         => 'facebook_page_id',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'text',
+        'label'      => __('Facebook page ID'),
+        'attributes' => [
+            'name'    => 'facebook_page_id',
+            'value'   => null,
+            'options' => [
+                'class' => 'form-control',
+            ],
+        ],
+    ])
+    ->setField([
+        'id'         => 'facebook_comment_enabled_in_post',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'select',
+        'label'      => __('Enable Facebook comment in post detail page?'),
+        'attributes' => [
+            'name'    => 'facebook_comment_enabled_in_post',
+            'list'    => [
+                'yes' => 'Yes',
+                'no'  => 'No',
+            ],
+            'value'   => 'yes',
+            'options' => [
+                'class' => 'form-control',
             ],
         ],
     ]);

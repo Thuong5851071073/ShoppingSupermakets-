@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
-use Botble\Assets\Assets as BaseAssets;
-use Botble\Assets\HtmlBuilder;
+use Platform\Assets\Assets as BaseAssets;
+use Platform\Assets\HtmlBuilder;
 use File;
 use Illuminate\Config\Repository;
 use Illuminate\Support\Str;
@@ -48,12 +48,12 @@ class Assets extends BaseAssets
     {
         $themes = [];
 
-        if (!File::isDirectory(public_path('vendor/core/css/themes'))) {
+        if (!File::isDirectory(public_path('vendor/core/core/base/css/themes'))) {
             return $themes;
         }
 
-        foreach (File::files(public_path('vendor/core/css/themes')) as $file) {
-            $name = '/vendor/core/css/themes/' . basename($file);
+        foreach (File::files(public_path('vendor/core/core/base/css/themes')) as $file) {
+            $name = '/vendor/core/core/base/css/themes/' . basename($file);
             if (!Str::contains($file, '.css.map')) {
                 $themes[basename($file, '.css')] = $name;
             }
@@ -67,30 +67,7 @@ class Assets extends BaseAssets
      */
     public function getAdminLocales(): array
     {
-        $languages = [];
-        $locales = scan_folder(resource_path('lang'));
-        if (in_array('vendor', $locales)) {
-            $locales = array_merge($locales, scan_folder(resource_path('lang/vendor')));
-        }
-
-        foreach ($locales as $locale) {
-            if ($locale === 'vendor') {
-                continue;
-            }
-            foreach (Language::getListLanguages() as $key => $language) {
-                if (in_array($key, [$locale, str_replace('-', '_', $locale)]) ||
-                    in_array($language[0], [$locale, str_replace('-', '_', $locale)])
-                ) {
-                    $languages[$locale] = [
-                        'locale' => $locale,
-                        'name'   => $language[2],
-                        'flag'   => $language[4],
-                    ];
-                }
-            }
-        }
-
-        return $languages;
+        return Language::getAvailableLocales();
     }
 
     /**

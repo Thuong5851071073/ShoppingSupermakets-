@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\ACL\Forms;
+namespace Platform\ACL\Forms;
 
 use Assets;
-use Botble\ACL\Http\Requests\RoleCreateRequest;
-use Botble\ACL\Models\Role;
-use Botble\Base\Forms\FormAbstract;
+use Platform\ACL\Http\Requests\RoleCreateRequest;
+use Platform\ACL\Models\Role;
+use Platform\Base\Forms\FormAbstract;
 use Illuminate\Support\Arr;
 
 class RoleForm extends FormAbstract
@@ -18,7 +18,7 @@ class RoleForm extends FormAbstract
     {
         Assets::addStyles(['jquery-ui', 'jqueryTree'])
             ->addScripts(['jquery-ui', 'jqueryTree'])
-            ->addScriptsDirectly('vendor/core/js/role.js');
+            ->addScriptsDirectly('vendor/core/core/acl/js/role.js');
 
         $flags = $this->getAvailablePermissions();
         $children = $this->getPermissionTree($flags);
@@ -131,7 +131,7 @@ class RoleForm extends FormAbstract
      * @param array $allFlags
      * @return mixed
      */
-    protected function getChildren($parentId, $allFlags)
+    protected function getChildren($parentId, array $allFlags)
     {
         $newFlagArray = [];
         foreach ($allFlags as $flagDetails) {

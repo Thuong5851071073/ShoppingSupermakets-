@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Member\Models;
+namespace Platform\Member\Models;
 
-use Botble\Base\Supports\Avatar;
-use Botble\Media\Models\MediaFile;
-use Botble\Member\Notifications\ResetPasswordNotification;
+use Platform\Base\Supports\Avatar;
+use Platform\Media\Models\MediaFile;
+use Platform\Member\Notifications\ResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use Storage;
+use RvMedia;
 
 /**
  * @mixin \Eloquent
@@ -74,7 +74,7 @@ class Member extends Authenticatable
      */
     public function getAvatarUrlAttribute()
     {
-        return $this->avatar->url ? Storage::url($this->avatar->url) : (new Avatar)->create($this->getFullName())->toBase64();
+        return $this->avatar->url ? RvMedia::url($this->avatar->url) : (new Avatar)->create($this->getFullName())->toBase64();
     }
 
     /**
@@ -110,6 +110,6 @@ class Member extends Authenticatable
      */
     public function posts()
     {
-        return $this->morphMany('Botble\Blog\Models\Post', 'author');
+        return $this->morphMany('Platform\Blog\Models\Post', 'author');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Widget\Misc;
+namespace Platform\Widget\Misc;
 
 use Illuminate\Support\HtmlString;
 
@@ -14,10 +14,6 @@ trait ViewExpressionTrait
      */
     protected function convertToViewExpression($html)
     {
-        if (interface_exists('Illuminate\Contracts\Support\Htmlable') && class_exists('Illuminate\Support\HtmlString')) {
-            return new HtmlString($html);
-        }
-
-        return $html;
+        return new HtmlString($html);
     }
 }

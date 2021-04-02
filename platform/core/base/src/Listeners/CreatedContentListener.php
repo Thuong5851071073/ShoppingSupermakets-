@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Base\Listeners;
+namespace Platform\Base\Listeners;
 
-use Botble\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\CreatedContentEvent;
 use Exception;
 
 class CreatedContentListener
@@ -18,8 +18,6 @@ class CreatedContentListener
     {
         try {
             do_action(BASE_ACTION_AFTER_CREATE_CONTENT, $event->screen, $event->request, $event->data);
-
-            cache()->forget('public.sitemap');
         } catch (Exception $exception) {
             info($exception->getMessage());
         }

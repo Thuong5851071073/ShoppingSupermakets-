@@ -1,8 +1,23 @@
+let mix = require('laravel-mix');
 let glob = require('glob');
 
-configs = [
-    './platform/*/webpack.mix.js',
-    './platform/**/*/webpack.mix.js',
-];
+mix.options({
+    processCssUrls: false,
+    clearConsole: true,
+    terser: {
+        extractComments: false,
+    }
+});
 
-configs.forEach(config => glob.sync(config).forEach(item => require(item)));
+// Run all webpack.mix.js in app
+glob.sync('./platform/**/**/webpack.mix.js').forEach(item => require(item));
+
+// Run only for a package
+// require('./platform/packages/[package]/webpack.mix.js');
+
+// Run only for a plugin
+// require('./platform/plugins/[plugin]/webpack.mix.js');
+
+// Run only for a theme
+// require('./platform/themes/[theme]/webpack.mix.js');
+

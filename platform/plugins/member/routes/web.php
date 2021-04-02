@@ -1,8 +1,8 @@
 <?php
 
 Route::group([
-    'namespace'  => 'Botble\Member\Http\Controllers',
-    'prefix'     => config('core.base.general.admin_dir'),
+    'namespace'  => 'Platform\Member\Http\Controllers',
+    'prefix'     => BaseHelper::getAdminPrefix(),
     'middleware' => ['web', 'auth'],
 ], function () {
 
@@ -22,7 +22,7 @@ if (defined('THEME_MODULE_SCREEN_NAME')) {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
 
         Route::group([
-            'namespace'  => 'Botble\Member\Http\Controllers',
+            'namespace'  => 'Platform\Member\Http\Controllers',
             'middleware' => ['web'],
             'as'         => 'public.member.',
         ], function () {
@@ -53,7 +53,7 @@ if (defined('THEME_MODULE_SCREEN_NAME')) {
         });
 
         Route::group([
-            'namespace'  => 'Botble\Member\Http\Controllers',
+            'namespace'  => 'Platform\Member\Http\Controllers',
             'middleware' => ['web', 'member'],
             'as'         => 'public.member.',
         ], function () {

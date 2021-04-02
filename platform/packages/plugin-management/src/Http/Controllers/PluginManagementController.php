@@ -1,13 +1,12 @@
 <?php
 
-namespace Botble\PluginManagement\Http\Controllers;
+namespace Platform\PluginManagement\Http\Controllers;
 
 use Assets;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\PluginManagement\Services\PluginService;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\PluginManagement\Services\PluginService;
 use Exception;
 use File;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
@@ -16,7 +15,7 @@ class PluginManagementController extends Controller
 {
     /**
      * Show all plugins in system
-     * @throws FileNotFoundException
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -71,8 +70,7 @@ class PluginManagementController extends Controller
      * @param Request $request
      * @param BaseHttpResponse $response
      * @param PluginService $pluginService
-     * @return mixed
-     * @throws FileNotFoundException
+     * @return BaseHttpResponse
      */
     public function update(Request $request, BaseHttpResponse $response, PluginService $pluginService)
     {

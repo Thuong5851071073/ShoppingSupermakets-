@@ -1,10 +1,10 @@
 <?php
 
-namespace Botble\Menu\Repositories\Eloquent;
+namespace Platform\Menu\Repositories\Eloquent;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Menu\Repositories\Interfaces\MenuInterface;
-use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Menu\Repositories\Interfaces\MenuInterface;
+use Platform\Support\Repositories\Eloquent\RepositoriesAbstract;
 use Illuminate\Support\Str;
 
 class MenuRepository extends RepositoriesAbstract implements MenuInterface
@@ -12,12 +12,22 @@ class MenuRepository extends RepositoriesAbstract implements MenuInterface
     /**
      * {@inheritDoc}
      */
-    public function findBySlug($slug, $active, $selects = [])
+    public function findBySlug($slug, $active, array $select = [], array $with = [])
     {
         $data = $this->model->where('menus.slug', $slug);
+
         if ($active) {
-            $data = $data->where('menus.status', BaseStatusEnum::PUBLISHED)->select($selects);
+            $data = $data->where('menus.status', BaseStatusEnum::PUBLISHED);
         }
+
+        if (!empty($select)) {
+            $data = $data->select($select);
+        }
+
+        if (!empty($with)) {
+            $data = $data->with($with);
+        }
+
         $data = $this->applyBeforeExecuteQuery($data, true)->first();
 
         $this->resetModel();

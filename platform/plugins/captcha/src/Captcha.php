@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Captcha;
+namespace Platform\Captcha;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
@@ -61,8 +61,16 @@ class Captcha
      */
     public function display($attributes = [], $options = [])
     {
+        if (!$this->optionOrConfig($options, 'site_key')) {
+            return null;
+        }
+
         if (is_string($attributes)) {
             $attributes = [];
+        }
+
+        if (!Arr::get($options, 'lang')) {
+            $options['lang'] = app()->getLocale();
         }
 
         $isMultiple = (bool)$this->optionOrConfig($options, 'options.multiple');
@@ -84,7 +92,7 @@ class Captcha
             $attributes['data-sitekey'] = $this->optionOrConfig($options, 'site_key');
         }
 
-        return $html . '<div class="g-recaptcha"' . $this->buildAttributes($attributes) . '></div>';
+        return $html . '<script>var refreshRecaptcha = function () { grecaptcha.reset(); };</script><div class="g-recaptcha" ' . $this->buildAttributes($attributes) . '></div>';
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
 use Cache;
 use Illuminate\Support\Collection;
@@ -118,11 +118,44 @@ class Avatar
     }
 
     /**
-     * @param $array
-     * @param $default
+     * @param string $color
+     * @return $this
+     */
+    public function setBackground(string $color): self
+    {
+        $this->background = $color;
+
+        return $this;
+    }
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setForeground(string $color): self
+    {
+        $this->foreground = $color;
+
+        return $this;
+    }
+
+    /**
+     * @param string $shape
+     * @return $this
+     */
+    public function setShape(string $shape): self
+    {
+        $this->shape = $shape;
+
+        return $this;
+    }
+
+    /**
+     * @param array $array
+     * @param string $default
      * @return mixed
      */
-    protected function getRandomElement($array, $default)
+    protected function getRandomElement(array $array, $default)
     {
         // Make it work for associative array
         $array = array_values($array);
@@ -191,6 +224,7 @@ class Avatar
             'borderSize',
             'borderColor',
         ];
+
         foreach ($attributes as $attr) {
             $keys[] = $this->$attr;
         }

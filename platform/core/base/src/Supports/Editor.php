@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
 use Assets;
 use Illuminate\Support\Arr;
@@ -19,7 +19,7 @@ class Editor
             config('core.base.general.editor.' .
                 setting('rich_editor', config('core.base.general.editor.primary')) . '.js')
         )
-            ->addScriptsDirectly('vendor/core/js/editor.js');
+            ->addScriptsDirectly('vendor/core/core/base/js/editor.js');
     }
 
     /**

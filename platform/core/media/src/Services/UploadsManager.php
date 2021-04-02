@@ -1,10 +1,16 @@
 <?php
 
-namespace Botble\Media\Services;
+namespace Platform\Media\Services;
 
 use Carbon\Carbon;
+use Exception;
 use File;
+use Illuminate\Contracts\Filesystem\FileExistsException;
+use Illuminate\Contracts\Translation\Translator;
+use Illuminate\Http\UploadedFile;
+use League\Flysystem\FileNotFoundException;
 use Mimey\MimeTypes;
+use RvMedia;
 use Storage;
 
 class UploadsManager
@@ -48,7 +54,7 @@ class UploadsManager
      */
     public function fileMimeType($path): ?string
     {
-        return $this->mimeType->getMimeType(File::extension(Storage::path($path)));
+        return $this->mimeType->getMimeType(File::extension(RvMedia::getRealPath($path)));
     }
 
     /**
@@ -75,7 +81,7 @@ class UploadsManager
 
     /**
      * @param string $folder
-     * @return array|bool|\Illuminate\Contracts\Translation\Translator|string|null
+     * @return array|bool|Translator|string|null
      */
     public function createDirectory($folder)
     {
@@ -101,7 +107,7 @@ class UploadsManager
 
     /**
      * @param string $folder
-     * @return array|bool|\Illuminate\Contracts\Translation\Translator|string|null
+     * @return array|bool|Translator|string|null
      */
     public function deleteDirectory($folder)
     {
@@ -132,12 +138,29 @@ class UploadsManager
     /**
      * @param string $path
      * @param string $content
+     * @param UploadedFile|null $file
      * @return bool
+     * @throws FileExistsException
+     * @throws FileNotFoundException
      */
-    public function saveFile($path, $content)
+    public function saveFile($path, $content, UploadedFile $file = null)
     {
-        $path = $this->cleanFolder($path);
+        if (!config('core.media.media.chunk.enabled') || !$file) {
+            return Storage::put($this->cleanFolder($path), $content);
+        }
 
-        return Storage::put($path, $content);
+        $currentChunksPath = config('core.media.media.chunk.storage.chunks') . '/' . $file->getFilename();
+        $disk = Storage::disk(config('core.media.media.chunk.storage.disk'));
+
+        try {
+            $stream = $disk->getDriver()->readStream($currentChunksPath);
+            if ($result = Storage::writeStream($path, $stream, ['visibility' => 'public'])) {
+                $disk->delete($currentChunksPath);
+            }
+        } catch (Exception $exception) {
+            return Storage::put($this->cleanFolder($path), $content, ['visibility' => 'public']);
+        }
+
+        return $result;
     }
 }

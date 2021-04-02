@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\Menu\Models;
+namespace Platform\Menu\Models;
 
-use Botble\Base\Models\BaseModel;
+use Platform\Base\Models\BaseModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
+use Request;
 
 class MenuNode extends BaseModel
 {
@@ -46,7 +46,7 @@ class MenuNode extends BaseModel
      */
     public function child()
     {
-        return $this->hasMany(MenuNode::class, 'parent_id');
+        return $this->hasMany(MenuNode::class, 'parent_id')->orderBy('position', 'asc');
     }
 
     /**
@@ -64,14 +64,14 @@ class MenuNode extends BaseModel
     public function getUrlAttribute($value)
     {
         if (!$this->reference_type) {
-            return $value ? url($value) : url('');
+            return $value ? (string)$value : '/';
         }
 
         if (!$this->reference) {
-            return url('');
+            return '/';
         }
 
-        return $this->reference->url;
+        return (string)$this->reference->url;
     }
 
     /**
@@ -79,10 +79,6 @@ class MenuNode extends BaseModel
      */
     public function setUrlAttribute($value)
     {
-        if (Str::contains(url(''), $value)) {
-            $value = str_replace(url(''), '', $value);
-        }
-
         $this->attributes['url'] = $value;
     }
 
@@ -101,5 +97,40 @@ class MenuNode extends BaseModel
         }
 
         return $this->reference->name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActiveAttribute()
+    {
+        return rtrim(url($this->url), '/') == rtrim(Request::url(), '/');
+    }
+
+    /**
+     * @deprecated
+     * @return mixed
+     */
+    public function hasChild()
+    {
+        return $this->has_child;
+    }
+
+    /**
+     * @deprecated
+     * @return $this
+     */
+    public function getRelated()
+    {
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     * @return mixed
+     */
+    public function getNameAttribute()
+    {
+        return $this->title;
     }
 }

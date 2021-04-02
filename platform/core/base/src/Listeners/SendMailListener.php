@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Base\Listeners;
+namespace Platform\Base\Listeners;
 
-use Botble\Base\Events\SendMailEvent;
-use Botble\Base\Supports\EmailAbstract;
+use Platform\Base\Events\SendMailEvent;
+use Platform\Base\Supports\EmailAbstract;
 use Exception;
 use Illuminate\Contracts\Mail\Mailer;
 use Log;
@@ -36,11 +36,11 @@ class SendMailListener
     {
         try {
             $this->mailer->to($event->to)->send(new EmailAbstract($event->content, $event->title, $event->args));
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
             if ($event->debug) {
-                throw $ex;
+                throw $exception;
             }
-            Log::error($ex->getMessage());
+            Log::error($exception->getMessage());
         }
     }
 }

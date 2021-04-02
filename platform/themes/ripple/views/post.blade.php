@@ -9,9 +9,9 @@
                     <a href="{{ $post->categories->first()->url }}">{{ $post->categories->first()->name }}</a>
                 </span>
             @endif
-            <span class="post__created-at"><i class="ion-clock"></i><a href="#">{{ date_from_database($post->created_at, 'M d, Y') }}</a></span>
-            @if ($post->user->username)
-                <span class="post__author"><i class="ion-android-person"></i><span>{{ $post->user->getFullName() }}</span></span>
+            <span class="post__created-at"><i class="ion-clock"></i>{{ $post->created_at->format('M d, Y') }}</span>
+            @if ($post->author->username)
+                <span class="post__author"><i class="ion-android-person"></i><span>{{ $post->author->getFullName() }}</span></span>
             @endif
 
             @if (!$post->tags->isEmpty())
@@ -22,13 +22,12 @@
                 </span>
             @endif
         </div>
-        <div class="post__social"></div>
     </header>
     <div class="post__content">
         @if (defined('GALLERY_MODULE_SCREEN_NAME') && !empty($galleries = gallery_meta_data($post)))
             {!! render_object_gallery($galleries, ($post->categories()->first() ? $post->categories()->first()->name : __('Uncategorized'))) !!}
         @endif
-        {!! $post->content !!}
+        {!! clean($post->content, 'youtube') !!}
         <div class="fb-like" data-href="{{ Request::url() }}" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
     </div>
     <footer class="post__footer">
@@ -39,7 +38,7 @@
                         <h4 class="relate__title">@if ($loop->first) {{ __('Previous Post') }} @else {{ __('Next Post') }} @endif</h4>
                         <article class="post post--related">
                             <div class="post__thumbnail"><a href="{{ $relatedItem->url }}" class="post__overlay"></a>
-                                <img src="{{ get_object_image($relatedItem->image, 'thumb') }}" alt="{{ $relatedItem->name }}">
+                                <img src="{{ RvMedia::getImageUrl($relatedItem->image, 'thumb', false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedItem->name }}">
                             </div>
                             <header class="post__header"><a href="{{ $relatedItem->url }}" class="post__title"> {{ $relatedItem->name }}</a></header>
                         </article>
@@ -48,6 +47,8 @@
             @endforeach
         </div>
     </footer>
-    <br />
-    {!! apply_filters(BASE_FILTER_PUBLIC_COMMENT_AREA, Theme::partial('comments')) !!}
+    @if (theme_option('facebook_comment_enabled_in_post', 'yes') == 'yes')
+        <br />
+        {!! apply_filters(BASE_FILTER_PUBLIC_COMMENT_AREA, Theme::partial('comments')) !!}
+    @endif
 </article>

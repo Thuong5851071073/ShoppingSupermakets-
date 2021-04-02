@@ -1,13 +1,14 @@
 <?php
 
-namespace Botble\Blog\Tables;
+namespace Platform\Blog\Tables;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Blog\Models\Tag;
+use BaseHelper;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Blog\Models\Tag;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\Blog\Repositories\Interfaces\TagInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Blog\Repositories\Interfaces\TagInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
 
@@ -57,10 +58,10 @@ class TagTable extends TableAbstract
                 return Html::link(route('tags.edit', $item->id), $item->name);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('status', function ($item) {
                 if ($this->request()->input('action') === 'excel') {
@@ -71,7 +72,7 @@ class TagTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('tags.edit', 'tags.destroy', $item);
+                return $this->getOperations('tags.edit', 'tags.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -83,15 +84,16 @@ class TagTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->select([
-                'tags.id',
-                'tags.name',
-                'tags.created_at',
-                'tags.status',
-            ]);
+        $select = [
+            'tags.id',
+            'tags.name',
+            'tags.created_at',
+            'tags.status',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

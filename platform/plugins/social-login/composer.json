@@ -1,8 +1,8 @@
 {
-  "name": "botble/social-login",
+  "name": "platform/social-login",
   "description": "Social login plugin",
   "type": "package",
   "require": {
-    "laravel/socialite": "^4.0"
+    "laravel/socialite": "^5.0"
   }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Theme\Providers;
+namespace Platform\Theme\Providers;
 
-use Botble\Dashboard\Supports\DashboardWidgetInstance;
+use Platform\Dashboard\Supports\DashboardWidgetInstance;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
@@ -11,7 +11,7 @@ class HookServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        add_filter(DASHBOARD_FILTER_ADMIN_LIST, [$this, 'addStatsWidgets'], 29, 2);
+        add_filter(DASHBOARD_FILTER_ADMIN_LIST, [$this, 'addStatsWidgets'], 4, 2);
 
         add_filter(BASE_FILTER_AFTER_SETTING_CONTENT, [$this, 'addSetting'], 39, 1);
 
@@ -80,6 +80,15 @@ class HookServiceProvider extends ServiceProvider
                                 'class' => 'form-control',
                                 'rows'  => 4,
                             ],
+                        ],
+                    ],
+                    [
+                        'id'         => 'seo_og_image',
+                        'type'       => 'mediaImage',
+                        'label'      => __('SEO default Open Graph image'),
+                        'attributes' => [
+                            'name'    => 'seo_og_image',
+                            'value'   => null,
                         ],
                     ],
                 ],

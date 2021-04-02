@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Providers;
+namespace Platform\Base\Providers;
 
 use Form;
 use Illuminate\Support\ServiceProvider;
@@ -11,6 +11,12 @@ class FormServiceProvider extends ServiceProvider
     public function boot()
     {
         Form::component('mediaImage', 'core/base::forms.partials.image', [
+            'name',
+            'value'      => null,
+            'attributes' => [],
+        ]);
+
+        Form::component('mediaFile', 'core/base::forms.partials.file', [
             'name',
             'value'      => null,
             'attributes' => [],
@@ -79,7 +85,19 @@ class FormServiceProvider extends ServiceProvider
             'errors' => null,
         ]);
 
-        Form::component('editor', 'core/base::forms.partials.editor-input', [
+        Form::component('editor', 'core/base::forms.partials.editor', [
+            'name',
+            'value'      => null,
+            'attributes' => [],
+        ]);
+
+        Form::component('ckeditor', 'core/base::forms.partials.ckeditor', [
+            'name',
+            'value'      => null,
+            'attributes' => [],
+        ]);
+
+        Form::component('tinymce', 'core/base::forms.partials.tinymce', [
             'name',
             'value'      => null,
             'attributes' => [],

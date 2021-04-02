@@ -1,21 +1,21 @@
 <?php
 
-namespace Botble\Base\Providers;
+namespace Platform\Base\Providers;
 
-use Botble\Base\Exceptions\Handler;
-use Botble\Base\Http\Middleware\DisableInDemoModeMiddleware;
-use Botble\Base\Http\Middleware\HttpsProtocolMiddleware;
-use Botble\Base\Http\Middleware\LocaleMiddleware;
-use Botble\Base\Models\MetaBox as MetaBoxModel;
-use Botble\Base\Repositories\Caches\MetaBoxCacheDecorator;
-use Botble\Base\Repositories\Eloquent\MetaBoxRepository;
-use Botble\Base\Repositories\Interfaces\MetaBoxInterface;
-use Botble\Base\Supports\CustomResourceRegistrar;
-use Botble\Base\Supports\Helper;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Setting\Providers\SettingServiceProvider;
-use Botble\Setting\Supports\SettingStore;
-use Botble\Base\Supports\BreadcrumbsManager;
+use Platform\Base\Exceptions\Handler;
+use Platform\Base\Http\Middleware\DisableInDemoModeMiddleware;
+use Platform\Base\Http\Middleware\HttpsProtocolMiddleware;
+use Platform\Base\Http\Middleware\LocaleMiddleware;
+use Platform\Base\Models\MetaBox as MetaBoxModel;
+use Platform\Base\Repositories\Caches\MetaBoxCacheDecorator;
+use Platform\Base\Repositories\Eloquent\MetaBoxRepository;
+use Platform\Base\Repositories\Interfaces\MetaBoxInterface;
+use Platform\Base\Supports\BreadcrumbsManager;
+use Platform\Base\Supports\CustomResourceRegistrar;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Setting\Providers\SettingServiceProvider;
+use Platform\Setting\Supports\SettingStore;
 use Event;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -59,7 +59,7 @@ class BaseServiceProvider extends ServiceProvider
         $config->set([
             'app.timezone'                     => $setting->get('time_zone', $config->get('app.timezone')),
             'ziggy.blacklist'                  => ['debugbar.*'],
-            'session.cookie'                   => 'botble_session',
+            'session.cookie'                   => 'platform_session',
             'filesystems.default'              => $setting->get('media_driver', 'public'),
             'filesystems.disks.s3.key'         => $setting
                 ->get('media_aws_access_key_id', $config->get('filesystems.disks.s3.key')),
@@ -69,8 +69,17 @@ class BaseServiceProvider extends ServiceProvider
                 ->get('media_aws_default_region', $config->get('filesystems.disks.s3.region')),
             'filesystems.disks.s3.bucket'      => $setting
                 ->get('media_aws_bucket', $config->get('filesystems.disks.s3.bucket')),
-            'filesystems.disks.s3.endpoint'    => $setting
-                ->get('media_aws_url', $config->get('filesystems.disks.s3.endpoint')),
+            'filesystems.disks.s3.url'         => $setting
+                ->get('media_aws_url', $config->get('filesystems.disks.s3.url')),
+            'filesystems.disks.do_spaces'      => [
+                'driver'     => 's3',
+                'visibility' => 'public',
+                'key'        => $setting->get('media_do_spaces_access_key_id'),
+                'secret'     => $setting->get('media_do_spaces_secret_key'),
+                'region'     => $setting->get('media_do_spaces_default_region'),
+                'bucket'     => $setting->get('media_do_spaces_bucket'),
+                'endpoint'   => $setting->get('media_do_spaces_endpoint'),
+            ],
             'app.debug_blacklist'              => [
                 '_ENV'    => [
                     'APP_KEY',
@@ -99,7 +108,10 @@ class BaseServiceProvider extends ServiceProvider
                 ],
             ],
             'datatables-buttons.pdf_generator' => 'excel',
+            'excel.exports.csv.use_bom'        => true,
         ]);
+
+        date_default_timezone_set($config->get('app.timezone', 'UTC'));
 
         $this->app->singleton(ExceptionHandler::class, Handler::class);
 
@@ -135,8 +147,9 @@ class BaseServiceProvider extends ServiceProvider
 
             $config = $this->app->make('config');
             $config->set([
-                'app.locale'                                         => $config->get('core.base.general.locale',
-                    $config->get('app.locale')),
+                'app.locale'                                         => setting('locale',
+                    $config->get('core.base.general.locale',
+                        $config->get('app.locale'))),
                 'purifier.settings.default.AutoFormat.AutoParagraph' => false,
                 'purifier.settings.default.AutoFormat.RemoveEmpty'   => false,
             ]);

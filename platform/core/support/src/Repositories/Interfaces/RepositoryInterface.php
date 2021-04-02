@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Support\Repositories\Interfaces;
+namespace Platform\Support\Repositories\Interfaces;
 
 use Eloquent;
 use Exception;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 interface RepositoryInterface
 {
     /**
-     * @param $data
+     * @param Builder $data
      * @param bool $isSingle
      * @return Builder
      */
@@ -59,14 +59,14 @@ interface RepositoryInterface
     /**
      * Retrieve model by id regardless of status.
      *
-     * @param $id
+     * @param int $id
      * @param array $with
      * @return mixed
      */
     public function findById($id, array $with = []);
 
     /**
-     * @param $id
+     * @param int $id
      * @param array $with
      * @return mixed
      */
@@ -74,10 +74,11 @@ interface RepositoryInterface
 
     /**
      * @param string $column
-     * @param string $key
+     * @param null $key
+     * @param array $condition
      * @return array
      */
-    public function pluck($column, $key = null);
+    public function pluck($column, $key = null, array $condition = []);
 
     /**
      * Get all models.
@@ -111,7 +112,7 @@ interface RepositoryInterface
      * @param array $condition
      * @return false|Model
      */
-    public function createOrUpdate($data, $condition = []);
+    public function createOrUpdate($data, array $condition = []);
 
     /**
      * Delete model.
@@ -152,7 +153,7 @@ interface RepositoryInterface
 
     /**
      * @param array $condition
-     * @return mixed
+     * @return int
      */
     public function count(array $condition = []);
 

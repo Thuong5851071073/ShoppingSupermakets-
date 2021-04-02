@@ -1,3 +1,4 @@
+@if (is_plugin_active('blog'))
 <section class="section pt-50 pb-50">
     <div class="container">
         <div class="row">
@@ -14,12 +15,12 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <article class="post post__vertical post__vertical--single">
                                                 <div class="post__thumbnail">
-                                                    <img src="{{ get_object_image($post->image, 'medium') }}" alt="{{ $post->name }}"><a href="{{ $post->url }}" class="post__overlay"></a>
+                                                    <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}"><a href="{{ $post->url }}" class="post__overlay"></a>
                                                 </div>
                                                 <div class="post__content-wrap">
                                                     <header class="post__header">
                                                         <h3 class="post__title"><a href="{{ $post->url }}">{{ $post->name }}</a></h3>
-                                                        <div class="post__meta"><span class="created__month">{{ date_from_database($post->created_at, 'M') }}</span><span class="created__date">{{ date_from_database($post->created_at, 'd') }}</span><span class="created__year">{{ date_from_database($post->created_at, 'Y') }}</span></div>
+                                                        <div class="post__meta"><span class="created__month">{{ $post->created_at->format('M') }}</span><span class="created__date">{{ $post->created_at->format('d') }}</span><span class="created__year">{{ $post->created_at->format('Y') }}</span></div>
                                                     </header>
                                                     <div class="post__content">
                                                         <p data-number-line="4">{{ $post->description }}</p>
@@ -32,12 +33,12 @@
                                             @else
                                                 <article class="post post__horizontal post__horizontal--single mb-20 clearfix">
                                                     <div class="post__thumbnail">
-                                                        <img src="{{ get_object_image($post->image, 'medium') }}" alt="{{ $post->name }}"><a href="{{ $post->url }}" class="post__overlay"></a>
+                                                        <img src="{{ RvMedia::getImageUrl($post->image, 'medium', false, RvMedia::getDefaultImage()) }}" alt="{{ $post->name }}"><a href="{{ $post->url }}" class="post__overlay"></a>
                                                     </div>
                                                     <div class="post__content-wrap">
                                                         <header class="post__header">
                                                             <h3 class="post__title"><a href="{{ $post->url }}">{{ $post->name }}</a></h3>
-                                                            <div class="post__meta"><span class="post__created-at"><a href="#">{{ date_from_database($post->created_at, 'M d, Y') }}</a></span></div>
+                                                            <div class="post__meta"><span class="post__created-at">{{ $post->created_at->format('M d, Y') }}</span></div>
                                                         </header>
                                                     </div>
                                                 </article>
@@ -59,3 +60,4 @@
         </div>
     </div>
 </section>
+@endif

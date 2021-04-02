@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\SeoHelper\Contracts\Entities;
+namespace Platform\SeoHelper\Contracts\Entities;
 
-use Botble\SeoHelper\Contracts\RenderableContract;
+use Platform\SeoHelper\Contracts\RenderableContract;
 
 interface MetaCollectionContract extends RenderableContract
 {
@@ -10,8 +10,7 @@ interface MetaCollectionContract extends RenderableContract
      * Add a meta to collection.
      *
      * @param array $item
-     *
-     * @return self
+     * @return $this
      */
     public function add($item);
 
@@ -19,8 +18,7 @@ interface MetaCollectionContract extends RenderableContract
      * Add many meta tags.
      *
      * @param array $meta
-     *
-     * @return self
+     * @return $this
      */
     public function addMany(array $meta);
 
@@ -28,8 +26,7 @@ interface MetaCollectionContract extends RenderableContract
      * Remove a meta from the meta collection by key.
      *
      * @param array|string $names
-     *
-     * @return self
+     * @return $this
      */
     public function remove($names);
 }

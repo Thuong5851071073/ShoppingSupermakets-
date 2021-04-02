@@ -1,14 +1,15 @@
 <?php
 
-namespace Botble\SeoHelper;
+namespace Platform\SeoHelper;
 
-use Botble\Base\Models\BaseModel;
-use Botble\SeoHelper\Contracts\SeoHelperContract;
-use Botble\SeoHelper\Contracts\SeoMetaContract;
-use Botble\SeoHelper\Contracts\SeoOpenGraphContract;
-use Botble\SeoHelper\Contracts\SeoTwitterContract;
+use Platform\Base\Models\BaseModel;
+use Platform\SeoHelper\Contracts\SeoHelperContract;
+use Platform\SeoHelper\Contracts\SeoMetaContract;
+use Platform\SeoHelper\Contracts\SeoOpenGraphContract;
+use Platform\SeoHelper\Contracts\SeoTwitterContract;
 use Exception;
 use Illuminate\Http\Request;
+use MetaBox;
 
 class SeoHelper implements SeoHelperContract
 {
@@ -17,21 +18,21 @@ class SeoHelper implements SeoHelperContract
      *
      * @var SeoMetaContract
      */
-    private $seoMeta;
+    protected $seoMeta;
 
     /**
      * The SeoOpenGraph instance.
      *
      * @var SeoOpenGraphContract
      */
-    private $seoOpenGraph;
+    protected $seoOpenGraph;
 
     /**
      * The SeoTwitter instance.
      *
      * @var SeoTwitterContract
      */
-    private $seoTwitter;
+    protected $seoTwitter;
 
     /**
      * Make SeoHelper instance.
@@ -116,7 +117,9 @@ class SeoHelper implements SeoHelperContract
     {
         $this->meta()->setTitle($title, $siteName, $separator);
         $this->openGraph()->setTitle($title);
-        $this->openGraph()->setSiteName($siteName);
+        if ($siteName) {
+            $this->openGraph()->setSiteName($siteName);
+        }
         $this->twitter()->setTitle($title);
 
         return $this;
@@ -201,10 +204,10 @@ class SeoHelper implements SeoHelperContract
         if (in_array(get_class($object), config('packages.seo-helper.general.supported', []))) {
             try {
                 if (empty($request->input('seo_meta'))) {
-                    delete_meta_data($object, 'seo_meta');
+                    MetaBox::deleteMetaData($object, 'seo_meta');
                     return false;
                 }
-                save_meta_data($object, 'seo_meta', $request->input('seo_meta'));
+                MetaBox::saveMetaBoxData($object, 'seo_meta', $request->input('seo_meta'));
                 return true;
             } catch (Exception $ex) {
                 return false;
@@ -222,7 +225,7 @@ class SeoHelper implements SeoHelperContract
     {
         try {
             if (in_array(get_class($object), config('packages.seo-helper.general.supported', []))) {
-                delete_meta_data($object, 'seo_meta');
+                MetaBox::deleteMetaData($object, 'seo_meta');
             }
             return true;
         } catch (Exception $ex) {

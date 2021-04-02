@@ -1,13 +1,14 @@
 <?php
 
-namespace Botble\ACL\Tables;
+namespace Platform\ACL\Tables;
 
-use Botble\ACL\Models\Role;
+use BaseHelper;
+use Platform\ACL\Models\Role;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\ACL\Repositories\Interfaces\RoleInterface;
-use Botble\ACL\Repositories\Interfaces\UserInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\ACL\Repositories\Interfaces\RoleInterface;
+use Platform\ACL\Repositories\Interfaces\UserInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
 
@@ -69,10 +70,10 @@ class RoleTable extends TableAbstract
                 return Html::link(route('roles.edit', $item->id), $item->name);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('created_by', function ($item) {
                 return $item->author->getFullName();
@@ -80,7 +81,7 @@ class RoleTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('roles.edit', 'roles.destroy', $item);
+                return $this->getOperations('roles.edit', 'roles.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -92,17 +93,19 @@ class RoleTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
+        $select = [
+            'roles.id',
+            'roles.name',
+            'roles.description',
+            'roles.created_at',
+            'roles.created_by',
+        ];
+
         $query = $model
             ->with('author')
-            ->select([
-                'roles.id',
-                'roles.name',
-                'roles.description',
-                'roles.created_at',
-                'roles.created_by',
-            ]);
+            ->select($select);
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

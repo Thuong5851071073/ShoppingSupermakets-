@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\DevTool\Commands\Make;
+namespace Platform\DevTool\Commands\Make;
 
-use Botble\DevTool\Commands\Abstracts\BaseMakeCommand;
+use Platform\DevTool\Commands\Abstracts\BaseMakeCommand;
 use File;
 use Illuminate\Support\Str;
 use League\Flysystem\FileNotFoundException;
@@ -33,7 +33,7 @@ class RepositoryMakeCommand extends BaseMakeCommand
     {
         if (!preg_match('/^[a-z0-9\-\_]+$/i', $this->argument('name'))) {
             $this->error('Only alphabetic characters are allowed.');
-            return false;
+            return 1;
         }
 
         $name = $this->argument('name');
@@ -49,7 +49,7 @@ class RepositoryMakeCommand extends BaseMakeCommand
 
         $this->info('Created successfully <comment>' . $path . '</comment>!');
 
-        return true;
+        return 0;
     }
 
     /**

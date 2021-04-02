@@ -1,11 +1,10 @@
 <?php
 
-namespace Botble\Member\Http\Controllers;
+namespace Platform\Member\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Botble\ACL\Traits\ResetsPasswords;
+use Platform\ACL\Traits\ResetsPasswords;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use SeoHelper;
 
@@ -49,7 +48,7 @@ class ResetPasswordController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  string|null $token
-     * @return \Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function showResetForm(Request $request, $token = null)
@@ -76,6 +75,6 @@ class ResetPasswordController extends Controller
      */
     protected function guard()
     {
-        return Auth::guard('member');
+        return auth('member');
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\ACL\Repositories\Eloquent;
+namespace Platform\ACL\Repositories\Eloquent;
 
-use Botble\ACL\Repositories\Interfaces\RoleInterface;
-use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;
+use Platform\ACL\Repositories\Interfaces\RoleInterface;
+use Platform\Support\Repositories\Eloquent\RepositoriesAbstract;
 use Illuminate\Support\Str;
 
 class RoleRepository extends RepositoriesAbstract implements RoleInterface
@@ -16,7 +16,7 @@ class RoleRepository extends RepositoriesAbstract implements RoleInterface
         $slug = Str::slug($name);
         $index = 1;
         $baseSlug = $slug;
-        while ($this->model->where('slug', '=', $slug)->where('id', '!=', $id)->count() > 0) {
+        while ($this->model->where('slug', $slug)->where('id', '!=', $id)->count() > 0) {
             $slug = $baseSlug . '-' . $index++;
         }
 

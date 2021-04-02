@@ -1,7 +1,8 @@
 <?php
 
-namespace Botble\Language\Commands;
+namespace Platform\Language\Commands;
 
+use Platform\Language\Models\LanguageMeta;
 use DB;
 use Illuminate\Console\Command;
 use Language;
@@ -15,7 +16,7 @@ class SyncOldDataCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cms:language:sync {table : The table need to set default language} {reference : screen name of that object}';
+    protected $signature = 'cms:language:sync {class : Model class name}';
 
     /**
      * The console command description.
@@ -26,44 +27,49 @@ class SyncOldDataCommand extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {
-        if (!preg_match('/^[a-z\-_]+$/i', $this->argument('table'))) {
-            $this->error('Only alphabetic characters are allowed.');
-            return false;
+        if (!Language::getDefaultLanguage()) {
+            $this->error('No languages in the system, please add a language!');
+            return 1;
         }
 
-        if (!Schema::hasTable($this->argument('table'))) {
+        $class = $this->argument('class');
+        $table = (new $class)->getTable();
+        if (!Schema::hasTable($table)) {
             $this->error('That table is not existed!');
-            return false;
+            return 1;
         }
 
-        if (!Schema::hasColumn($this->argument('table'), 'id')) {
-            $this->error('That table does not have ID column!');
-            return false;
+        if (!Schema::hasColumn($table, 'id')) {
+            $this->error('Table "' . $table . '" does not have ID column!');
+            return 1;
         }
 
-        $data = DB::table($this->argument('table'))->get();
-        foreach ($data as $item) {
-            $existed = DB::table('language_meta')
-                ->where([
-                    'reference_id'   => $item->id,
-                    'reference_type' => $this->argument('reference'),
-                ])
-                ->first();
-            if (empty($existed)) {
-                DB::table('language_meta')->insert([
-                    'reference_id'     => $item->id,
-                    'reference_type'   => $this->argument('reference'),
-                    'lang_meta_code'   => Language::getDefaultLocaleCode(),
-                    'lang_meta_origin' => md5($item->id . $this->argument('reference') . time()),
-                ]);
-            }
+        $ids = LanguageMeta::where('reference_type', $this->argument('class'))
+            ->pluck('reference_id')
+            ->all();
+
+        $referenceIds = DB::table($table)
+            ->whereNotIn('id', $ids)
+            ->pluck('id')
+            ->all();
+
+        $data = [];
+        foreach ($referenceIds as $referenceId) {
+            $data[] = [
+                'reference_id'     => $referenceId,
+                'reference_type'   => $class,
+                'lang_meta_code'   => Language::getDefaultLocaleCode(),
+                'lang_meta_origin' => md5($referenceId . $class . time()),
+            ];
         }
+
+        LanguageMeta::insert($data);
 
         $this->info('Processed ' . count($data) . ' item(s)!');
-        return true;
+
+        return 0;
     }
 }

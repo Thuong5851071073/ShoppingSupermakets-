@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\PluginManagement\Services;
+namespace Platform\PluginManagement\Services;
 
-use Botble\Base\Supports\Helper;
-use Botble\Setting\Supports\SettingStore;
+use Platform\Base\Supports\Helper;
+use Platform\Setting\Supports\SettingStore;
 use Composer\Autoload\ClassLoader;
 use DB;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -18,17 +18,17 @@ class PluginService
     /**
      * @var Application
      */
-    public $app;
+    protected $app;
 
     /**
      * @var SettingStore
      */
-    public $settingStore;
+    protected $settingStore;
 
     /**
      * @var Filesystem
      */
-    public $files;
+    protected $files;
 
     /**
      * PluginService constructor.
@@ -46,7 +46,6 @@ class PluginService
     /**
      * @param string $plugin
      * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function activate(string $plugin): array
     {
@@ -120,7 +119,6 @@ class PluginService
     /**
      * @param string $plugin
      * @return array
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function validate(string $plugin): array
     {

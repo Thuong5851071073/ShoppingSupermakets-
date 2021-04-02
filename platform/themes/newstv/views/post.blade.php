@@ -6,8 +6,8 @@
         <h1 class="article-content-title">{{ $post->name }}</h1>
 
         <div class="post-meta">
-            <span><i class="fa fa-user"></i> {{ $post->user->getFullName() }}</span>
-            <span><i class="fa fa-calendar"></i> {{ date_from_database($post->created_at, 'M d, Y') }}</span>
+            <span><i class="fa fa-user"></i> {{ $post->author->getFullName() }}</span>
+            <span><i class="fa fa-calendar"></i> {{ $post->created_at->format('M d, Y') }}</span>
             @if (!$post->categories->isEmpty())
                 <span>
                     <i class="fa fa-list"></i> <a href="{{ $post->categories->first()->url }}">{{ $post->categories->first()->name }}</a>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="article-content">
-            {!! $post->content !!}
+            {!! clean($post->content, 'youtube') !!}
         </div>
         @if (!$post->tags->isEmpty())
             <div class="tags-wrap">
@@ -48,12 +48,14 @@
                 <g:plusone count="true" href="{{ $post->url }}" size="medium"></g:plusone>
             </div>
         </div>
-        <div class="comment-post">
-            <h4 class="article-content-subtitle">
-                {{ __('Comments') }}
-            </h4>
-            {!! apply_filters(BASE_FILTER_PUBLIC_COMMENT_AREA, Theme::partial('comments')) !!}
-        </div>
+        @if (theme_option('facebook_comment_enabled_in_post', 'yes') == 'yes')
+            <div class="comment-post">
+                <h4 class="article-content-subtitle">
+                    {{ __('Comments') }}
+                </h4>
+                {!! apply_filters(BASE_FILTER_PUBLIC_COMMENT_AREA, Theme::partial('comments')) !!}
+            </div>
+        @endif
     </div>
 </section>
 <section class="main-box">
@@ -65,7 +67,7 @@
             @foreach (get_related_posts($post->slug, 6) as $related_item)
                 <div class="media-news">
                     <a href="{{ $related_item->url }}" title="{{ $related_item->name }}" class="media-news-img">
-                        <img class="img-full img-bg" src="{{ get_object_image($related_item->image) }}" style="background-image: url('{{ get_object_image($related_item->image) }}');" alt="{{ $related_item->name }}">
+                        <img class="img-full img-bg" src="{{ RvMedia::getImageUrl($related_item->image) }}" style="background-image: url('{{ RvMedia::getImageUrl($related_item->image) }}');" alt="{{ $related_item->name }}">
                     </a>
                     <div class="media-news-body">
                         <p class="common-title">
@@ -74,7 +76,7 @@
                             </a>
                         </p>
                         <p class="common-date">
-                            <time datetime="">{{ date_from_database($post->created_at, 'M d, Y') }}</time>
+                            <time datetime="">{{ $post->created_at->format('M d, Y') }}</time>
                         </p>
                         <div class="common-summary">
                             {{ $related_item->description }}

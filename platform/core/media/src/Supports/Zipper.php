@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Media\Supports;
+namespace Platform\Media\Supports;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -59,8 +59,6 @@ class Zipper
      * opens a zip archive if the file exists
      *
      * @param string $pathToFile The file to open
-     * @param ZipperInterface|string $type The type of the archive, defaults to zip, possible are zip, phar
-     *
      * @return $this Zipper instance
      * @throws Exception
      * @throws InvalidArgumentException

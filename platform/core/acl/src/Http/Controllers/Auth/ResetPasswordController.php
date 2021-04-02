@@ -1,12 +1,12 @@
 <?php
 
-namespace Botble\ACL\Http\Controllers\Auth;
+namespace Platform\ACL\Http\Controllers\Auth;
 
 use Assets;
-use Botble\Base\Http\Controllers\BaseController;
-use Illuminate\Config\Repository;
+use BaseHelper;
+use Platform\Base\Http\Controllers\BaseController;
 use Illuminate\Contracts\View\Factory;
-use Botble\ACL\Traits\ResetsPasswords;
+use Platform\ACL\Traits\ResetsPasswords;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -34,14 +34,12 @@ class ResetPasswordController extends BaseController
     protected $redirectTo;
 
     /**
-     * Create a new controller instance.
-     *
-     * @param Repository $config
+     * ResetPasswordController constructor.
      */
-    public function __construct(Repository $config)
+    public function __construct()
     {
         $this->middleware('guest');
-        $this->redirectTo = $config->get('core.base.general.admin_dir');
+        $this->redirectTo = BaseHelper::getAdminPrefix();
     }
 
     /**
@@ -55,8 +53,8 @@ class ResetPasswordController extends BaseController
 
         $email = $request->email;
         Assets::addScripts(['jquery-validation'])
-            ->addScriptsDirectly('vendor/core/js/login.js')
-            ->addStylesDirectly('vendor/core/css/login.css')
+            ->addScriptsDirectly('vendor/core/core/acl/js/login.js')
+            ->addStylesDirectly('vendor/core/core/acl/css/login.css')
             ->removeStyles([
                 'select2',
                 'fancybox',

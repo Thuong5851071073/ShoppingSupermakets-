@@ -1,25 +1,25 @@
 <?php
 
-namespace Botble\Table\Abstracts;
+namespace Platform\Table\Abstracts;
 
 use Assets;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Botble\Base\Events\UpdatedContentEvent;
-use Botble\Support\Repositories\Interfaces\RepositoryInterface;
-use Botble\Table\Supports\TableExportHandler;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
+use Platform\Table\Supports\TableExportHandler;
 use Carbon\Carbon;
 use Form;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Request;
 use Throwable;
-use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Services\DataTable;
 
 abstract class TableAbstract extends DataTable
 {
@@ -295,7 +295,7 @@ abstract class TableAbstract extends DataTable
                     'search'            => '',
                     'searchPlaceholder' => trans('core/table::general.search'),
                     'zeroRecords'       => trans('core/base::tables.no_record'),
-                    'processing'        => Html::image(url('vendor/core/images/loading-spinner-blue.gif')),
+                    'processing'        => Html::image(url('vendor/core/core/base/images/loading-spinner-blue.gif')),
                     'paginate'          => [
                         'next'     => trans('pagination.next'),
                         'previous' => trans('pagination.previous'),
@@ -320,7 +320,7 @@ abstract class TableAbstract extends DataTable
         $columns = $this->columns();
 
         if ($this->type == self::TABLE_TYPE_SIMPLE) {
-            return $columns;
+            return apply_filters(BASE_FILTER_TABLE_HEADINGS, $columns, $this->repository->getModel());
         }
 
         foreach ($columns as $key => &$column) {
@@ -367,6 +367,19 @@ abstract class TableAbstract extends DataTable
     }
 
     /**
+     * @param string|null $edit
+     * @param string|null $delete
+     * @param mixed $item
+     * @param string|null $extra
+     * @return string
+     * @throws Throwable
+     */
+    protected function getOperations(?string $edit, ?string $delete, $item, ?string $extra = null): string
+    {
+        return table_actions($edit, $delete, $item, $extra);
+    }
+
+    /**
      * @return array
      */
     public function getCheckboxColumnHeading()
@@ -385,6 +398,16 @@ abstract class TableAbstract extends DataTable
                 'printable'  => false,
             ],
         ];
+    }
+
+    /**
+     * @param int $id
+     * @return string
+     * @throws Throwable
+     */
+    protected function getCheckbox($id): string
+    {
+        return table_checkbox($id);
     }
 
     /**
@@ -477,6 +500,7 @@ abstract class TableAbstract extends DataTable
 
     /**
      * @return array
+     * @throws \Throwable
      * @since 2.1
      */
     public function buttons()
@@ -630,7 +654,6 @@ abstract class TableAbstract extends DataTable
     /**
      * @param array $data
      * @param array $mergeData
-     * @param string $view
      * @return JsonResponse|View
      * @throws Throwable
      * @since 2.4
@@ -651,11 +674,11 @@ abstract class TableAbstract extends DataTable
     {
         Assets::addScripts(['datatables', 'moment', 'datepicker'])
             ->addStyles(['datatables', 'datepicker'])
-            ->addStylesDirectly('vendor/core/css/table.css')
+            ->addStylesDirectly('vendor/core/core/table/css/table.css')
             ->addScriptsDirectly([
-                'vendor/core/libraries/bootstrap3-typeahead.min.js',
-                'vendor/core/js/table.js',
-                'vendor/core/js/filter.js',
+                'vendor/core/core/base/libraries/bootstrap3-typeahead.min.js',
+                'vendor/core/core/table/js/table.js',
+                'vendor/core/core/table/js/filter.js',
             ]);
 
         $data['id'] = Arr::get($data, 'id', $this->getOption('id'));
@@ -745,19 +768,27 @@ abstract class TableAbstract extends DataTable
         switch ($key) {
             case 'created_at':
             case 'updated_at':
+                if (!$value) {
+                    break;
+                }
+
                 $value = Carbon::createFromFormat(config('core.base.general.date_format.date'), $value)->toDateString();
-                $query = $query->whereDate($key, $operator, $value);
+                $query = $query->whereDate($this->repository->getTable() . '.' . $key, $operator, $value);
                 break;
             default:
+                if (!$value) {
+                    break;
+                }
+
                 if ($operator === 'like') {
-                    $query = $query->where($key, $operator, '%' . $value . '%');
+                    $query = $query->where($this->repository->getTable() . '.' . $key, $operator, '%' . $value . '%');
                     break;
                 }
 
                 if ($operator !== '=') {
                     $value = (float)$value;
                 }
-                $query = $query->where($key, $operator, $value);
+                $query = $query->where($this->repository->getTable() . '.' . $key, $operator, $value);
         }
 
         return $query;
@@ -765,7 +796,7 @@ abstract class TableAbstract extends DataTable
 
     /**
      * @param string|null $title
-     * @param null $value
+     * @param string|null $value
      * @param string| null $type
      * @param null $data
      * @return array
@@ -922,8 +953,8 @@ abstract class TableAbstract extends DataTable
      * @param array $buttons
      * @param string $url
      * @param null|string $permission
-     * @throws Throwable
      * @return array
+     * @throws Throwable
      */
     protected function addCreateButton(string $url, $permission = null, array $buttons = []): array
     {

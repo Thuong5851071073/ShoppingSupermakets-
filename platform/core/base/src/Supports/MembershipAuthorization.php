@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
-use Botble\Setting\Supports\SettingStore;
+use Platform\Setting\Supports\SettingStore;
 use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Client;
@@ -52,10 +52,6 @@ class MembershipAuthorization
     public function authorize(): bool
     {
         try {
-
-            $this->settingStore
-                ->set('membership_authorization_at', now()->toDateTimeString())
-                ->save();
 
             if (!filter_var($this->url, FILTER_VALIDATE_URL)) {
                 return false;
@@ -114,11 +110,15 @@ class MembershipAuthorization
      */
     protected function processAuthorize(): bool
     {
-        $this->client->post('https://botble.com/membership/authorize', [
+        $this->client->post('https://laravel-cms.gistensal.com/membership/authorize', [
             'form_params' => [
                 'website' => $this->url,
             ],
         ]);
+
+        $this->settingStore
+            ->set('membership_authorization_at', now()->toDateTimeString())
+            ->save();
 
         return true;
     }

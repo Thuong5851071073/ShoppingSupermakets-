@@ -1,15 +1,16 @@
 <?php
 
-namespace Botble\ACL\Tables;
+namespace Platform\ACL\Tables;
 
-use Botble\ACL\Models\User;
+use BaseHelper;
+use Platform\ACL\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Botble\ACL\Enums\UserStatusEnum;
-use Botble\ACL\Repositories\Interfaces\ActivationInterface;
-use Botble\ACL\Repositories\Interfaces\UserInterface;
-use Botble\ACL\Services\ActivateUserService;
-use Botble\Base\Events\UpdatedContentEvent;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\ACL\Enums\UserStatusEnum;
+use Platform\ACL\Repositories\Interfaces\ActivationInterface;
+use Platform\ACL\Repositories\Interfaces\UserInterface;
+use Platform\ACL\Services\ActivateUserService;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Table\Abstracts\TableAbstract;
 use Exception;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -66,7 +67,7 @@ class UserTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('username', function ($item) {
                 if (!Auth::user()->hasPermission('users.edit')) {
@@ -76,7 +77,7 @@ class UserTable extends TableAbstract
                 return Html::link(route('user.profile.view', $item->id), $item->username);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('role_name', function ($item) {
                 if (!Auth::user()->hasPermission('users.edit')) {
@@ -124,20 +125,22 @@ class UserTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
+        $select = [
+            'users.id',
+            'users.username',
+            'users.email',
+            'roles.name as role_name',
+            'roles.id as role_id',
+            'users.updated_at',
+            'users.created_at',
+            'users.super_user',
+        ];
+
         $query = $model->leftJoin('role_users', 'users.id', '=', 'role_users.user_id')
             ->leftJoin('roles', 'roles.id', '=', 'role_users.role_id')
-            ->select([
-                'users.id',
-                'users.username',
-                'users.email',
-                'roles.name as role_name',
-                'roles.id as role_id',
-                'users.updated_at',
-                'users.created_at',
-                'users.super_user',
-            ]);
+            ->select($select);
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

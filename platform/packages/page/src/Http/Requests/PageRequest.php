@@ -1,9 +1,10 @@
 <?php
 
-namespace Botble\Page\Http\Requests;
+namespace Platform\Page\Http\Requests;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Support\Http\Requests\Request;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Page\Supports\Template;
+use Platform\Support\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
 class PageRequest extends Request
@@ -17,10 +18,10 @@ class PageRequest extends Request
     public function rules()
     {
         return [
-            'name'    => 'required|max:120',
-            'content' => 'required',
-            'slug'    => 'required|max:255',
-            'status'  => Rule::in(BaseStatusEnum::values()),
+            'name'     => 'required|max:120',
+            'content'  => 'required',
+            'template' => Rule::in(array_keys(Template::getPageTemplates())),
+            'status'   => Rule::in(BaseStatusEnum::values()),
         ];
     }
 }

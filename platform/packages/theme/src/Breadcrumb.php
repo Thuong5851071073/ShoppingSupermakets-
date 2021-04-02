@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Theme;
+namespace Platform\Theme;
 
 use Throwable;
 use URL;
@@ -46,16 +46,6 @@ class Breadcrumb
     }
 
     /**
-     * Get crumbs.
-     *
-     * @return array
-     */
-    public function getCrumbs(): array
-    {
-        return $this->crumbs;
-    }
-
-    /**
      * Render breadcrumbs.
      *
      * @return string
@@ -64,8 +54,16 @@ class Breadcrumb
      */
     public function render(): string
     {
-        $crumbs = $this->getCrumbs();
+        return view('packages/theme::partials.breadcrumb')->render();
+    }
 
-        return view('packages/theme::partials.breadcrumb', compact('crumbs'))->render();
+    /**
+     * Get crumbs.
+     *
+     * @return array
+     */
+    public function getCrumbs(): array
+    {
+        return $this->crumbs;
     }
 }

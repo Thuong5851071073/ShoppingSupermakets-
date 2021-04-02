@@ -1,18 +1,20 @@
 <?php
 
-namespace Botble\Media\Repositories\Eloquent;
+namespace Platform\Media\Repositories\Eloquent;
 
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\Media\Repositories\Interfaces\MediaFolderInterface;
-use Botble\Support\Repositories\Eloquent\RepositoriesAbstract;
+use Platform\Media\Repositories\Interfaces\MediaFileInterface;
+use Platform\Media\Repositories\Interfaces\MediaFolderInterface;
+use Platform\Support\Repositories\Eloquent\RepositoriesAbstract;
 use Eloquent;
 use Exception;
 use File;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Storage;
+use RvMedia;
 
 /**
  * @since 19/08/2015 07:45 AM
@@ -54,7 +56,7 @@ class MediaFileRepository extends RepositoriesAbstract implements MediaFileInter
         $slug = Str::slug($name);
         $index = 1;
         $baseSlug = $slug;
-        while (File::exists(Storage::path(rtrim($folderPath, '/') . '/' . $slug . '.' . $extension))) {
+        while (File::exists(RvMedia::getRealPath(rtrim($folderPath, '/') . '/' . $slug . '.' . $extension))) {
             $slug = $baseSlug . '-' . $index++;
         }
 
@@ -205,7 +207,7 @@ class MediaFileRepository extends RepositoriesAbstract implements MediaFileInter
 
     /**
      * @param array $params
-     * @return Eloquent[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Model[]|Builder|Builder[]|\Illuminate\Support\Collection|object
+     * @return Eloquent[]|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Model|Model[]|Builder|Builder[]|Collection|object
      */
     protected function getFile($params)
     {

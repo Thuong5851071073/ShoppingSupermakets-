@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Backup\Commands;
+namespace Platform\Backup\Commands;
 
-use Botble\Backup\Supports\Backup;
+use Platform\Backup\Supports\Backup;
 use Exception;
 use File;
 use Illuminate\Console\Command;
@@ -52,11 +52,11 @@ class BackupRemoveCommand extends Command
 
             if (!File::isDirectory($this->backup->getBackupPath($backup))) {
                 $this->error('Cannot found backup folder!');
-                return false;
+                return 1;
             }
 
             if (!$this->confirmToProceed('Are you sure you want to permanently delete?', true)) {
-                return false;
+                return 1;
             }
 
             $this->backup->deleteFolderBackup($this->backup->getBackupPath($backup));
@@ -67,6 +67,6 @@ class BackupRemoveCommand extends Command
             $this->error($exception->getMessage());
         }
 
-        return true;
+        return 0;
     }
 }

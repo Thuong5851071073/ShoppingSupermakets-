@@ -6,16 +6,19 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1" name="viewport"/>
         <meta name="format-detection" content="telephone=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!-- Fonts-->
-        <link href="https://fonts.googleapis.com/css?family={{ theme_option('primary_font', 'Roboto') }}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family={{ urlencode(theme_option('primary_font', 'Roboto')) }}" rel="stylesheet" type="text/css">
         <!-- CSS Library-->
 
         <style>
-            body {font-family: '{{ theme_option('primary_font', 'Roboto') }}', sans-serif !important;}
+            :root {
+                --color-1st: {{ theme_option('primary_color', '#ff2b4a') }};
+                --primary-font: '{{ theme_option('primary_font', 'Roboto') }}', sans-serif;
+            }
         </style>
 
         {!! Theme::header() !!}
@@ -28,27 +31,33 @@
     <!--[if IE 7]><body class="ie7 lt-ie8 lt-ie9 lt-ie10"><![endif]-->
     <!--[if IE 8]><body class="ie8 lt-ie9 lt-ie10"><![endif]-->
     <!--[if IE 9]><body class="ie9 lt-ie10"><![endif]-->
-    <body>
+    <body @if (class_exists('Language', false) && Language::getCurrentLocaleRTL()) dir="rtl" @endif>
     <header class="header" id="header">
         <div class="header-wrap">
             <nav class="nav-top">
                 <div class="container">
                     <div class="pull-left">
                         <div class="hi-icon-wrap hi-icon-effect-3 hi-icon-effect-3a">
-                            <a href="{{ theme_option('facebook') }}" title="Facebook" class="hi-icon fa fa-facebook"></a>
-                            <a href="{{ theme_option('twitter') }}" title="Twitter" class="hi-icon fa fa-twitter"></a>
-                            <a href="{{ theme_option('youtube') }}" title="Youtube" class="hi-icon fa fa-youtube"></a>
+                            @if (theme_option('facebook'))
+                                <a href="{{ theme_option('facebook') }}" title="Facebook" class="hi-icon fa fa-facebook" target="_blank"></a>
+                            @endif
+                            @if (theme_option('twitter'))
+                                <a href="{{ theme_option('twitter') }}" title="Twitter" class="hi-icon fa fa-twitter" target="_blank"></a>
+                            @endif
+                            @if (theme_option('youtube'))
+                                <a href="{{ theme_option('youtube') }}" title="Youtube" class="hi-icon fa fa-youtube" target="_blank"></a>
+                            @endif
                         </div>
                     </div>
                     <div class="pull-right">
                         @if (is_plugin_active('member'))
                             <ul class="pull-left">
-                                @if (Auth::guard('member')->check())
-                                    <li><a href="{{ route('public.member.dashboard') }}" rel="nofollow"><img src="{{ Auth::guard('member')->user()->avatar_url }}" class="img-circle" width="20" alt="{{ Auth::guard('member')->user()->getFullName() }}"> <span>{{ Auth::guard('member')->user()->getFullName() }}</span></a></li>
+                                @auth('member')
+                                    <li><a href="{{ route('public.member.dashboard') }}" rel="nofollow"><img src="{{ auth('member')->user()->avatar_url }}" class="img-circle" width="20" alt="{{ auth('member')->user()->getFullName() }}"> &nbsp;<span>{{ auth('member')->user()->getFullName() }}</span></a></li>
                                     <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" rel="nofollow"><i class="fa fa-sign-out"></i> {{ __('Logout') }}</a></li>
-                                @else
+                                @elseauth
                                     <li><a href="{{ route('public.member.login') }}" rel="nofollow"><i class="fa fa-sign-in"></i> {{ __('Login') }}</a></li>
-                                @endif
+                                @endauth
                             </ul>
                             @auth('member')
                                 <form id="logout-form" action="{{ route('public.member.logout') }}" method="POST" style="display: none;">
@@ -75,7 +84,7 @@
                     @if (!theme_option('logo'))
                         <span>Bot</span>ble
                     @else
-                        <img src="{{ get_image_url(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" height="50">
+                        <img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" height="50">
                     @endif
                 </a></div>
             <div class="page-header__right">
@@ -108,4 +117,3 @@
         @endif
     </header>
     <div id="page-wrap">
-

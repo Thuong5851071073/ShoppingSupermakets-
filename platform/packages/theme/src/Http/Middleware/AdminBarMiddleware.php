@@ -1,8 +1,9 @@
 <?php
 
-namespace Botble\Theme\Http\Middleware;
+namespace Platform\Theme\Http\Middleware;
 
-use Botble\Setting\Supports\SettingStore;
+use BaseHelper;
+use Platform\Setting\Supports\SettingStore;
 use Closure;
 use Html;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -46,7 +47,7 @@ class AdminBarMiddleware
     {
         $response = $next($request);
 
-        if (!config('core.base.general.admin_dir')) {
+        if (!BaseHelper::getAdminPrefix()) {
             return $response;
         }
 

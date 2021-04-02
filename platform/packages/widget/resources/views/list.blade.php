@@ -1,6 +1,6 @@
 @extends('core/base::layouts.master')
 @section('content')
-    @php do_action(BASE_ACTION_TOP_FORM_CONTENT_NOTIFICATION, WIDGET_MANAGER_MODULE_SCREEN_NAME, request(), null) @endphp
+    @php do_action(BASE_ACTION_TOP_FORM_CONTENT_NOTIFICATION, request(), WIDGET_MANAGER_MODULE_SCREEN_NAME) @endphp
     <div class="widget-main" id="wrap-widgets">
         <div class="row">
             <div class="col-sm-6">
@@ -66,7 +66,7 @@
 
 @section('javascript')
     <script>
-        "use strict";
+        'use strict';
         var BWidget = BWidget || {};
         BWidget.routes = {
             'delete': '{{ route('widgets.destroy', ['ref_lang' => request()->input('ref_lang')]) }}',

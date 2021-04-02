@@ -1,10 +1,10 @@
 <?php
 
-namespace Botble\Member\Listeners;
+namespace Platform\Member\Listeners;
 
-use Botble\Base\Events\UpdatedContentEvent;
-use Botble\Member\Models\Member;
-use Botble\Member\Repositories\Interfaces\MemberActivityLogInterface;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Member\Models\Member;
+use Platform\Member\Repositories\Interfaces\MemberActivityLogInterface;
 use Exception;
 
 class UpdatedContentListener
@@ -20,8 +20,8 @@ class UpdatedContentListener
         try {
             if ($event->data->id &&
                 $event->data->author_type === Member::class &&
-                auth()->guard('member')->check() &&
-                $event->data->author_id == auth()->guard('member')->user()->getKey()
+                auth('member')->check() &&
+                $event->data->author_id == auth('member')->user()->getAuthIdentifier()
             ) {
                 app(MemberActivityLogInterface::class)->createOrUpdate([
                     'action'         => 'your_post_updated_by_admin',

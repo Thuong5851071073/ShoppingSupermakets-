@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Setting\Supports;
+namespace Platform\Setting\Supports;
 
-use Botble\Base\Supports\Helper;
+use Platform\Base\Supports\Helper;
 use Closure;
 use Exception;
 use File;
@@ -179,7 +179,7 @@ class DatabaseSettingStore extends SettingStore
 
         foreach ($updateData as $key => $value) {
             $this->newQuery()
-                ->where($this->keyColumn, '=', $key)
+                ->where($this->keyColumn, $key)
                 ->update([$this->valueColumn => $value]);
         }
 
@@ -302,7 +302,7 @@ class DatabaseSettingStore extends SettingStore
     /**
      * Create a new query builder instance.
      *
-     * @param  $insert  boolean  Whether the query is an insert or not.
+     * @param boolean $insert  Whether the query is an insert or not.
      *
      * @return Builder
      */
@@ -312,7 +312,7 @@ class DatabaseSettingStore extends SettingStore
 
         if (!$insert) {
             foreach ($this->extraColumns as $key => $value) {
-                $query->where($key, '=', $value);
+                $query->where($key, $value);
             }
         }
 

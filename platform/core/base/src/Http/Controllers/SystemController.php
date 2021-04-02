@@ -1,17 +1,19 @@
 <?php
 
-namespace Botble\Base\Http\Controllers;
+namespace Platform\Base\Http\Controllers;
 
 use Assets;
-use Botble\ACL\Models\UserMeta;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Supports\Helper;
-use Botble\Base\Supports\MembershipAuthorization;
-use Botble\Base\Supports\SystemManagement;
-use Botble\Base\Tables\InfoTable;
-use Botble\Table\TableBuilder;
+use Platform\ACL\Models\UserMeta;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Supports\MembershipAuthorization;
+use Platform\Base\Supports\SystemManagement;
+use Platform\Base\Tables\InfoTable;
+use Platform\Table\TableBuilder;
 use Exception;
 use File;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
@@ -26,15 +28,19 @@ class SystemController extends Controller
 {
 
     /**
+     * @param Request $request
+     * @param TableBuilder $tableBuilder
      * @return Factory|View
      * @throws Throwable
+     * @throws BindingResolutionException
+     * @throws FileNotFoundException
      */
     public function getInfo(Request $request, TableBuilder $tableBuilder)
     {
         page_title()->setTitle(trans('core/base::system.info.title'));
 
-        Assets::addScriptsDirectly('vendor/core/js/system-info.js')
-            ->addStylesDirectly(['vendor/core/css/system-info.css']);
+        Assets::addScriptsDirectly('vendor/core/core/base/js/system-info.js')
+            ->addStylesDirectly(['vendor/core/core/base/css/system-info.css']);
 
         $composerArray = SystemManagement::getComposerArray();
         $packages = SystemManagement::getPackagesAndDependencies($composerArray['require']);
@@ -63,7 +69,7 @@ class SystemController extends Controller
     {
         page_title()->setTitle(trans('core/base::cache.cache_management'));
 
-        Assets::addScriptsDirectly('vendor/core/js/cache.js');
+        Assets::addScriptsDirectly('vendor/core/core/base/js/cache.js');
 
         return view('core/base::system.cache');
     }

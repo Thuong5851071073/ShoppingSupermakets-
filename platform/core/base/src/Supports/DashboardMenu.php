@@ -1,11 +1,12 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
+use BaseHelper;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Psr\SimpleCache\InvalidArgumentException;
 use RuntimeException;
@@ -89,10 +90,15 @@ class DashboardMenu
 
     /**
      * @param array|string $id
+     * @param null $parentId
      * @return $this
      */
     public function removeItem($id, $parentId = null): self
     {
+        if ($parentId && !isset($this->links[$parentId])) {
+            return $this;
+        }
+
         $id = is_array($id) ? $id : func_get_args();
         foreach ($id as $item) {
             if (!$parentId) {
@@ -121,7 +127,7 @@ class DashboardMenu
         $currentUrl = URL::full();
 
         $prefix = request()->route()->getPrefix();
-        if (!$prefix || $prefix === config('core.base.general.admin_dir')) {
+        if (!$prefix || $prefix === BaseHelper::getAdminPrefix()) {
             $uri = explode('/', request()->route()->uri());
             $prefix = end($uri);
         }
@@ -129,12 +135,12 @@ class DashboardMenu
         $routePrefix = '/' . $prefix;
 
         if (setting('cache_admin_menu_enable', true) && Auth::check()) {
-            $cache_key = md5('cache-dashboard-menu-' . Auth::user()->getKey());
-            if (!cache()->has($cache_key)) {
+            $cacheKey = md5('cache-dashboard-menu-' . Auth::user()->getKey());
+            if (!cache()->has($cacheKey)) {
                 $links = $this->links;
-                cache()->forever($cache_key, $links);
+                cache()->forever($cacheKey, $links);
             } else {
-                $links = cache($cache_key);
+                $links = cache($cacheKey);
             }
         } else {
             $links = $this->links;
@@ -146,7 +152,8 @@ class DashboardMenu
                 continue;
             }
 
-            $link['active'] = $currentUrl == $link['url'] || (Str::contains($link['url'], $routePrefix) && $routePrefix != '//');
+            $link['active'] = $currentUrl == $link['url'] || (Str::contains($link['url'],
+                        $routePrefix) && $routePrefix != '//');
             if (!count($link['children'])) {
                 continue;
             }

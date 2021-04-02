@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Blog\Repositories\Caches;
+namespace Platform\Blog\Repositories\Caches;
 
-use Botble\Support\Repositories\Caches\CacheAbstractDecorator;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Support\Repositories\Caches\CacheAbstractDecorator;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
 
 class CategoryCacheDecorator extends CacheAbstractDecorator implements CategoryInterface
 {
@@ -18,7 +18,7 @@ class CategoryCacheDecorator extends CacheAbstractDecorator implements CategoryI
     /**
      * {@inheritDoc}
      */
-    public function getFeaturedCategories($limit)
+    public function getFeaturedCategories($limit, array $with = [])
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }

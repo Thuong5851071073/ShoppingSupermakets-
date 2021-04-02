@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Platform\DevTool\Commands;
 
 use File;
 use Illuminate\Console\Command;
@@ -22,13 +22,13 @@ class LocaleCreateCommand extends Command
     protected $description = 'Create a new locale';
 
     /**
-     * Execute the console command.
+     * @return int
      */
     public function handle()
     {
         if (!preg_match('/^[a-z0-9\-]+$/i', $this->argument('locale'))) {
             $this->error('Only alphabetic characters are allowed.');
-            return false;
+            return 1;
         }
 
         $defaultLocale = resource_path('lang/en');
@@ -41,7 +41,7 @@ class LocaleCreateCommand extends Command
         $this->createLocaleInPath(resource_path('lang/vendor/packages'));
         $this->createLocaleInPath(resource_path('lang/vendor/plugins'));
 
-        return true;
+        return 0;
     }
 
     /**
@@ -50,6 +50,10 @@ class LocaleCreateCommand extends Command
      */
     protected function createLocaleInPath(string $path)
     {
+        if (!File::isDirectory($path)) {
+            return 0;
+        }
+
         $folders = File::directories($path);
 
         foreach ($folders as $module) {

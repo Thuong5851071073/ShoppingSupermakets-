@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Gallery\Http\Requests;
+namespace Platform\Gallery\Http\Requests;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Support\Http\Requests\Request;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Support\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
 class GalleryRequest extends Request
@@ -20,7 +20,7 @@ class GalleryRequest extends Request
         return [
             'name'        => 'required|max:120',
             'description' => 'required|max:400',
-            'order'       => 'required|integer|min:0',
+            'order'       => 'required|integer|min:0|max:127',
             'status'      => Rule::in(BaseStatusEnum::values()),
         ];
     }

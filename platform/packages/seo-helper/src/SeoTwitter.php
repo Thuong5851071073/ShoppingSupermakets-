@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\SeoHelper;
+namespace Platform\SeoHelper;
 
-use Botble\SeoHelper\Contracts\Entities\TwitterCardContract;
-use Botble\SeoHelper\Contracts\SeoTwitterContract;
+use Platform\SeoHelper\Contracts\Entities\TwitterCardContract;
+use Platform\SeoHelper\Contracts\SeoTwitterContract;
 
 class SeoTwitter implements SeoTwitterContract
 {
@@ -141,9 +141,9 @@ class SeoTwitter implements SeoTwitterContract
      *
      * @return string
      */
-    public function render()
+    public function __toString()
     {
-        return $this->card->render();
+        return $this->render();
     }
 
     /**
@@ -151,8 +151,8 @@ class SeoTwitter implements SeoTwitterContract
      *
      * @return string
      */
-    public function __toString()
+    public function render()
     {
-        return $this->render();
+        return $this->card->render();
     }
 }

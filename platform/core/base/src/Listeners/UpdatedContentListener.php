@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Base\Listeners;
+namespace Platform\Base\Listeners;
 
-use Botble\Base\Events\UpdatedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
 use Exception;
 
 class UpdatedContentListener
@@ -18,8 +18,6 @@ class UpdatedContentListener
     {
         try {
             do_action(BASE_ACTION_AFTER_UPDATE_CONTENT, $event->screen, $event->request, $event->data);
-
-            cache()->forget('public.sitemap');
         } catch (Exception $exception) {
             info($exception->getMessage());
         }

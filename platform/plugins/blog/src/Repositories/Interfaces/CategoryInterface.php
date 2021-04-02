@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Blog\Repositories\Interfaces;
+namespace Platform\Blog\Repositories\Interfaces;
 
-use Botble\Support\Repositories\Interfaces\RepositoryInterface;
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
 use Illuminate\Support\Collection;
 
 interface CategoryInterface extends RepositoryInterface
@@ -15,8 +15,9 @@ interface CategoryInterface extends RepositoryInterface
 
     /**
      * @param int $limit
+     * @param array $with
      */
-    public function getFeaturedCategories($limit);
+    public function getFeaturedCategories($limit, array $with = []);
 
     /**
      * @param array $condition

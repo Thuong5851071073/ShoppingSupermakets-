@@ -7,17 +7,24 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8">
-
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1" name="viewport"/>
 
-    <meta http-equiv="content-language" content="en">
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css?family={{ urlencode(theme_option('primary_font', 'Roboto Slab')) }}:100,300,400,700" rel="stylesheet" type="text/css">
+    <!-- CSS Library-->
+
+    <style>
+        :root {
+            --color-1st: {{ theme_option('primary_color', '#d8403f') }};
+            --primary-font: '{{ theme_option('primary_font', 'Roboto Slab') }}', sans-serif;
+        }
+    </style>
 
     {!! Theme::header() !!}
 
 </head>
-<body>
+<body @if (class_exists('Language', false) && Language::getCurrentLocaleRTL()) dir="rtl" @endif>
 <div class="wrapper" id="site_wrapper">
     <header class="header" id="header">
         <div class="header-wrap">
@@ -34,12 +41,12 @@
                     <div class="pull-right">
                         @if (is_plugin_active('member'))
                             <ul class="pull-left">
-                                @if(Auth::guard('member')->check())
-                                    <li><a href="{{ route('public.member.dashboard') }}" rel="nofollow"><i class="fa fa-user"></i> <span>{{ Auth::guard('member')->user()->getFullName() }}</span></a></li>
+                                @auth('member')
+                                    <li><a href="{{ route('public.member.dashboard') }}" rel="nofollow"><i class="fa fa-user"></i> <span>{{ auth('member')->user()->getFullName() }}</span></a></li>
                                     <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" rel="nofollow"><i class="fa fa-sign-out"></i> {{ __('Logout') }}</a></li>
-                                @else
+                                @elseauth
                                     <li><a href="{{ route('public.member.login') }}" rel="nofollow"><i class="fa fa-sign-in"></i> {{ __('Login') }}</a></li>
-                                @endif
+                                @endauth
                             </ul>
                             @auth('member')
                                 <form id="logout-form" action="{{ route('public.member.logout') }}" method="POST" style="display: none;">
@@ -61,11 +68,11 @@
                 <div class="container">
                     <h1 class="logo">
                         <a href="{{ route('public.single') }}" title="{{ theme_option('site_title') }}">
-                            <img src="{{ get_image_url(theme_option('logo', Theme::asset()->url('images/logo.png'))) }}" alt="{{ theme_option('site_title') }}">
+                            <img src="{{ RvMedia::getImageUrl(theme_option('logo', Theme::asset()->url('images/logo.png'))) }}" alt="{{ theme_option('site_title') }}">
                         </a>
                     </h1>
                     <div class="header-content-right">
-                        <p><img alt="Banner" src="{{ theme_option('top_banner') ? get_image_url(theme_option('top_banner')) : Theme::asset()->url('images/banner.png') }}" style="width: 728px; height: 90px;"></p>
+                        <p><img alt="Banner" src="{{ theme_option('top_banner') ? RvMedia::getImageUrl(theme_option('top_banner')) : Theme::asset()->url('images/banner.png') }}" style="width: 728px; height: 90px;"></p>
                     </div>
                 </div>
             </div>
@@ -101,7 +108,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand"  href="{{ route('public.single') }}" title="{{ theme_option('site_title') }}">
-                        <img src="{{ get_image_url(theme_option('logo', Theme::asset()->url('images/logo.png'))) }}" alt="{{ theme_option('site_title') }}">
+                        <img src="{{ RvMedia::getImageUrl(theme_option('logo', Theme::asset()->url('images/logo.png'))) }}" alt="{{ theme_option('site_title') }}">
                     </a>
                 </div>
 

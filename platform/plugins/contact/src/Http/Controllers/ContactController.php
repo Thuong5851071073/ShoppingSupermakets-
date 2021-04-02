@@ -1,24 +1,24 @@
 <?php
 
-namespace Botble\Contact\Http\Controllers;
+namespace Platform\Contact\Http\Controllers;
 
-use Botble\Base\Forms\FormBuilder;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Supports\EmailHandler;
-use Botble\Base\Traits\HasDeleteManyItemsTrait;
-use Botble\Contact\Enums\ContactStatusEnum;
-use Botble\Contact\Forms\ContactForm;
-use Botble\Contact\Http\Requests\ContactReplyRequest;
-use Botble\Contact\Http\Requests\EditContactRequest;
-use Botble\Contact\Repositories\Interfaces\ContactReplyInterface;
-use Botble\Contact\Tables\ContactTable;
-use Botble\Contact\Repositories\Interfaces\ContactInterface;
-use Botble\Setting\Supports\SettingStore;
+use Platform\Base\Forms\FormBuilder;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Base\Traits\HasDeleteManyItemsTrait;
+use Platform\Contact\Enums\ContactStatusEnum;
+use Platform\Contact\Forms\ContactForm;
+use Platform\Contact\Http\Requests\ContactReplyRequest;
+use Platform\Contact\Http\Requests\EditContactRequest;
+use Platform\Contact\Repositories\Interfaces\ContactReplyInterface;
+use Platform\Contact\Tables\ContactTable;
+use Platform\Contact\Repositories\Interfaces\ContactInterface;
+use Platform\Setting\Supports\SettingStore;
+use EmailHandler;
 use Exception;
 use Illuminate\Http\Request;
-use Botble\Base\Events\DeletedContentEvent;
-use Botble\Base\Events\UpdatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
 
 class ContactController extends BaseController
 {
@@ -102,7 +102,7 @@ class ContactController extends BaseController
         } catch (Exception $exception) {
             return $response
                 ->setError()
-                ->setMessage(trans('core/base::notices.cannot_delete'));
+                ->setMessage($exception->getMessage());
         }
     }
 
@@ -118,22 +118,21 @@ class ContactController extends BaseController
     }
 
     /**
-     * @param ContactReplyRequest $request
      * @param $id
-     * @param SettingStore $setting
-     * @param EmailHandler $emailHandler
-     * @throws \Throwable
+     * @param ContactReplyRequest $request
+     * @param BaseHttpResponse $response
+     * @param ContactReplyInterface $contactReplyRepository
+     * @return BaseHttpResponse
      */
     public function postReply(
         $id,
         ContactReplyRequest $request,
-        EmailHandler $emailHandler,
         BaseHttpResponse $response,
         ContactReplyInterface $contactReplyRepository
     ) {
         $contact = $this->contactRepository->findOrFail($id);
 
-        $emailHandler->send($request->input('message'), 'Re: ' . $contact->subject, $contact->email);
+        EmailHandler::send($request->input('message'), 'Re: ' . $contact->subject, $contact->email);
 
         $contactReplyRepository->create([
             'message'    => $request->input('message'),

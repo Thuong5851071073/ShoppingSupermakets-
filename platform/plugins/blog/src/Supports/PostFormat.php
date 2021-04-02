@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Blog\Supports;
+namespace Platform\Blog\Supports;
 
 class PostFormat
 {
@@ -47,7 +47,7 @@ class PostFormat
         if ($isConvertToList) {
             $results = [];
             foreach (self::$formats as $key => $item) {
-                $results[] = [
+                $results[$key] = [
                     $key,
                     $item['name'],
                 ];

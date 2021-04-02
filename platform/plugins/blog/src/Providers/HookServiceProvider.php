@@ -1,33 +1,26 @@
 <?php
 
-namespace Botble\Blog\Providers;
+namespace Platform\Blog\Providers;
 
 use Assets;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Blog\Models\Category;
-use Botble\Blog\Models\Post;
-use Botble\Blog\Models\Tag;
-use Botble\Dashboard\Supports\DashboardWidgetInstance;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Routing\Events\RouteMatched;
-use Botble\Base\Supports\Helper;
-use Botble\Page\Models\Page;
-use Botble\Page\Repositories\Interfaces\PageInterface;
-use Botble\SeoHelper\SeoOpenGraph;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Blog\Models\Category;
+use Platform\Blog\Models\Tag;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Blog\Services\BlogService;
+use Platform\Dashboard\Supports\DashboardWidgetInstance;
+use Platform\Page\Models\Page;
+use Platform\Page\Repositories\Interfaces\PageInterface;
 use Eloquent;
 use Event;
 use Html;
-use Illuminate\Support\Arr;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
-use Botble\Blog\Repositories\Interfaces\TagInterface;
 use Illuminate\Support\Str;
 use Menu;
-use Botble\Blog\Repositories\Interfaces\PostInterface;
-use Illuminate\Support\Facades\Auth;
-use SeoHelper;
 use stdClass;
 use Theme;
 use Throwable;
@@ -46,7 +39,6 @@ class HookServiceProvider extends ServiceProvider
         add_filter(BASE_FILTER_PUBLIC_SINGLE_DATA, [$this, 'handleSingleView'], 2, 1);
         if (defined('PAGE_MODULE_SCREEN_NAME')) {
             add_filter(PAGE_FILTER_FRONT_PAGE_CONTENT, [$this, 'renderBlogPage'], 2, 2);
-            add_filter(BASE_FILTER_AFTER_SETTING_CONTENT, [$this, 'addSettings'], 47, 1);
             add_filter(PAGE_FILTER_PAGE_NAME_IN_ADMIN_LIST, [$this, 'addAdditionNameToPageName'], 147, 2);
         }
 
@@ -62,6 +54,16 @@ class HookServiceProvider extends ServiceProvider
                 view('plugins/blog::partials.posts-short-code-admin-config')->render());
         }
 
+        if (function_exists('theme_option')) {
+            add_action(RENDERING_THEME_OPTIONS_PAGE, [$this, 'addThemeOptions'], 35);
+        }
+    }
+
+    public function addThemeOptions()
+    {
+        $pages = $this->app->make(PageInterface::class)
+            ->pluck('pages.name', 'pages.id', ['status' => BaseStatusEnum::PUBLISHED]);
+
         theme_option()
             ->setSection([
                 'title'      => 'Blog',
@@ -71,9 +73,22 @@ class HookServiceProvider extends ServiceProvider
                 'icon'       => 'fa fa-edit',
                 'fields'     => [
                     [
+                        'id'         => 'blog_page_id',
+                        'type'       => 'select',
+                        'label'      => trans('plugins/blog::settings.blog_page_id'),
+                        'attributes' => [
+                            'name'    => 'blog_page_id',
+                            'list'    => ['' => trans('plugins/blog::settings.select')] + $pages,
+                            'value'   => '',
+                            'options' => [
+                                'class' => 'form-control',
+                            ],
+                        ],
+                    ],
+                    [
                         'id'         => 'number_of_posts_in_a_category',
                         'type'       => 'number',
-                        'label'      => __('Number of posts in a category'),
+                        'label'      => __('Number of posts per page in a category'),
                         'attributes' => [
                             'name'    => 'number_of_posts_in_a_category',
                             'value'   => 12,
@@ -85,7 +100,7 @@ class HookServiceProvider extends ServiceProvider
                     [
                         'id'         => 'number_of_posts_in_a_tag',
                         'type'       => 'number',
-                        'label'      => __('Number of posts in a tag'),
+                        'label'      => __('Number of posts per page in a tag'),
                         'attributes' => [
                             'name'    => 'number_of_posts_in_a_tag',
                             'value'   => 12,
@@ -105,27 +120,11 @@ class HookServiceProvider extends ServiceProvider
     public function registerMenuOptions()
     {
         if (Auth::user()->hasPermission('categories.index')) {
-            $categories = Menu::generateSelect([
-                'model'   => $this->app->make(CategoryInterface::class)->getModel(),
-                'type'    => Category::class,
-                'theme'   => false,
-                'options' => [
-                    'class' => 'list-item',
-                ],
-            ]);
-            echo view('plugins/blog::categories.menu-options', compact('categories'));
+            Menu::registerMenuOptions(Category::class, trans('plugins/blog::categories.menu'));
         }
 
         if (Auth::user()->hasPermission('tags.index')) {
-            $tags = Menu::generateSelect([
-                'model'   => $this->app->make(TagInterface::class)->getModel(),
-                'type'    => Tag::class,
-                'theme'   => false,
-                'options' => [
-                    'class' => 'list-item',
-                ],
-            ]);
-            echo view('plugins/blog::tags.partials.menu-options', compact('tags'));
+            Menu::registerMenuOptions(Tag::class, trans('plugins/blog::tags.menu'));
         }
     }
 
@@ -158,117 +157,16 @@ class HookServiceProvider extends ServiceProvider
     /**
      * @param Eloquent $slug
      * @return array|Eloquent
-     * @throws FileNotFoundException
      * @throws BindingResolutionException
      */
     public function handleSingleView($slug)
     {
-        if ($slug instanceof Eloquent) {
-            $data = [];
-            $condition = [
-                'id'     => $slug->reference_id,
-                'status' => BaseStatusEnum::PUBLISHED,
-            ];
-
-            if (Auth::check() && request()->input('preview')) {
-                Arr::forget($condition, 'status');
-            }
-
-            switch ($slug->reference_type) {
-                case Post::class:
-                    $post = $this->app->make(PostInterface::class)
-                        ->getFirstBy($condition, ['*'],
-                            ['categories', 'tags', 'slugable', 'categories.slugable', 'tags.slugable']);
-
-                    if (!empty($post)) {
-                        Helper::handleViewCount($post, 'viewed_post');
-
-                        SeoHelper::setTitle($post->name)->setDescription($post->description);
-
-                        $meta = new SeoOpenGraph;
-                        if ($post->image) {
-                            $meta->setImage(get_image_url($post->image));
-                        }
-                        $meta->setDescription($post->description);
-                        $meta->setUrl($post->url);
-                        $meta->setTitle($post->name);
-                        $meta->setType('article');
-
-                        SeoHelper::setSeoOpenGraph($meta);
-
-                        if (function_exists('admin_bar')) {
-                            admin_bar()->registerLink(trans('plugins/blog::posts.edit_this_post'),
-                                route('posts.edit', $post->id));
-                        }
-
-                        Theme::breadcrumb()->add(__('Home'), url('/'))->add($post->name, $post->url);
-
-                        do_action(BASE_ACTION_PUBLIC_RENDER_SINGLE, POST_MODULE_SCREEN_NAME, $post);
-
-                        $data = [
-                            'view'         => 'post',
-                            'default_view' => 'plugins/blog::themes.post',
-                            'data'         => compact('post'),
-                            'slug'         => $post->slug,
-                        ];
-                    }
-                    break;
-                case Category::class:
-                    $category = $this->app->make(CategoryInterface::class)
-                        ->getFirstBy($condition, ['*'], ['slugable']);
-                    if (!empty($category)) {
-                        SeoHelper::setTitle($category->name)->setDescription($category->description);
-
-                        $meta = new SeoOpenGraph;
-                        if ($category->image) {
-                            $meta->setImage(get_image_url($category->image));
-                        }
-                        $meta->setDescription($category->description);
-                        $meta->setUrl($category->url);
-                        $meta->setTitle($category->name);
-                        $meta->setType('article');
-
-                        SeoHelper::setSeoOpenGraph($meta);
-
-                        if (function_exists('admin_bar')) {
-                            admin_bar()->registerLink(trans('plugins/blog::categories.edit_this_category'),
-                                route('categories.edit', $category->id));
-                        }
-
-                        $allRelatedCategoryIds = array_unique(array_merge(
-                            $this->app->make(CategoryInterface::class)->getAllRelatedChildrenIds($category),
-                            [$category->id]
-                        ));
-
-                        $posts = $this->app->make(PostInterface::class)
-                            ->getByCategory($allRelatedCategoryIds, theme_option('number_of_posts_in_a_category', 12));
-
-                        Theme::breadcrumb()->add(__('Home'), url('/'))
-                            ->add($category->name, $category->url);
-
-                        do_action(BASE_ACTION_PUBLIC_RENDER_SINGLE, CATEGORY_MODULE_SCREEN_NAME, $category);
-
-                        return [
-                            'view'         => 'category',
-                            'default_view' => 'plugins/blog::themes.category',
-                            'data'         => compact('category', 'posts'),
-                            'slug'         => $category->slug,
-                        ];
-                    }
-                    break;
-            }
-            if (!empty($data)) {
-                return $data;
-            }
-        }
-
-        return $slug;
+        return (new BlogService)->handleFrontRoutes($slug);
     }
 
     /**
      * @param stdClass $shortcode
      * @return array|string
-     * @throws FileNotFoundException
      * @throws Throwable
      */
     public function renderBlogPosts($shortcode)
@@ -276,7 +174,7 @@ class HookServiceProvider extends ServiceProvider
         $posts = $this->app->make(PostInterface::class)->getAllPosts($shortcode->paginate);
 
         $view = 'plugins/blog::themes.templates.posts';
-        $themeView = 'theme.' . setting('theme') . '::views.templates.posts';
+        $themeView = Theme::getThemeNamespace() . '::views.templates.posts';
         if (view()->exists($themeView)) {
             $view = $themeView;
         }
@@ -287,33 +185,21 @@ class HookServiceProvider extends ServiceProvider
     /**
      * @param string|null $content
      * @param Page $page
+     * @return array|string|null
      * @throws Throwable
      */
     public function renderBlogPage(?string $content, Page $page)
     {
-        if ($page->id == setting('blog_page_id')) {
+        if ($page->id == theme_option('blog_page_id', setting('blog_page_id'))) {
             $view = 'plugins/blog::themes.loop';
 
-            if (view()->exists('theme.' . setting('theme') . '::views.loop')) {
-                $view = 'theme.' . setting('theme') . '::views.loop';
+            if (view()->exists(Theme::getThemeNamespace() . '::views.loop')) {
+                $view = Theme::getThemeNamespace() . '::views.loop';
             }
             return view($view, ['posts' => get_all_posts()])->render();
         }
 
         return $content;
-    }
-
-    /**
-     * @param null $data
-     * @return string
-     * @throws Throwable
-     */
-    public function addSettings($data = null)
-    {
-        $pages = $this->app->make(PageInterface::class)
-            ->allBy(['status' => BaseStatusEnum::PUBLISHED], [], ['pages.id', 'pages.name']);
-
-        return $data . view('plugins/blog::settings', compact('pages'))->render();
     }
 
     /**
@@ -323,7 +209,7 @@ class HookServiceProvider extends ServiceProvider
      */
     public function addAdditionNameToPageName(?string $name, Page $page)
     {
-        if ($page->id == setting('blog_page_id')) {
+        if ($page->id == theme_option('blog_page_id', setting('blog_page_id'))) {
             $subTitle = Html::tag('span', trans('plugins/blog::base.blog_page'), ['class' => 'additional-page-name'])
                 ->toHtml();
             if (Str::contains($name, '— ')) {

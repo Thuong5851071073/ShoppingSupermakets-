@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Widget;
+namespace Platform\Widget;
 
-use Botble\Widget\Repositories\Interfaces\WidgetInterface;
+use Platform\Widget\Repositories\Interfaces\WidgetInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
@@ -61,7 +61,7 @@ abstract class AbstractWidget
 
         $this->widgetRepository = app(WidgetInterface::class);
 
-        $this->theme = setting('theme') . $this->getCurrentLocaleCode();
+        $this->theme = Theme::getThemeName() . $this->getCurrentLocaleCode();
     }
 
     /**
@@ -95,7 +95,7 @@ abstract class AbstractWidget
      */
     public function run()
     {
-        Theme::uses(setting('theme'));
+        Theme::uses(Theme::getThemeName());
         $args = func_get_args();
         $data = $this->widgetRepository->getFirstBy([
             'widget_id'  => $this->getId(),
@@ -131,14 +131,14 @@ abstract class AbstractWidget
     }
 
     /**
-     * @param null $sidebarId
+     * @param string|null $sidebarId
      * @param int $position
      * @return Factory|View|mixed
      * @throws FileNotFoundException
      */
     public function form($sidebarId = null, $position = 0)
     {
-        Theme::uses(setting('theme'));
+        Theme::uses(Theme::getThemeName());
         if (!empty($sidebarId)) {
             $data = $this->widgetRepository->getFirstBy([
                 'widget_id'  => $this->getId(),

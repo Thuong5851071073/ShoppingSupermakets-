@@ -1,19 +1,17 @@
 <?php
 
-namespace Botble\Member\Http\Controllers\API;
+namespace Platform\Member\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Member\Http\Requests\LoginRequest;
-use Botble\Member\Http\Requests\RegisterRequest;
-use Botble\Member\Notifications\API\ConfirmEmailNotification;
-use Botble\Member\Repositories\Interfaces\MemberInterface;
-use Botble\ACL\Traits\RegistersUsers;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Member\Http\Requests\LoginRequest;
+use Platform\Member\Http\Requests\RegisterRequest;
+use Platform\Member\Notifications\API\ConfirmEmailNotification;
+use Platform\Member\Repositories\Interfaces\MemberInterface;
+use Platform\ACL\Traits\RegistersUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Laravel\Passport\Token;
 
 class AuthenticationController extends Controller
 {
@@ -118,14 +116,14 @@ class AuthenticationController extends Controller
      */
     public function login(LoginRequest $request, BaseHttpResponse $response)
     {
-        if (Auth::guard('member')->attempt([
+        if (auth('member')->attempt([
             'email'    => $request->input('email'),
             'password' => $request->input('password'),
         ])) {
-            $token = Auth::guard('member')->user()->createToken('Laravel Password Grant Client')->accessToken;
+            $token = auth('member')->user()->createToken('Laravel Password Grant Client')->accessToken;
 
             return $response
-                ->setData(['token' => $token]);
+                ->setData(compact('token'));
         }
 
         return $response
@@ -146,11 +144,7 @@ class AuthenticationController extends Controller
      */
     public function logout(Request $request, BaseHttpResponse $response)
     {
-        /**
-         * @var Token $token
-         */
-        $token = $request->user()->token();
-        $token->revoke();
+        $request->user()->token()->revoke();
 
         return $response
             ->setMessage(__('You have been successfully logged out!'));

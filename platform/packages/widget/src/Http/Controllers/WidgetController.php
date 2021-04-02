@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Widget\Http\Controllers;
+namespace Platform\Widget\Http\Controllers;
 
 use Assets;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Setting\Supports\SettingStore;
-use Botble\Widget\Factories\AbstractWidgetFactory;
-use Botble\Widget\Repositories\Interfaces\WidgetInterface;
-use Botble\Widget\WidgetId;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Setting\Supports\SettingStore;
+use Platform\Widget\Factories\AbstractWidgetFactory;
+use Platform\Widget\Repositories\Interfaces\WidgetInterface;
+use Platform\Widget\WidgetId;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -17,6 +17,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Language;
+use Theme;
 use Throwable;
 use WidgetGroup;
 
@@ -35,13 +36,12 @@ class WidgetController extends BaseController
     /**
      * WidgetController constructor.
      * @param WidgetInterface $widgetRepository
-     * @param SettingStore $setting
      * @throws FileNotFoundException
      */
-    public function __construct(WidgetInterface $widgetRepository, SettingStore $setting)
+    public function __construct(WidgetInterface $widgetRepository)
     {
         $this->widgetRepository = $widgetRepository;
-        $this->theme = $setting->get('theme') . $this->getCurrentLocaleCode();
+        $this->theme = Theme::getThemeName() . $this->getCurrentLocaleCode();
     }
 
     /**
@@ -101,10 +101,10 @@ class WidgetController extends BaseController
             return $response
                 ->setData(view('packages/widget::item', compact('widget_areas'))->render())
                 ->setMessage(trans('packages/widget::global.save_success'));
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
             return $response
                 ->setError()
-                ->setMessage($ex->getMessage());
+                ->setMessage($exception->getMessage());
         }
     }
 

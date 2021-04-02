@@ -1,22 +1,23 @@
 <?php
 
-namespace Botble\Widget\Providers;
+namespace Platform\Widget\Providers;
 
-use Botble\Base\Supports\Helper;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Widget\Factories\WidgetFactory;
-use Botble\Widget\Misc\LaravelApplicationWrapper;
-use Botble\Widget\Models\Widget;
-use Botble\Widget\Repositories\Caches\WidgetCacheDecorator;
-use Botble\Widget\Repositories\Eloquent\WidgetRepository;
-use Botble\Widget\Repositories\Interfaces\WidgetInterface;
-use Botble\Widget\WidgetGroupCollection;
-use Botble\Widget\Widgets\Text;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Widget\Factories\WidgetFactory;
+use Platform\Widget\Misc\LaravelApplicationWrapper;
+use Platform\Widget\Models\Widget;
+use Platform\Widget\Repositories\Caches\WidgetCacheDecorator;
+use Platform\Widget\Repositories\Eloquent\WidgetRepository;
+use Platform\Widget\Repositories\Interfaces\WidgetInterface;
+use Platform\Widget\WidgetGroupCollection;
+use Platform\Widget\Widgets\Text;
 use Event;
 use File;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Events\RouteMatched;
 use Illuminate\Support\ServiceProvider;
+use Theme;
 use WidgetGroup;
 
 class WidgetServiceProvider extends ServiceProvider
@@ -75,11 +76,11 @@ class WidgetServiceProvider extends ServiceProvider
 
             register_widget(Text::class);
 
-            $widget_path = theme_path(setting('theme') . '/widgets');
-            $widgets = scan_folder($widget_path);
+            $widgetPath = theme_path(Theme::getThemeName() . '/widgets');
+            $widgets = scan_folder($widgetPath);
             if (!empty($widgets) && is_array($widgets)) {
                 foreach ($widgets as $widget) {
-                    $registration = $widget_path . '/' . $widget . '/registration.php';
+                    $registration = $widgetPath . '/' . $widget . '/registration.php';
                     if (File::exists($registration)) {
                         File::requireOnce($registration);
                     }
@@ -100,7 +101,7 @@ class WidgetServiceProvider extends ServiceProvider
                 ]);
 
             if (function_exists('admin_bar')) {
-                admin_bar()->registerLink('Widget', route('widgets.index'), 'appearance');
+                admin_bar()->registerLink(trans('core/base::layouts.widgets'), route('widgets.index'), 'appearance');
             }
         });
     }

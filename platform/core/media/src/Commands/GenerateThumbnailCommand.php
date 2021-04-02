@@ -1,10 +1,11 @@
 <?php
 
-namespace Botble\Media\Commands;
+namespace Platform\Media\Commands;
 
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
+use Platform\Media\Repositories\Interfaces\MediaFileInterface;
 use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use RvMedia;
 
 class GenerateThumbnailCommand extends Command
@@ -39,7 +40,7 @@ class GenerateThumbnailCommand extends Command
     }
 
     /**
-     * @return bool
+     * @return int
      */
     public function handle()
     {
@@ -47,7 +48,7 @@ class GenerateThumbnailCommand extends Command
 
         $files = $this->fileRepository->allBy([], [], ['url', 'mime_type']);
 
-        $this->info('Processing ' . $files->count() . ' file(s)...');
+        $this->info('Processing ' . $files->count() . ' ' . Str::plural('file', $files->count()) . '...');
 
         $errors = [];
 
@@ -72,8 +73,10 @@ class GenerateThumbnailCommand extends Command
             $this->info('We are unable to regenerate thumbnail for these files:');
 
             $this->table(['File directory'], $errors);
+
+            return 1;
         }
 
-        return true;
+        return 0;
     }
 }

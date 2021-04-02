@@ -1,23 +1,23 @@
 <?php
 
-namespace Botble\Setting\Http\Controllers;
+namespace Platform\Setting\Http\Controllers;
 
 use Assets;
-use Botble\Base\Supports\Core;
-use Botble\Base\Supports\EmailHandler;
-use Botble\Setting\Http\Requests\EmailTemplateRequest;
-use Botble\Setting\Http\Requests\LicenseSettingRequest;
-use Botble\Setting\Http\Requests\MediaSettingRequest;
-use Botble\Setting\Http\Requests\SendTestEmailRequest;
-use Botble\Setting\Repositories\Interfaces\SettingInterface;
-use Botble\Setting\Supports\SettingStore;
+use Platform\Base\Supports\Core;
+use Platform\Setting\Http\Requests\EmailTemplateRequest;
+use Platform\Setting\Http\Requests\LicenseSettingRequest;
+use Platform\Setting\Http\Requests\MediaSettingRequest;
+use Platform\Setting\Http\Requests\SendTestEmailRequest;
+use Platform\Setting\Repositories\Interfaces\SettingInterface;
+use Platform\Setting\Supports\SettingStore;
 use Carbon\Carbon;
+use EmailHandler;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\File;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
@@ -52,7 +52,7 @@ class SettingController extends BaseController
     {
         page_title()->setTitle(trans('core/setting::setting.title'));
 
-        Assets::addScriptsDirectly('vendor/core/js/setting.js');
+        Assets::addScriptsDirectly('vendor/core/core/setting/js/setting.js');
 
         return view('core/setting::index');
     }
@@ -89,7 +89,7 @@ class SettingController extends BaseController
     public function getEmailConfig()
     {
         page_title()->setTitle(trans('core/base::layouts.setting_email'));
-        Assets::addScriptsDirectly('vendor/core/js/setting.js');
+        Assets::addScriptsDirectly('vendor/core/core/setting/js/setting.js');
 
         return view('core/setting::email');
     }
@@ -110,38 +110,38 @@ class SettingController extends BaseController
 
     /**
      * @param string $type
-     * @param string $name
+     * @param string $module
      * @param string $template
      * @param Request $request
      * @param BaseHttpResponse $response
      * @return Factory|View
      * @throws FileNotFoundException
      */
-    public function getEditEmailTemplate($type, $name, $template)
+    public function getEditEmailTemplate($type, $module, $template)
     {
-        $title = trans(config($type . '.' . $name . '.email.templates.' . $template . '.title', ''));
+        $title = trans(config($type . '.' . $module . '.email.templates.' . $template . '.title', ''));
         page_title()->setTitle($title);
 
         Assets::addStylesDirectly([
-            'vendor/core/libraries/codemirror/lib/codemirror.css',
-            'vendor/core/libraries/codemirror/addon/hint/show-hint.css',
-            'vendor/core/css/setting.css',
+            'vendor/core/core/base/libraries/codemirror/lib/codemirror.css',
+            'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.css',
+            'vendor/core/core/setting/css/setting.css',
         ])
             ->addScriptsDirectly([
-                'vendor/core/libraries/codemirror/lib/codemirror.js',
-                'vendor/core/libraries/codemirror/lib/css.js',
-                'vendor/core/libraries/codemirror/addon/hint/show-hint.js',
-                'vendor/core/libraries/codemirror/addon/hint/anyword-hint.js',
-                'vendor/core/libraries/codemirror/addon/hint/css-hint.js',
-                'vendor/core/js/setting.js',
+                'vendor/core/core/base/libraries/codemirror/lib/codemirror.js',
+                'vendor/core/core/base/libraries/codemirror/lib/css.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/show-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/anyword-hint.js',
+                'vendor/core/core/base/libraries/codemirror/addon/hint/css-hint.js',
+                'vendor/core/core/setting/js/setting.js',
             ]);
 
 
-        $emailContent = get_setting_email_template_content($type, $name, $template);
-        $emailSubject = get_setting_email_subject($type, $name, $template);
+        $emailContent = get_setting_email_template_content($type, $module, $template);
+        $emailSubject = get_setting_email_subject($type, $module, $template);
         $pluginData = [
             'type'          => $type,
-            'name'          => $name,
+            'name'          => $module,
             'template_file' => $template,
         ];
 
@@ -197,17 +197,13 @@ class SettingController extends BaseController
     /**
      * @param BaseHttpResponse $response
      * @param SendTestEmailRequest $request
-     * @param EmailHandler $emailHandler
      * @return BaseHttpResponse
      * @throws Throwable
      */
-    public function postSendTestEmail(
-        BaseHttpResponse $response,
-        SendTestEmailRequest $request,
-        EmailHandler $emailHandler
-    ) {
+    public function postSendTestEmail(BaseHttpResponse $response, SendTestEmailRequest $request)
+    {
         try {
-            $emailHandler->send(
+            EmailHandler::send(
                 file_get_contents(core_path('setting/resources/email-templates/test.tpl')),
                 __('Test title'),
                 $request->input('email'),
@@ -228,6 +224,8 @@ class SettingController extends BaseController
     public function getMediaSetting()
     {
         page_title()->setTitle(trans('core/setting::setting.media.title'));
+
+        Assets::addScriptsDirectly('vendor/core/core/setting/js/setting.js');
 
         return view('core/setting::media');
     }
@@ -254,16 +252,21 @@ class SettingController extends BaseController
     public function getVerifyLicense(Core $coreApi, BaseHttpResponse $response)
     {
         if (!File::exists(storage_path('.license'))) {
-            return $response->setError()->setMessage('Your license is invalid, please contact support.');
+            return $response->setError()->setMessage('Your license is invalid. Please activate your license!');
         }
 
-        $result = $coreApi->verifyLicense(true);
+        try {
+            $result = $coreApi->verifyLicense(true);
 
-        if (!$result['status']) {
-            return $response->setError()->setMessage($result['message']);
+            if (!$result['status']) {
+                return $response->setError()->setMessage($result['message']);
+            }
+
+            $activatedAt = Carbon::createFromTimestamp(filectime($coreApi->getLicenseFilePath()));
+        } catch (Exception $exception) {
+            $activatedAt = now();
+            $result = ['message' => $exception->getMessage()];
         }
-
-        $activatedAt = Carbon::createFromTimestamp(filectime($coreApi->getLicenseFilePath()));
 
         $data = [
             'activated_at' => $activatedAt->format('M d Y'),

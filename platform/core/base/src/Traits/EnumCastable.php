@@ -1,14 +1,14 @@
 <?php
 
-namespace Botble\Base\Traits;
+namespace Platform\Base\Traits;
 
-use Botble\Base\Supports\Enum;
+use Platform\Base\Supports\Enum;
 
 trait EnumCastable
 {
     /**
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      * @return mixed
      */
     protected function castAttribute($key, $value)

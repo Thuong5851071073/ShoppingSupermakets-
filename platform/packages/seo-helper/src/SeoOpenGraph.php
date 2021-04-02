@@ -1,9 +1,10 @@
 <?php
 
-namespace Botble\SeoHelper;
+namespace Platform\SeoHelper;
 
-use Botble\SeoHelper\Contracts\Entities\OpenGraphContract;
-use Botble\SeoHelper\Contracts\SeoOpenGraphContract;
+use Platform\SeoHelper\Contracts\Entities\OpenGraphContract;
+use Platform\SeoHelper\Contracts\SeoOpenGraphContract;
+use RvMedia;
 
 class SeoOpenGraph implements SeoOpenGraphContract
 {
@@ -110,20 +111,6 @@ class SeoOpenGraph implements SeoOpenGraphContract
     }
 
     /**
-     * Set image property.
-     *
-     * @param string $image
-     *
-     * @return SeoOpenGraph
-     */
-    public function setImage($image)
-    {
-        $this->openGraph->setImage($image);
-
-        return $this;
-    }
-
-    /**
      * Set site name property.
      *
      * @param string $siteName
@@ -171,9 +158,9 @@ class SeoOpenGraph implements SeoOpenGraphContract
      *
      * @return string
      */
-    public function render()
+    public function __toString()
     {
-        return $this->openGraph->render();
+        return $this->render();
     }
 
     /**
@@ -181,8 +168,34 @@ class SeoOpenGraph implements SeoOpenGraphContract
      *
      * @return string
      */
-    public function __toString()
+    public function render()
     {
-        return $this->render();
+        if (!$this->hasImage() && theme_option('seo_og_image')) {
+            $this->setImage(RvMedia::url(theme_option('seo_og_image')));
+        }
+
+        return $this->openGraph->render();
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasImage()
+    {
+        return $this->openGraph->hasImage();
+    }
+
+    /**
+     * Set image property.
+     *
+     * @param string $image
+     *
+     * @return SeoOpenGraph
+     */
+    public function setImage($image)
+    {
+        $this->openGraph->setImage($image);
+
+        return $this;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Widget;
+namespace Platform\Widget;
 
-use Botble\Widget\Contracts\ApplicationWrapperContract;
-use Botble\Widget\Misc\ViewExpressionTrait;
+use Platform\Widget\Contracts\ApplicationWrapperContract;
+use Platform\Widget\Misc\ViewExpressionTrait;
 use Illuminate\Support\Arr;
 use stdClass;
 
@@ -64,7 +64,7 @@ class WidgetGroup
     protected $count = 0;
 
     /**
-     * @param $args
+     * @param array $args
      * @param ApplicationWrapperContract $app
      */
     public function __construct(array $args, ApplicationWrapperContract $app)
@@ -103,7 +103,7 @@ class WidgetGroup
     /**
      * Display a widget according to its type.
      *
-     * @param $widget
+     * @param array $widget
      * @return mixed
      */
     protected function displayWidget($widget, $position)

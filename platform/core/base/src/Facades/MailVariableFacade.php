@@ -1,20 +1,20 @@
 <?php
 
-namespace Botble\Base\Facades;
+namespace Platform\Base\Facades;
 
-use Botble\Base\Supports\MailVariable;
+use Platform\Base\Supports\EmailHandler;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @deprecated since v5.5
+ */
 class MailVariableFacade extends Facade
 {
-
     /**
      * @return string
-     *
-     * @since 3.2
      */
     protected static function getFacadeAccessor()
     {
-        return MailVariable::class;
+        return EmailHandler::class;
     }
 }

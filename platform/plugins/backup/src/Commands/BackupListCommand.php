@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Backup\Commands;
+namespace Platform\Backup\Commands;
 
-use Botble\Backup\Supports\Backup;
+use Platform\Backup\Supports\Backup;
 use Exception;
 use Illuminate\Console\Command;
 
@@ -63,6 +63,6 @@ class BackupListCommand extends Command
             $this->error($exception->getMessage());
         }
 
-        return true;
+        return 0;
     }
 }

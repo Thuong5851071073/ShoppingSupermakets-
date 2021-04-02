@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Base\Supports;
+namespace Platform\Base\Supports;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -30,8 +30,8 @@ class EmailAbstract extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param $content
-     * @param $subject
+     * @param string $content
+     * @param string $subject
      * @param array $data
      */
     public function __construct($content, $subject, $data = [])
@@ -49,7 +49,8 @@ class EmailAbstract extends Mailable
     public function build()
     {
         $inlineCss = new CssToInlineStyles;
-        $email = $this->from(setting('email_from_address', setting('admin_email', config('mail.from.address'))))
+        $email = $this->from(setting('email_from_address', config('mail.from.address')),
+            setting('email_from_name', config('mail.from.name')))
             ->subject($this->subject)
             ->html($inlineCss->convert($this->content));
 

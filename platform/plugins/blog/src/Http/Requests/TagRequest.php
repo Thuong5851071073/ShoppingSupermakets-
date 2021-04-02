@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Blog\Http\Requests;
+namespace Platform\Blog\Http\Requests;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Support\Http\Requests\Request;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Support\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
 class TagRequest extends Request
@@ -18,7 +18,6 @@ class TagRequest extends Request
     {
         return [
             'name'        => 'required|max:120',
-            'slug'        => 'required|max:120',
             'description' => 'max:400',
             'status'      => Rule::in(BaseStatusEnum::values()),
         ];

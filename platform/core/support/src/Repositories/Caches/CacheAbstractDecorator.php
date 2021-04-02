@@ -1,9 +1,9 @@
 <?php
 
-namespace Botble\Support\Repositories\Caches;
+namespace Platform\Support\Repositories\Caches;
 
-use Botble\Support\Repositories\Interfaces\RepositoryInterface;
-use Botble\Support\Services\Cache\Cache;
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
+use Platform\Support\Services\Cache\Cache;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Model;
@@ -174,7 +174,7 @@ abstract class CacheAbstractDecorator implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function pluck($column, $key = null)
+    public function pluck($column, $key = null, array $condition = [])
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
@@ -206,7 +206,7 @@ abstract class CacheAbstractDecorator implements RepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createOrUpdate($data, $condition = [])
+    public function createOrUpdate($data, array $condition = [])
     {
         return $this->flushCacheAndUpdateData(__FUNCTION__, func_get_args());
     }

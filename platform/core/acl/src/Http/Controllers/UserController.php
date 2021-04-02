@@ -1,36 +1,37 @@
 <?php
 
-namespace Botble\ACL\Http\Controllers;
+namespace Platform\ACL\Http\Controllers;
 
 use Assets;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Media\Services\ThumbnailService;
+use File;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Botble\ACL\Forms\PasswordForm;
-use Botble\ACL\Forms\ProfileForm;
-use Botble\ACL\Forms\UserForm;
-use Botble\ACL\Tables\UserTable;
-use Botble\ACL\Http\Requests\CreateUserRequest;
-use Botble\ACL\Http\Requests\UpdatePasswordRequest;
-use Botble\ACL\Http\Requests\UpdateProfileRequest;
-use Botble\ACL\Models\UserMeta;
-use Botble\ACL\Repositories\Interfaces\RoleInterface;
-use Botble\ACL\Repositories\Interfaces\UserInterface;
-use Botble\ACL\Services\ChangePasswordService;
-use Botble\ACL\Services\CreateUserService;
-use Botble\Base\Events\CreatedContentEvent;
-use Botble\Base\Events\DeletedContentEvent;
-use Botble\Base\Forms\FormBuilder;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\ACL\Http\Requests\AvatarRequest;
+use Platform\ACL\Forms\PasswordForm;
+use Platform\ACL\Forms\ProfileForm;
+use Platform\ACL\Forms\UserForm;
+use Platform\ACL\Tables\UserTable;
+use Platform\ACL\Http\Requests\CreateUserRequest;
+use Platform\ACL\Http\Requests\UpdatePasswordRequest;
+use Platform\ACL\Http\Requests\UpdateProfileRequest;
+use Platform\ACL\Models\UserMeta;
+use Platform\ACL\Repositories\Interfaces\RoleInterface;
+use Platform\ACL\Repositories\Interfaces\UserInterface;
+use Platform\ACL\Services\ChangePasswordService;
+use Platform\ACL\Services\CreateUserService;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Forms\FormBuilder;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Media\Repositories\Interfaces\MediaFileInterface;
+use Platform\ACL\Http\Requests\AvatarRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Intervention\Image\ImageManager;
 use RvMedia;
-use Storage;
 use Throwable;
 
 class UserController extends BaseController
@@ -173,10 +174,10 @@ class UserController extends BaseController
                 }
                 $this->userRepository->delete($user);
                 event(new DeletedContentEvent(USER_MODULE_SCREEN_NAME, $request, $user));
-            } catch (Exception $ex) {
+            } catch (Exception $exception) {
                 return $response
                     ->setError()
-                    ->setMessage(trans('core/acl::users.cannot_delete'));
+                    ->setMessage($exception->getMessage());
             }
         }
 
@@ -192,7 +193,7 @@ class UserController extends BaseController
     public function getUserProfile($id, Request $request, FormBuilder $formBuilder)
     {
         Assets::addScripts(['bootstrap-pwstrength', 'cropper'])
-            ->addScriptsDirectly('vendor/core/js/profile.js');
+            ->addScriptsDirectly('vendor/core/core/acl/js/profile.js');
 
         $user = $this->userRepository->findOrFail($id);
 
@@ -268,6 +269,8 @@ class UserController extends BaseController
         $this->userRepository->createOrUpdate($user);
         do_action(USER_ACTION_AFTER_UPDATE_PROFILE, USER_MODULE_SCREEN_NAME, $request, $user);
 
+        event(new UpdatedContentEvent(USER_MODULE_SCREEN_NAME, $request, $user));
+
         return $response->setMessage(trans('core/acl::users.update_profile_success'));
     }
 
@@ -299,11 +302,11 @@ class UserController extends BaseController
     /**
      * @param $id
      * @param AvatarRequest $request
-     * @param ImageManager $imageManager
+     * @param ThumbnailService $thumbnailService
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
-    public function postAvatar($id, AvatarRequest $request, ImageManager $imageManager, BaseHttpResponse $response)
+    public function postAvatar($id, AvatarRequest $request, ThumbnailService $thumbnailService, BaseHttpResponse $response)
     {
         try {
             $user = $this->userRepository->findOrFail($id);
@@ -314,20 +317,27 @@ class UserController extends BaseController
                 return $response->setError()->setMessage($result['message']);
             }
 
-            $image = $imageManager->make(Storage::path($result['data']->url));
             $avatarData = json_decode($request->input('avatar_data'));
-            $image->crop((int)$avatarData->height, (int)$avatarData->width, (int)$avatarData->x, (int)$avatarData->y);
-            $image->save();
+
+            $file = $result['data'];
+
+            $thumbnailService
+                ->setImage(RvMedia::getRealPath($file->url))
+                ->setSize((int)$avatarData->width, (int)$avatarData->height)
+                ->setCoordinates((int)$avatarData->x, (int)$avatarData->y)
+                ->setDestinationPath(File::dirname($file->url))
+                ->setFileName(File::name($file->url) . '.' . File::extension($file->url))
+                ->save('crop');
 
             $this->fileRepository->forceDelete(['id' => $user->avatar_id]);
 
-            $user->avatar_id = $result['data']->id;
+            $user->avatar_id = $file->id;
 
             $this->userRepository->createOrUpdate($user);
 
             return $response
                 ->setMessage(trans('core/acl::users.update_avatar_success'))
-                ->setData(['url' => Storage::url($result['data']->url)]);
+                ->setData(['url' => RvMedia::url($file->url)]);
         } catch (Exception $exception) {
             return $response
                 ->setError()

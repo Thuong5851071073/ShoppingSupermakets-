@@ -1,22 +1,23 @@
 <?php
 
-namespace Botble\Menu\Repositories\Interfaces;
+namespace Platform\Menu\Repositories\Interfaces;
 
-use Botble\Support\Repositories\Interfaces\RepositoryInterface;
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
 
 interface MenuInterface extends RepositoryInterface
 {
 
     /**
-     * @param $slug
-     * @param $active
-     * @param $selects
+     * @param string $slug
+     * @param bool $active
+     * @param array $select
+     * @param array $with
      * @return mixed
      */
-    public function findBySlug($slug, $active, $selects = []);
+    public function findBySlug($slug, $active, array $select = [], array $with = []);
 
     /**
-     * @param $name
+     * @param string $name
      * @return mixed
      */
     public function createSlug($name);

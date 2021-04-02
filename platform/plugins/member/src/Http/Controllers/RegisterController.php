@@ -1,16 +1,15 @@
 <?php
 
-namespace Botble\Member\Http\Controllers;
+namespace Platform\Member\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Member\Models\Member;
-use Botble\Member\Repositories\Interfaces\MemberInterface;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Member\Models\Member;
+use Platform\Member\Repositories\Interfaces\MemberInterface;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
-use Botble\ACL\Traits\RegistersUsers;
+use Platform\ACL\Traits\RegistersUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use SeoHelper;
 use URL;
 use Illuminate\Support\Facades\Validator;
@@ -46,7 +45,6 @@ class RegisterController extends Controller
      * Create a new controller instance.
      *
      * @param MemberInterface $memberRepository
-     *
      */
     public function __construct(MemberInterface $memberRepository)
     {
@@ -59,7 +57,6 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      */
     public function showRegistrationForm()
     {
@@ -76,7 +73,6 @@ class RegisterController extends Controller
      * @param BaseHttpResponse $response
      * @param MemberInterface $memberRepository
      * @return BaseHttpResponse
-     *
      */
     public function confirm($email, Request $request, BaseHttpResponse $response, MemberInterface $memberRepository)
     {
@@ -104,11 +100,10 @@ class RegisterController extends Controller
      * Get the guard to be used during registration.
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
-     *
      */
     protected function guard()
     {
-        return Auth::guard('member');
+        return auth('member');
     }
 
     /**
@@ -118,7 +113,6 @@ class RegisterController extends Controller
      * @param MemberInterface $memberRepository
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
-     *
      */
     public function resendConfirmation(Request $request, MemberInterface $memberRepository, BaseHttpResponse $response)
     {
@@ -139,7 +133,6 @@ class RegisterController extends Controller
      * Send the confirmation code to a user.
      *
      * @param Member $member
-     *
      */
     protected function sendConfirmationToUser($member)
     {
@@ -157,7 +150,6 @@ class RegisterController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
-     *
      */
     public function register(Request $request, BaseHttpResponse $response)
     {
@@ -183,7 +175,6 @@ class RegisterController extends Controller
      *
      * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
-     *
      */
     protected function validator(array $data)
     {
@@ -200,7 +191,6 @@ class RegisterController extends Controller
      *
      * @param  array $data
      * @return Member
-     *
      */
     protected function create(array $data)
     {

@@ -1,15 +1,17 @@
 <?php
 
-namespace Botble\Gallery\Tables;
+namespace Platform\Gallery\Tables;
 
-use Botble\Gallery\Models\Gallery;
+use BaseHelper;
+use Platform\Gallery\Models\Gallery;
 use Illuminate\Support\Facades\Auth;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Gallery\Repositories\Interfaces\GalleryInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Gallery\Repositories\Interfaces\GalleryInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Validation\Rule;
+use RvMedia;
 use Yajra\DataTables\DataTables;
 
 class GalleryTable extends TableAbstract
@@ -58,13 +60,13 @@ class GalleryTable extends TableAbstract
                 return Html::link(route('galleries.edit', $item->id), $item->name);
             })
             ->editColumn('image', function ($item) {
-                return Html::image(get_object_image($item->image, 'thumb'), $item->name, ['width' => 70]);
+                return Html::image(RvMedia::getImageUrl($item->image, 'thumb', false, RvMedia::getDefaultImage()), $item->name, ['width' => 70]);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('status', function ($item) {
                 return $item->status->toHtml();
@@ -72,7 +74,7 @@ class GalleryTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('galleries.edit', 'galleries.destroy', $item);
+                return $this->getOperations('galleries.edit', 'galleries.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -84,17 +86,18 @@ class GalleryTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->select([
-                'galleries.id',
-                'galleries.name',
-                'galleries.order',
-                'galleries.created_at',
-                'galleries.status',
-                'galleries.image',
-            ]);
+        $select = [
+            'galleries.id',
+            'galleries.name',
+            'galleries.order',
+            'galleries.created_at',
+            'galleries.status',
+            'galleries.image',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

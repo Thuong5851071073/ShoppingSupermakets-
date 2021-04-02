@@ -1,13 +1,13 @@
 <?php
 
-namespace Botble\Widget\Contracts;
+namespace Platform\Widget\Contracts;
 
 interface ApplicationWrapperContract
 {
     /**
      * Wrapper around app()->call().
      *
-     * @param string $method
+     * @param string|array $method
      * @param array $params
      * @return mixed
      */

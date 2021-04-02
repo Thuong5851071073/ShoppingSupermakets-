@@ -1,13 +1,13 @@
 <?php
 
-namespace Botble\Backup\Http\Controllers;
+namespace Platform\Backup\Http\Controllers;
 
 use Assets;
-use Botble\Backup\Http\Requests\BackupRequest;
-use Botble\Backup\Supports\Backup;
-use Botble\Base\Http\Controllers\BaseController;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Supports\Helper;
+use Platform\Backup\Http\Requests\BackupRequest;
+use Platform\Backup\Supports\Backup;
+use Platform\Base\Http\Controllers\BaseController;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Base\Supports\Helper;
 use Exception;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
@@ -110,7 +110,6 @@ class BackupController extends BaseController
             }
 
             Helper::clearCache();
-            $this->generateAppKey();
 
             do_action(BACKUP_ACTION_AFTER_RESTORE, BACKUP_MODULE_SCREEN_NAME, $request);
 
@@ -120,22 +119,6 @@ class BackupController extends BaseController
                 ->setError()
                 ->setMessage($exception->getMessage());
         }
-    }
-
-    /**
-     * @return void
-     */
-    public function generateAppKey(): void
-    {
-        $key = 'base64:' . base64_encode(Encrypter::generateKey(config('app.cipher')));
-
-        file_put_contents(app()->environmentFilePath(), preg_replace(
-            '/^APP_KEY' . preg_quote('=' . config('app.key'), '/') . '/m',
-            'APP_KEY=' . $key,
-            file_get_contents(app()->environmentFilePath())
-        ));
-
-        config(['app.key' => $key]);
     }
 
     /**

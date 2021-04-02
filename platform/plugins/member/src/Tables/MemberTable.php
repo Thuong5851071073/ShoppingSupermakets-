@@ -1,12 +1,13 @@
 <?php
 
-namespace Botble\Member\Tables;
+namespace Platform\Member\Tables;
 
-use Botble\Member\Models\Member;
+use BaseHelper;
+use Platform\Member\Models\Member;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\Member\Repositories\Interfaces\MemberInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Member\Repositories\Interfaces\MemberInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
 
@@ -56,15 +57,15 @@ class MemberTable extends TableAbstract
                 return Html::link(route('member.edit', $item->id), $item->getFullName());
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             });
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('member.edit', 'member.destroy', $item);
+                return $this->getOperations('member.edit', 'member.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -76,15 +77,17 @@ class MemberTable extends TableAbstract
     public function query()
     {
         $model = app(MemberInterface::class)->getModel();
-        $query = $model
-            ->select([
-                'members.id',
-                'members.first_name',
-                'members.last_name',
-                'members.email',
-                'members.created_at',
-            ]);
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $select = [
+            'members.id',
+            'members.first_name',
+            'members.last_name',
+            'members.email',
+            'members.created_at',
+        ];
+
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

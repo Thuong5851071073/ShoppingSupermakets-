@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Slug\Commands;
+namespace Platform\Slug\Commands;
 
-use Botble\Slug\Repositories\Interfaces\SlugInterface;
+use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Console\Command;
 
 class ChangeSlugPrefixCommand extends Command
@@ -38,6 +38,6 @@ class ChangeSlugPrefixCommand extends Command
 
         $this->info('Processed ' . $data . ' item(s)!');
 
-        return true;
+        return 0;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\Backup\Commands;
+namespace Platform\Backup\Commands;
 
-use Botble\Backup\Supports\Backup;
+use Platform\Backup\Supports\Backup;
 use Exception;
 use File;
 use Illuminate\Console\Command;
@@ -52,14 +52,14 @@ class BackupRestoreCommand extends Command
 
                 if (!File::isDirectory($this->backup->getBackupPath($backup))) {
                     $this->error('Cannot found backup folder!');
-                    return false;
+                    return 1;
                 }
             } else {
                 $backups = scan_folder($this->backup->getBackupPath());
 
                 if (empty($backups)) {
                     $this->error('No backup found to restore!');
-                    return false;
+                    return 1;
                 }
 
                 $backup = Arr::first($backups);
@@ -83,7 +83,6 @@ class BackupRestoreCommand extends Command
             }
 
             $this->call('cache:clear');
-            $this->call('key:generate');
 
             do_action(BACKUP_ACTION_AFTER_RESTORE, BACKUP_MODULE_SCREEN_NAME, request());
 
@@ -93,6 +92,6 @@ class BackupRestoreCommand extends Command
             $this->error($exception->getMessage());
         }
 
-        return true;
+        return 0;
     }
 }

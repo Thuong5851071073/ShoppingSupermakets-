@@ -1,25 +1,25 @@
 <?php
 
-namespace Botble\Media\Http\Controllers;
+namespace Platform\Media\Http\Controllers;
 
-use Botble\Media\Http\Resources\FileResource;
-use Botble\Media\Http\Resources\FolderResource;
-use Botble\Media\Supports\Zipper;
+use Platform\Media\Http\Resources\FileResource;
+use Platform\Media\Http\Resources\FolderResource;
+use Platform\Media\Models\MediaFile;
+use Platform\Media\Models\MediaFolder;
+use Platform\Media\Repositories\Interfaces\MediaFileInterface;
+use Platform\Media\Repositories\Interfaces\MediaFolderInterface;
+use Platform\Media\Repositories\Interfaces\MediaSettingInterface;
+use Platform\Media\Services\UploadsManager;
+use Platform\Media\Supports\Zipper;
 use Eloquent;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Botble\Media\Models\MediaFile;
-use Botble\Media\Models\MediaFolder;
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\Media\Repositories\Interfaces\MediaFolderInterface;
-use Botble\Media\Repositories\Interfaces\MediaSettingInterface;
-use Botble\Media\Services\UploadsManager;
 use Exception;
 use File;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Mimey\MimeTypes;
 use RvMedia;
 use Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -70,6 +70,7 @@ class MediaController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return string
      */
     public function getMedia(Request $request)
@@ -251,9 +252,14 @@ class MediaController extends Controller
         }
 
         $breadcrumbs = array_merge($breadcrumbs, $this->getBreadcrumbs($request));
-        $selected_file_id = $request->input('selected_file_id');
+        $selectedFileId = $request->input('selected_file_id');
 
-        return RvMedia::responseSuccess(compact('files', 'folders', 'breadcrumbs', 'selected_file_id'));
+        return RvMedia::responseSuccess([
+            'files'            => $files,
+            'folders'          => $folders,
+            'breadcrumbs'      => $breadcrumbs,
+            'selected_file_id' => $selectedFileId,
+        ]);
     }
 
     /**
@@ -285,6 +291,7 @@ class MediaController extends Controller
         } else {
             $folder = $this->folderRepository->getFirstBy(['id' => $request->input('folder_id')]);
         }
+
         if (empty($folder)) {
             return [];
         }
@@ -309,7 +316,6 @@ class MediaController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws FileNotFoundException
      */
     public function postGlobalActions(Request $request)
     {
@@ -381,7 +387,7 @@ class MediaController extends Controller
                         $folderData['user_id'] = Auth::user()->getKey();
                         $folder = $this->folderRepository->create($folderData);
 
-                        $files = $this->fileRepository->getFilesByFolderId($id);
+                        $files = $this->fileRepository->getFilesByFolderId($id, [], false);
                         foreach ($files as $file) {
                             $this->copyFile($file, $folder->id);
                         }
@@ -403,7 +409,7 @@ class MediaController extends Controller
                                 $folderData['parent_id'] = $folder->id;
                                 $folder = $this->folderRepository->create($folderData);
 
-                                $parentFiles = $this->fileRepository->getFilesByFolderId($parentId);
+                                $parentFiles = $this->fileRepository->getFilesByFolderId($parentId, [], false);
                                 foreach ($parentFiles as $parentFile) {
                                     $this->copyFile($parentFile, $folder->id);
                                 }
@@ -413,7 +419,7 @@ class MediaController extends Controller
                                 /**
                                  * @var Eloquent $sub
                                  */
-                                $subFiles = $this->fileRepository->getFilesByFolderId($sub->id);
+                                $subFiles = $this->fileRepository->getFilesByFolderId($sub->id, [], false);
 
                                 $subFolderData = $sub->replicate()->toArray();
 
@@ -460,6 +466,7 @@ class MediaController extends Controller
                     'key'     => 'favorites',
                     'user_id' => Auth::user()->getKey(),
                 ]);
+
                 if (!empty($meta->value)) {
                     $meta->value = array_merge($meta->value, $request->input('selected', []));
                 } else {
@@ -476,6 +483,7 @@ class MediaController extends Controller
                     'key'     => 'favorites',
                     'user_id' => Auth::user()->getKey(),
                 ]);
+
                 if (!empty($meta)) {
                     $value = $meta->value;
                     if (!empty($value)) {
@@ -498,6 +506,10 @@ class MediaController extends Controller
             case 'rename':
                 $error = false;
                 foreach ($request->input('selected') as $item) {
+                    if (!$item['id'] || !$item['name']) {
+                        continue;
+                    }
+
                     $id = $item['id'];
                     if ($item['is_folder'] == 'false') {
                         $file = $this->fileRepository->getFirstBy(['id' => $id]);
@@ -540,7 +552,6 @@ class MediaController extends Controller
      * @param MediaFile $file
      * @param int $newFolderId
      * @return mixed
-     * @throws FileNotFoundException
      */
     protected function copyFile($file, $newFolderId = null)
     {
@@ -559,8 +570,8 @@ class MediaController extends Controller
 
             $path = $path . File::name($file->url) . '-(copy)' . '.' . File::extension($file->url);
 
-            $filePath = Storage::path($file->url);
-            if (file_exists($filePath)) {
+            $filePath = RvMedia::getRealPath($file->url);
+            if (Storage::exists($filePath)) {
                 $content = File::get($filePath);
 
                 $this->uploadManager->saveFile($path, $content);
@@ -570,19 +581,23 @@ class MediaController extends Controller
             }
         } else {
             $file->url = str_replace(
-                Storage::path(File::dirname($file->url)),
-                Storage::path($this->folderRepository->getFullPath($newFolderId)),
+                RvMedia::getRealPath(File::dirname($file->url)),
+                RvMedia::getRealPath($this->folderRepository->getFullPath($newFolderId)),
                 $file->url
             );
             $file->folder_id = $newFolderId;
         }
+
+        unset($file->is_folder);
+        unset($file->slug);
+        unset($file->parent_id);
 
         return $this->fileRepository->createOrUpdate($file);
     }
 
     /**
      * @param Request $request
-     * @return JsonResponse|\Illuminate\Http\Response|BinaryFileResponse
+     * @return JsonResponse|Response|BinaryFileResponse
      * @throws Exception
      */
     public function download(Request $request)
@@ -592,9 +607,9 @@ class MediaController extends Controller
         if (count($items) == 1 && $items['0']['is_folder'] == 'false') {
             $file = $this->fileRepository->getFirstByWithTrash(['id' => $items[0]['id']]);
             if (!empty($file) && $file->type != 'video') {
-                $filePath = Storage::path($file->url);
-                if (!Str::contains($file->url, 'https://')) {
-                    if (!file_exists($filePath)) {
+                $filePath = RvMedia::getRealPath($file->url);
+                if (!RvMedia::isUsingCloud()) {
+                    if (!File::exists($filePath)) {
                         return RvMedia::responseError(trans('core/media::media.file_not_exists'));
                     }
                     return response()->download($filePath);
@@ -606,7 +621,7 @@ class MediaController extends Controller
                 ]);
             }
         } else {
-            $fileName = Storage::path('download-' . now(config('app.timezone'))->format('Y-m-d-h-i-s') . '.zip');
+            $fileName = RvMedia::getRealPath('download-' . now(config('app.timezone'))->format('Y-m-d-h-i-s') . '.zip');
             $zip = new Zipper;
             $zip->make($fileName);
             foreach ($items as $item) {
@@ -614,26 +629,26 @@ class MediaController extends Controller
                 if ($item['is_folder'] == 'false') {
                     $file = $this->fileRepository->getFirstByWithTrash(['id' => $id]);
                     if (!empty($file) && $file->type != 'video') {
-                        if (!Str::contains($file->url, 'https://')) {
-                            $filePath = Storage::path($file->url);
-                            if (file_exists($filePath)) {
+                        $filePath = RvMedia::getRealPath($file->url);
+                        if (!RvMedia::isUsingCloud()) {
+                            if (File::exists($filePath)) {
                                 $zip->add($filePath);
                             }
                         } else {
-                            $zip->addString(File::basename($file->url),
-                                file_get_contents(str_replace('https://', 'http://', $file->url)));
+                            $zip->addString(File::basename($file),
+                                file_get_contents(str_replace('https://', 'http://', $filePath)));
                         }
                     }
                 } else {
                     $folder = $this->folderRepository->getFirstByWithTrash(['id' => $id]);
                     if (!empty($folder)) {
-                        if (in_array(config('filesystems.default'), ['local', 'public'])) {
-                            $zip->add(Storage::path($this->folderRepository->getFullPath($folder->id)));
+                        if (!RvMedia::isUsingCloud()) {
+                            $zip->add(RvMedia::getRealPath($this->folderRepository->getFullPath($folder->id)));
                         } else {
                             $allFiles = Storage::allFiles($this->folderRepository->getFullPath($folder->id));
                             foreach ($allFiles as $file) {
                                 $zip->addString(File::basename($file),
-                                    file_get_contents(str_replace('https://', 'http://', Storage::path($file))));
+                                    file_get_contents(str_replace('https://', 'http://', RvMedia::getRealPath($file))));
                             }
                         }
                     }

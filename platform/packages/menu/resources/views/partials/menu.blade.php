@@ -20,7 +20,7 @@
                 @if (!$row->reference_id)
                     <label class="pad-bot-5 dis-inline-block">
                         <span class="text pad-top-5" data-update="custom-url">{{ trans('packages/menu::menu.url') }}</span>
-                        <input type="text" name="custom-url" value="{{ str_replace(url(''), '', $row->url) }}" data-old="{{ str_replace(url(''), '', $row->url) }}">
+                        <input type="text" name="custom-url" value="{{ $row->url }}" data-old="{{ $row->url }}">
                     </label>
                 @endif
                 <label class="pad-bot-5 dis-inline-block">
@@ -57,9 +57,9 @@
             @if ($row->has_child)
                 {!!
                     Menu::generateMenu([
-                        'slug'      => $menu->slug,
+                        'menu'       => $menu,
+                        'menu_nodes' => $row->child,
                         'view'      => 'packages/menu::partials.menu',
-                        'parent_id' => $row->id,
                         'theme'     => false,
                         'active'    => false
                     ])

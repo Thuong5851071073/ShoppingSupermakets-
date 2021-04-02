@@ -1,20 +1,23 @@
 <?php
 
-namespace Botble\Member\Providers;
+namespace Platform\Member\Providers;
 
+use BaseHelper;
+use Platform\Blog\Models\Post;
+use EmailHandler;
 use Illuminate\Routing\Events\RouteMatched;
-use Botble\Base\Supports\Helper;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Member\Http\Middleware\RedirectIfMember;
-use Botble\Member\Http\Middleware\RedirectIfNotMember;
-use Botble\Member\Models\Member;
-use Botble\Member\Models\MemberActivityLog;
-use Botble\Member\Repositories\Caches\MemberActivityLogCacheDecorator;
-use Botble\Member\Repositories\Caches\MemberCacheDecorator;
-use Botble\Member\Repositories\Eloquent\MemberActivityLogRepository;
-use Botble\Member\Repositories\Eloquent\MemberRepository;
-use Botble\Member\Repositories\Interfaces\MemberActivityLogInterface;
-use Botble\Member\Repositories\Interfaces\MemberInterface;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Member\Http\Middleware\RedirectIfMember;
+use Platform\Member\Http\Middleware\RedirectIfNotMember;
+use Platform\Member\Models\Member;
+use Platform\Member\Models\MemberActivityLog;
+use Platform\Member\Repositories\Caches\MemberActivityLogCacheDecorator;
+use Platform\Member\Repositories\Caches\MemberCacheDecorator;
+use Platform\Member\Repositories\Eloquent\MemberActivityLogRepository;
+use Platform\Member\Repositories\Eloquent\MemberRepository;
+use Platform\Member\Repositories\Interfaces\MemberActivityLogInterface;
+use Platform\Member\Repositories\Interfaces\MemberInterface;
 use Event;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
@@ -67,7 +70,7 @@ class MemberServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->setNamespace('plugins/member')
-            ->loadAndPublishConfigurations(['general', 'permissions', 'assets'])
+            ->loadAndPublishConfigurations(['general', 'permissions', 'assets', 'email'])
             ->loadAndPublishTranslations()
             ->loadAndPublishViews()
             ->loadRoutes(['web', 'api'])
@@ -86,13 +89,17 @@ class MemberServiceProvider extends ServiceProvider
             ]);
         });
 
+        $this->app->booted(function () {
+            EmailHandler::addTemplateSettings(MEMBER_MODULE_SCREEN_NAME, config('plugins.member.email'));
+        });
+
         $this->app->register(EventServiceProvider::class);
 
         add_filter(IS_IN_ADMIN_FILTER, [$this, 'setInAdmin'], 20, 0);
 
         add_action(BASE_ACTION_INIT, function () {
             if (defined('GALLERY_MODULE_SCREEN_NAME') && request()->segment(1) == 'account') {
-                \Gallery::removeModule('Botble\Blog\Models\Post');
+                \Gallery::removeModule(Post::class);
             }
         }, 12, 2);
 
@@ -104,7 +111,7 @@ class MemberServiceProvider extends ServiceProvider
      */
     public function setInAdmin(): bool
     {
-        return in_array(request()->segment(1), ['account', config('core.base.general.admin_dir')]);
+        return in_array(request()->segment(1), ['account', BaseHelper::getAdminPrefix()]);
     }
 
     /**

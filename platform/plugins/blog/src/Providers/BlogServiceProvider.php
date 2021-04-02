@@ -1,25 +1,25 @@
 <?php
 
-namespace Botble\Blog\Providers;
+namespace Platform\Blog\Providers;
 
-use Botble\Shortcode\View\View;
+use Platform\Shortcode\View\View;
 use Illuminate\Routing\Events\RouteMatched;
-use Botble\Base\Supports\Helper;
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Blog\Models\Post;
-use Botble\Blog\Repositories\Caches\PostCacheDecorator;
-use Botble\Blog\Repositories\Eloquent\PostRepository;
-use Botble\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Base\Supports\Helper;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Blog\Models\Post;
+use Platform\Blog\Repositories\Caches\PostCacheDecorator;
+use Platform\Blog\Repositories\Eloquent\PostRepository;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
 use Event;
 use Illuminate\Support\ServiceProvider;
-use Botble\Blog\Models\Category;
-use Botble\Blog\Repositories\Caches\CategoryCacheDecorator;
-use Botble\Blog\Repositories\Eloquent\CategoryRepository;
-use Botble\Blog\Repositories\Interfaces\CategoryInterface;
-use Botble\Blog\Models\Tag;
-use Botble\Blog\Repositories\Caches\TagCacheDecorator;
-use Botble\Blog\Repositories\Eloquent\TagRepository;
-use Botble\Blog\Repositories\Interfaces\TagInterface;
+use Platform\Blog\Models\Category;
+use Platform\Blog\Repositories\Caches\CategoryCacheDecorator;
+use Platform\Blog\Repositories\Eloquent\CategoryRepository;
+use Platform\Blog\Repositories\Interfaces\CategoryInterface;
+use Platform\Blog\Models\Tag;
+use Platform\Blog\Repositories\Caches\TagCacheDecorator;
+use Platform\Blog\Repositories\Eloquent\TagRepository;
+use Platform\Blog\Repositories\Interfaces\TagInterface;
 use Language;
 use SeoHelper;
 use SlugHelper;
@@ -50,6 +50,12 @@ class BlogServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        SlugHelper::registerModule(Post::class, 'Blog Posts');
+        SlugHelper::registerModule(Category::class, 'Blog Categories');
+        SlugHelper::registerModule(Tag::class, 'Blog Tags');
+
+        SlugHelper::setPrefix(Tag::class, 'tag');
+
         $this->setNamespace('plugins/blog')
             ->loadAndPublishConfigurations(['permissions'])
             ->loadAndPublishViews()
@@ -107,9 +113,6 @@ class BlogServiceProvider extends ServiceProvider
             if (defined('LANGUAGE_MODULE_SCREEN_NAME')) {
                 Language::registerModule($models);
             }
-
-            SlugHelper::registerModule($models);
-            SlugHelper::setPrefix(Tag::class, 'tag');
 
             SeoHelper::registerModule($models);
         });

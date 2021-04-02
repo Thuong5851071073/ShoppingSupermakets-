@@ -1,8 +1,8 @@
 <?php
 
-namespace Botble\DevTool\Commands;
+namespace Platform\DevTool\Commands;
 
-use Botble\ACL\Repositories\Interfaces\UserInterface;
+use Platform\ACL\Repositories\Interfaces\UserInterface;
 use DB;
 use Exception;
 use Illuminate\Console\Command;
@@ -41,11 +41,11 @@ class RebuildPermissionsCommand extends Command
 
     /**
      * Execute the console command.
-     * @param boolean $return
      *
      * @throws Exception
+     * @return int
      */
-    public function handle($return = false)
+    public function handle()
     {
         // Safety first!
         DB::beginTransaction();
@@ -81,10 +81,10 @@ class RebuildPermissionsCommand extends Command
             }
         }
 
-        if (!$return) {
-            $this->info('Rebuild user permissions successfully!');
-        }
+        $this->info('Rebuild user permissions successfully!');
 
         DB::commit();
+
+        return 0;
     }
 }

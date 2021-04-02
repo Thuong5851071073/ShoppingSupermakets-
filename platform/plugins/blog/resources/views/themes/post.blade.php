@@ -10,7 +10,7 @@
                 <a href="{{ $post->categories->first()->url }}">{{ $post->categories->first()->name }}</a>
             </span>
         @endif
-        <span>{{ date_from_database($post->created_at, 'M d, Y') }}</span>
+        <span>{{ $post->created_at->format('M d, Y') }}</span>
 
         @if (!$post->tags->isEmpty())
             <span>
@@ -21,17 +21,17 @@
         @endif
     </div>
 </header>
-{!! clean($post->content) !!}
+{!! clean($post->content, 'youtube') !!}
 <br />
 {!! apply_filters(BASE_FILTER_PUBLIC_COMMENT_AREA, null) !!}
 <footer>
-    @foreach (get_related_posts($post->slug, 2) as $related_item)
+    @foreach (get_related_posts($post->slug, 2) as $relatedItem)
         <div>
             <article>
-                <div><a href="{{ $related_item->url }}"></a>
-                    <img src="{{ url($related_item->image) }}" alt="{{ $related_item->name }}">
+                <div><a href="{{ $relatedItem->url }}"></a>
+                    <img src="{{ RvMedia::getImageUrl($relatedItem->image, null, false, RvMedia::getDefaultImage()) }}" alt="{{ $relatedItem->name }}">
                 </div>
-                <header><a href="{{ $related_item->url }}"> {{ $related_item->name }}</a></header>
+                <header><a href="{{ $relatedItem->url }}"> {{ $relatedItem->name }}</a></header>
             </article>
         </div>
     @endforeach

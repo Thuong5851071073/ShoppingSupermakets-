@@ -1,11 +1,11 @@
 <?php
 
-namespace Botble\AuditLog\Tables;
+namespace Platform\AuditLog\Tables;
 
-use Botble\AuditLog\Models\AuditHistory;
+use Platform\AuditLog\Models\AuditHistory;
 use Illuminate\Support\Facades\Auth;
-use Botble\AuditLog\Repositories\Interfaces\AuditLogInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\AuditLog\Repositories\Interfaces\AuditLogInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
@@ -48,7 +48,7 @@ class AuditLogTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('action', function ($history) {
                 return view('plugins/audit-log::activity-line', compact('history'))->render();
@@ -56,7 +56,7 @@ class AuditLogTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions(null, 'audit-log.destroy', $item);
+                return $this->getOperations(null, 'audit-log.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -68,11 +68,12 @@ class AuditLogTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
+        $select = ['audit_histories.*'];
         $query = $model
             ->with(['user'])
-            ->select('audit_histories.*');
+            ->select($select);
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

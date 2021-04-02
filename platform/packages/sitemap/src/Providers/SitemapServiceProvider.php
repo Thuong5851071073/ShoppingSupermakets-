@@ -1,9 +1,13 @@
 <?php
 
-namespace Botble\Sitemap\Providers;
+namespace Platform\Sitemap\Providers;
 
-use Botble\Base\Traits\LoadAndPublishDataTrait;
-use Botble\Sitemap\Sitemap;
+use Platform\Base\Events\CreatedContentEvent;
+use Platform\Base\Events\DeletedContentEvent;
+use Platform\Base\Events\UpdatedContentEvent;
+use Platform\Base\Traits\LoadAndPublishDataTrait;
+use Platform\Sitemap\Sitemap;
+use Event;
 use Illuminate\Support\ServiceProvider;
 
 class SitemapServiceProvider extends ServiceProvider
@@ -28,6 +32,18 @@ class SitemapServiceProvider extends ServiceProvider
             ->loadAndPublishConfigurations(['config'])
             ->loadAndPublishViews()
             ->publishAssets();
+
+        Event::listen(CreatedContentEvent::class, function () {
+            cache()->forget('public.sitemap');
+        });
+
+        Event::listen(UpdatedContentEvent::class, function () {
+            cache()->forget('public.sitemap');
+        });
+
+        Event::listen(DeletedContentEvent::class, function () {
+            cache()->forget('public.sitemap');
+        });
     }
 
     /**

@@ -1,17 +1,18 @@
 <?php
 
-namespace Botble\Blog\Repositories\Interfaces;
+namespace Platform\Blog\Repositories\Interfaces;
 
-use Botble\Support\Repositories\Interfaces\RepositoryInterface;
+use Platform\Support\Repositories\Interfaces\RepositoryInterface;
 use Eloquent;
 
 interface PostInterface extends RepositoryInterface
 {
     /**
      * @param int $limit
+     * @param array $with
      * @return mixed
      */
-    public function getFeatured($limit = 5);
+    public function getFeatured(int $limit = 5, array $with = []);
 
     /**
      * @param array $filters

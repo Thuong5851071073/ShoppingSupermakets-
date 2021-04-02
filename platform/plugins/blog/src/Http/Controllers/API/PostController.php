@@ -1,19 +1,19 @@
 <?php
 
-namespace Botble\Blog\Http\Controllers\API;
+namespace Platform\Blog\Http\Controllers\API;
 
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Blog\Http\Resources\PostResource;
-use Botble\Blog\Http\Resources\ListPostResource;
-use Botble\Blog\Repositories\Interfaces\PostInterface;
-use Botble\Blog\Supports\FilterPost;
-use Botble\Slug\Repositories\Interfaces\SlugInterface;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Blog\Http\Resources\PostResource;
+use Platform\Blog\Http\Resources\ListPostResource;
+use Platform\Blog\Repositories\Interfaces\PostInterface;
+use Platform\Blog\Supports\FilterPost;
+use Platform\Slug\Repositories\Interfaces\SlugInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Botble\Blog\Models\Post;
+use Platform\Blog\Models\Post;
 
 class PostController extends Controller
 {
@@ -84,7 +84,6 @@ class PostController extends Controller
      * @param PostInterface $postRepository
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
-     * @throws FileNotFoundException
      */
     public function getSearch(Request $request, PostInterface $postRepository, BaseHttpResponse $response)
     {

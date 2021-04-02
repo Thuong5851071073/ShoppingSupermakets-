@@ -1,15 +1,14 @@
 <?php
 
-namespace Botble\Contact\Http\Controllers;
+namespace Platform\Contact\Http\Controllers;
 
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Base\Supports\EmailHandler;
-use Botble\Contact\Http\Requests\ContactRequest;
-use Botble\Contact\Repositories\Interfaces\ContactInterface;
-use Botble\Setting\Supports\SettingStore;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Contact\Events\SentContactEvent;
+use Platform\Contact\Http\Requests\ContactRequest;
+use Platform\Contact\Repositories\Interfaces\ContactInterface;
+use EmailHandler;
 use Exception;
 use Illuminate\Routing\Controller;
-use MailVariable;
 
 class PublicController extends Controller
 {
@@ -29,42 +28,32 @@ class PublicController extends Controller
     /**
      * @param ContactRequest $request
      * @param BaseHttpResponse $response
-     * @param SettingStore $setting
-     * @param EmailHandler $emailHandler
      * @return BaseHttpResponse
      * @throws \Throwable
      */
-    public function postSendContact(
-        ContactRequest $request,
-        BaseHttpResponse $response,
-        SettingStore $setting,
-        EmailHandler $emailHandler
-    )
+    public function postSendContact(ContactRequest $request, BaseHttpResponse $response)
     {
         try {
             $contact = $this->contactRepository->getModel();
             $contact->fill($request->input());
             $this->contactRepository->createOrUpdate($contact);
 
-            if ($setting->get('plugins_contact_notice_status')) {
-                MailVariable::setModule(CONTACT_MODULE_SCREEN_NAME)
-                    ->setVariableValues([
-                        'contact_name'    => $contact->name ?? 'N/A',
-                        'contact_subject' => $contact->subject ?? 'N/A',
-                        'contact_email'   => $contact->email ?? 'N/A',
-                        'contact_phone'   => $contact->phone ?? 'N/A',
-                        'contact_address' => $contact->address ?? 'N/A',
-                        'contact_content' => $contact->content ?? 'N/A',
-                    ]);
+            event(new SentContactEvent($contact));
 
-                $content = get_setting_email_template_content('plugins', 'contact', 'notice');
+            EmailHandler::setModule(CONTACT_MODULE_SCREEN_NAME)
+                ->setVariableValues([
+                    'contact_name'    => $contact->name ?? 'N/A',
+                    'contact_subject' => $contact->subject ?? 'N/A',
+                    'contact_email'   => $contact->email ?? 'N/A',
+                    'contact_phone'   => $contact->phone ?? 'N/A',
+                    'contact_address' => $contact->address ?? 'N/A',
+                    'contact_content' => $contact->content ?? 'N/A',
+                ])
+                ->sendUsingTemplate('notice');
 
-                $emailHandler->send($content, $setting->get('plugins_contact_notice_subject', config('plugins.contact.email.templates.notice.subject')));
-            }
-
-            return $response->setMessage(trans('plugins/contact::contact.email.success'));
-        } catch (Exception $ex) {
-            info($ex->getMessage());
+            return $response->setMessage(__('Send message successfully!'));
+        } catch (Exception $exception) {
+            info($exception->getMessage());
             return $response
                 ->setError()
                 ->setMessage(trans('plugins/contact::contact.email.failed'));

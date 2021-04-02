@@ -1,13 +1,14 @@
 <?php
 
-namespace Botble\Menu\Tables;
+namespace Platform\Menu\Tables;
 
-use Botble\Menu\Models\Menu;
+use BaseHelper;
+use Platform\Menu\Models\Menu;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\Base\Enums\BaseStatusEnum;
-use Botble\Menu\Repositories\Interfaces\MenuInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Base\Enums\BaseStatusEnum;
+use Platform\Menu\Repositories\Interfaces\MenuInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
@@ -57,10 +58,10 @@ class MenuTable extends TableAbstract
                 return Html::link(route('menus.edit', $item->id), $item->name);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('status', function ($item) {
                 return $item->status->toHtml();
@@ -68,7 +69,7 @@ class MenuTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('menus.edit', 'menus.destroy', $item);
+                return $this->getOperations('menus.edit', 'menus.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -81,15 +82,16 @@ class MenuTable extends TableAbstract
     {
         $model = $this->repository->getModel();
 
-        $query = $model
-            ->select([
-                'menus.id',
-                'menus.name',
-                'menus.created_at',
-                'menus.status',
-            ]);
+        $select = [
+            'menus.id',
+            'menus.name',
+            'menus.created_at',
+            'menus.status',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**

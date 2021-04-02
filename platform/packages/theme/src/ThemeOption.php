@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Theme;
+namespace Platform\Theme;
 
 use Exception;
 use Form;
@@ -56,12 +56,15 @@ class ThemeOption
         $args = isset($this->args[$this->optName]) ? $this->args[$this->optName] : [];
 
         $args['opt_name'] = $this->optName;
+
         if (!isset($args['menu_title'])) {
             $args['menu_title'] = ucfirst($this->optName) . ' Options';
         }
+
         if (!isset($args['page_title'])) {
             $args['page_title'] = ucfirst($this->optName) . ' Options';
         }
+
         if (!isset($args['page_slug'])) {
             $args['page_slug'] = $this->optName . '_options';
         }
@@ -77,9 +80,11 @@ class ThemeOption
     public function constructSections(): array
     {
         $sections = [];
+
         if (!isset($this->sections[$this->optName])) {
             return $sections;
         }
+
         foreach ($this->sections[$this->optName] as $sectionId => $section) {
             $section['fields'] = $this->constructFields($sectionId);
             $priority = $section['priority'];
@@ -187,6 +192,7 @@ class ThemeOption
                 $this->setSection($section);
             }
         }
+
         return $this;
     }
 
@@ -484,7 +490,6 @@ class ThemeOption
 
     /**
      * @return null|string
-     * @throws FileNotFoundException
      */
     protected function getCurrentLocaleCode(): ?string
     {
@@ -520,7 +525,6 @@ class ThemeOption
     /**
      * @param string $key
      * @return bool
-     * @throws FileNotFoundException
      */
     public function hasOption(string $key): bool
     {
@@ -531,7 +535,6 @@ class ThemeOption
      * @param string $key
      * @param string $default
      * @return string
-     * @throws FileNotFoundException
      */
     public function getOption(string $key = '', ?string $default = ''): ?string
     {
@@ -539,5 +542,10 @@ class ThemeOption
             setting($this->optName . '-' . setting()->get('theme') . '-' . $key, $default));
 
         return $value ? $value : $default;
+    }
+
+    public function saveOptions()
+    {
+        return setting()->save();
     }
 }

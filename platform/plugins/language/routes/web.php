@@ -1,7 +1,7 @@
 <?php
 
-Route::group(['namespace' => 'Botble\Language\Http\Controllers', 'middleware' => 'web'], function () {
-    Route::group(['prefix' => config('core.base.general.admin_dir'), 'middleware' => 'auth'], function () {
+Route::group(['namespace' => 'Platform\Language\Http\Controllers', 'middleware' => 'web'], function () {
+    Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'settings/languages'], function () {
             Route::get('', [
                 'as'   => 'languages.index',
@@ -41,19 +41,6 @@ Route::group(['namespace' => 'Botble\Language\Http\Controllers', 'middleware' =>
                 'as'         => 'languages.settings',
                 'uses'       => 'LanguageController@postEditSettings',
                 'permission' => 'languages.edit',
-            ]);
-        });
-
-        Route::group(['prefix' => 'theme/translations'], function () {
-            Route::get('', [
-                'as'   => 'languages.theme-translations',
-                'uses' => 'LanguageController@getThemeTranslations',
-            ]);
-
-            Route::post('', [
-                'as'         => 'languages.theme-translations',
-                'uses'       => 'LanguageController@postThemeTranslations',
-                'middleware' => 'preventDemo',
             ]);
         });
 

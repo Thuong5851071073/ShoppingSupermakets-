@@ -1,23 +1,22 @@
 <?php
 
-namespace Botble\Member\Http\Controllers;
+namespace Platform\Member\Http\Controllers;
 
 use Assets;
-use Botble\Member\Http\Resources\ActivityLogResource;
+use Platform\Media\Services\ThumbnailService;
+use Platform\Member\Http\Resources\ActivityLogResource;
+use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Media\Repositories\Interfaces\MediaFileInterface;
-use Botble\Member\Http\Requests\AvatarRequest;
-use Botble\Member\Http\Requests\SettingRequest;
-use Botble\Member\Http\Requests\UpdatePasswordRequest;
-use Botble\Member\Repositories\Interfaces\MemberActivityLogInterface;
-use Botble\Member\Repositories\Interfaces\MemberInterface;
+use Platform\Base\Http\Responses\BaseHttpResponse;
+use Platform\Media\Repositories\Interfaces\MediaFileInterface;
+use Platform\Member\Http\Requests\AvatarRequest;
+use Platform\Member\Http\Requests\SettingRequest;
+use Platform\Member\Http\Requests\UpdatePasswordRequest;
+use Platform\Member\Repositories\Interfaces\MemberActivityLogInterface;
+use Platform\Member\Repositories\Interfaces\MemberInterface;
 use Exception;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 use RvMedia;
 use SeoHelper;
 use Illuminate\Support\Facades\Validator;
@@ -64,9 +63,9 @@ class PublicController extends Controller
      */
     public function getDashboard()
     {
-        $user = auth()->guard('member')->user();
+        $user = auth('member')->user();
 
-        SeoHelper::setTitle(auth()->guard('member')->user()->getFullName());
+        SeoHelper::setTitle(auth('member')->user()->getFullName());
 
         return view('plugins/member::dashboard.index', compact('user'));
     }
@@ -80,7 +79,7 @@ class PublicController extends Controller
     {
         SeoHelper::setTitle(__('Account settings'));
 
-        $user = auth()->guard('member')->user();
+        $user = auth('member')->user();
 
         return view('plugins/member::settings.index', compact('user'));
     }
@@ -109,7 +108,7 @@ class PublicController extends Controller
         }
 
         $this->memberRepository->createOrUpdate($request->except('email'),
-            ['id' => auth()->guard('member')->user()->getKey()]);
+            ['id' => auth('member')->user()->getAuthIdentifier()]);
 
         $this->activityLogRepository->createOrUpdate(['action' => 'update_setting']);
 
@@ -137,7 +136,7 @@ class PublicController extends Controller
      */
     public function postSecurity(UpdatePasswordRequest $request, BaseHttpResponse $response)
     {
-        $this->memberRepository->update(['id' => auth()->guard('member')->user()->getKey()], [
+        $this->memberRepository->update(['id' => auth('member')->user()->getAuthIdentifier()], [
             'password' => bcrypt($request->input('password')),
         ]);
 
@@ -148,14 +147,14 @@ class PublicController extends Controller
 
     /**
      * @param AvatarRequest $request
-     * @param ImageManager $imageManager
+     * @param ThumbnailService $thumbnailService
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
-    public function postAvatar(AvatarRequest $request, ImageManager $imageManager, BaseHttpResponse $response)
+    public function postAvatar(AvatarRequest $request, ThumbnailService $thumbnailService, BaseHttpResponse $response)
     {
         try {
-            $account = Auth::guard('member')->user();
+            $account = auth('member')->user();
 
             $result = RvMedia::handleUpload($request->file('avatar_file'), 0, 'members');
 
@@ -163,14 +162,21 @@ class PublicController extends Controller
                 return $response->setError()->setMessage($result['message']);
             }
 
-            $image = $imageManager->make(Storage::path($result['data']->url));
             $avatarData = json_decode($request->input('avatar_data'));
-            $image->crop((int)$avatarData->height, (int)$avatarData->width, (int)$avatarData->x, (int)$avatarData->y);
-            $image->save();
+
+            $file = $result['data'];
+
+            $thumbnailService
+                ->setImage(RvMedia::getRealPath($file->url))
+                ->setSize((int)$avatarData->width, (int)$avatarData->height)
+                ->setCoordinates((int)$avatarData->x, (int)$avatarData->y)
+                ->setDestinationPath(File::dirname($file->url))
+                ->setFileName(File::name($file->url) . '.' . File::extension($file->url))
+                ->save('crop');
 
             $this->fileRepository->forceDelete(['id' => $account->avatar_id]);
 
-            $account->avatar_id = $result['data']->id;
+            $account->avatar_id = $file->id;
 
             $this->memberRepository->createOrUpdate($account);
 
@@ -180,11 +186,11 @@ class PublicController extends Controller
 
             return $response
                 ->setMessage(trans('plugins/member::dashboard.update_avatar_success'))
-                ->setData(['url' => Storage::url($result['data']->url)]);
-        } catch (Exception $ex) {
+                ->setData(['url' => RvMedia::url($file->url)]);
+        } catch (Exception $exception) {
             return $response
                 ->setError()
-                ->setMessage($ex->getMessage());
+                ->setMessage($exception->getMessage());
         }
     }
 
@@ -194,7 +200,7 @@ class PublicController extends Controller
      */
     public function getActivityLogs(BaseHttpResponse $response)
     {
-        $activities = $this->activityLogRepository->getAllLogs(auth()->guard('member')->user()->getKey());
+        $activities = $this->activityLogRepository->getAllLogs(auth('member')->user()->getAuthIdentifier());
 
         return $response->setData(ActivityLogResource::collection($activities))->toApiResponse();
     }

@@ -1,13 +1,15 @@
 <?php
 
-namespace Botble\Contact\Tables;
+namespace Platform\Contact\Tables;
 
-use Botble\Contact\Models\Contact;
+use BaseHelper;
+use Platform\Contact\Exports\ContactExport;
+use Platform\Contact\Models\Contact;
 use Html;
 use Illuminate\Support\Facades\Auth;
-use Botble\Contact\Enums\ContactStatusEnum;
-use Botble\Contact\Repositories\Interfaces\ContactInterface;
-use Botble\Table\Abstracts\TableAbstract;
+use Platform\Contact\Enums\ContactStatusEnum;
+use Platform\Contact\Repositories\Interfaces\ContactInterface;
+use Platform\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
@@ -24,6 +26,11 @@ class ContactTable extends TableAbstract
      * @var bool
      */
     protected $hasFilter = true;
+
+    /**
+     * @var string
+     */
+    protected $exportClass = ContactExport::class;
 
     /**
      * ContactTable constructor.
@@ -58,10 +65,10 @@ class ContactTable extends TableAbstract
                 return Html::link(route('contacts.edit', $item->id), $item->name);
             })
             ->editColumn('checkbox', function ($item) {
-                return table_checkbox($item->id);
+                return $this->getCheckbox($item->id);
             })
             ->editColumn('created_at', function ($item) {
-                return date_from_database($item->created_at, config('core.base.general.date_format.date'));
+                return BaseHelper::formatDate($item->created_at);
             })
             ->editColumn('status', function ($item) {
                 return $item->status->toHtml();
@@ -69,7 +76,7 @@ class ContactTable extends TableAbstract
 
         return apply_filters(BASE_FILTER_GET_LIST_DATA, $data, $this->repository->getModel())
             ->addColumn('operations', function ($item) {
-                return table_actions('contacts.edit', 'contacts.destroy', $item);
+                return $this->getOperations('contacts.edit', 'contacts.destroy', $item);
             })
             ->escapeColumns([])
             ->make(true);
@@ -81,17 +88,18 @@ class ContactTable extends TableAbstract
     public function query()
     {
         $model = $this->repository->getModel();
-        $query = $model
-            ->select([
-                'contacts.id',
-                'contacts.name',
-                'contacts.phone',
-                'contacts.email',
-                'contacts.created_at',
-                'contacts.status',
-            ]);
+        $select = [
+            'contacts.id',
+            'contacts.name',
+            'contacts.phone',
+            'contacts.email',
+            'contacts.created_at',
+            'contacts.status',
+        ];
 
-        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model));
+        $query = $model->select($select);
+
+        return $this->applyScopes(apply_filters(BASE_FILTER_TABLE_QUERY, $query, $model, $select));
     }
 
     /**
