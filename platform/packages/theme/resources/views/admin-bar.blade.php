@@ -1,4 +1,4 @@
-<nav id="admin_bar">
+{{-- <nav id="admin_bar">
     <div class="admin-bar-container">
         <div class="admin-bar-logo">
             <a href="{{ route('dashboard.index') }}" title="{{ __('Go to dashboard') }}">
@@ -45,4 +45,4 @@
 </nav>
 <script type="text/javascript">
     document.getElementsByTagName('body')[0].classList.add('show-admin-bar');
-</script>
+</script> --}}

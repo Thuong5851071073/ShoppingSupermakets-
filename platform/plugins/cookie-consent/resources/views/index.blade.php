@@ -1,4 +1,4 @@
-@if ($cookieConsentConfig['enabled'] && !$alreadyConsentedWithCookies)
+{{-- @if ($cookieConsentConfig['enabled'] && !$alreadyConsentedWithCookies)
 
     <div class="js-cookie-consent cookie-consent">
         <div class="cookie-consent-body">
@@ -16,4 +16,4 @@
     <div data-site-cookie-domain="{{ config('session.domain') ?? request()->getHost() }}"></div>
     <div data-site-session-secure="{{ config('session.secure') ? ';secure' : null }}"></div>
 
-@endif
+@endif --}}
