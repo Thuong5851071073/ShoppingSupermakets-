@@ -1,0 +1,8 @@
+{
+    "name": "Supermarket",
+    "namespace": "Theme\\Supermarket\\",
+    "description": "This is a basic theme",
+    "author": "N/A",
+    "version": "1.0",
+    "required_plugins": []
+}
