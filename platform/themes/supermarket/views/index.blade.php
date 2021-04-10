@@ -1,1 +1,4 @@
-<h2>This is the homepage</h2>
+<div class=" container">
+    <h2>This is the </h2>
+</div>
+

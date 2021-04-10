@@ -44,7 +44,49 @@ theme_option()
         'label'      => __('Primary color'),
         'attributes' => [
             'name'  => 'primary_color',
-            'value' => '#ff2b4a',
+            'value' => '#89C74A',
+        ],
+    ])
+    ->setField([
+        'id'         => 'primary_color_text',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'customColor',
+        'label'      => __('Primary color text'),
+        'attributes' => [
+            'name'  => 'primary_color_text',
+            'value' => '#000000',
+        ],
+    ])
+    ->setField([
+        'id'         => 'primary_color_text_white',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'customColor',
+        'label'      => __('Primary color text white'),
+        'attributes' => [
+            'name'  => 'primary_color_text_white',
+            'value' => '#FFFFFF',
+        ],
+    ])
+
+    ->setSection([ 
+        'title' => __('Logo header'),
+        'desc' => __(''),
+        'id' => 'opt-text-subsection-logo',
+        'subsection' => true,
+        'icon' => 'fa fa-image',
+        'fields' => [
+            [
+                'id' => 'logo',
+                'type' => 'mediaImage',
+                'label' =>"logo header",
+                'attributes' => [
+                    'name' => 'logo',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
         ],
     ]);
 
