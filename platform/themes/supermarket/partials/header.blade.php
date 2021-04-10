@@ -196,14 +196,57 @@
                 <div class="container header_footer_find">
                     <div class="header_footer_find-left">
                         <div class="dropdown">
-                            <button class="dropbtn">Tất Cả Danh Sách</button>
+                            <button class="dropbtn">Tất Cả Danh Sách <i class="fas fa-chevron-down"></i> </button>
                             <div class="dropdown-content">
                               <a href="#" class="dropdown-content_item" title="">Link 1</a>
                               <a href="#" class="dropdown-content_item" title="">Link 1</a>
                               <a href="#" class="dropdown-content_item" title="">Link 1</a>
-                              
                             </div>
                           </div>
+                    </div>
+                    <div class="header_footer_find_right">
+                        <form class="header_footer_find_right_form">
+                            <div class="inner-form">
+                                <div class="input-field first-wrap">
+                                     <input id="search" type="text" placeholder="Bạn Muốn Tìm ...">
+                                </div>
+                                {{-- <div class="input-field second-wrap">
+                                    <div class="input-select">
+                                        <div class="choices" role="listbox" data-type="select-one" tabindex="0" aria-haspopup="true" aria-expanded="false" dir="ltr" aria-activedescendant="choices-choices-single-defaul-mo-item-choice-1">
+                                            <div class="choices__inner">
+                                                    <select data-trigger="" name="choices-single-defaul" class="choices__input is-hidden" tabindex="-1" style="display:none;" aria-hidden="true" data-choice="active">
+                                                         <option value="CATEGORY" selected="">CATEGORY</option>
+                                                    </select>
+                                                    <div class="choices__list choices__list--single">
+                                                        <div class="choices__item choices__item--selectable choices__placeholder" data-item="" data-id="1" data-value="CATEGORY" aria-selected="true">
+                                                             CATEGORY
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="choices__list choices__list--dropdown" aria-expanded="false">
+                                                    <div class="choices__list" dir="ltr" role="listbox">
+                                                        <div class="choices__item choices__item--choice choices__item--selectable choices__placeholder is-highlighted" data-select-text="Press to select" data-choice="" data-id="1" data-value="CATEGORY" data-choice-selectable="" id="choices-choices-single-defaul-mo-item-choice-1" role="option" aria-selected="true">
+                                                            CATEGORY
+                                                        </div>
+                                                        <div class="choices__item choices__item--choice choices__item--selectable" data-select-text="Press to select" data-choice="" data-id="2" data-value="Subject A" data-choice-selectable="" id="choices-choices-single-defaul-mo-item-choice-2" role="option">
+                                                            Subject A
+                                                        </div>
+                                                        <div class="choices__item choices__item--choice choices__item--selectable" data-select-text="Press to select" data-choice="" data-id="3" data-value="Subject B" data-choice-selectable="" id="choices-choices-single-defaul-mo-item-choice-3" role="option">
+                                                            Subject B
+                                                        </div>
+                                                        <div class="choices__item choices__item--choice choices__item--selectable" data-select-text="Press to select" data-choice="" data-id="4" data-value="Subject C" data-choice-selectable="" id="choices-choices-single-defaul-mo-item-choice-4" role="option">
+                                                            Subject C
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> --}}
+                                <div class="input-field third-wrap">
+                                    <button class="btn-search" type="button">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

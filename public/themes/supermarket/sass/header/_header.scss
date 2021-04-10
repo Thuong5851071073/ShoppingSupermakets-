@@ -89,6 +89,7 @@
                               }
                            }
                            .dropdown-menu{
+                              box-shadow: rgb(100 100 111 / 20%) 0px 7px 29px 0px;
                               .dropdown-menu_item{
                                     margin: 12px 15px;
                                  .menu-dropdown{
@@ -151,12 +152,14 @@
    }
    .header_footer{
       .header_footer_find{
+         display: flex;
          .header_footer_find-left{
+            flex: auto;
             .dropdown{
                position: relative;
                display: inline-block;
                &:hover{
-                  .dropbtn {
+                  .dropbtn { 
                      background-color: $primary_color;
                   }
                   .dropdown-content{
@@ -166,9 +169,12 @@
                .dropbtn{
                   background-color: $primary_color;
                   color: white;
-                  padding: 16px;
+                  padding: 21px;
                   font-size: 16px;
                   border: none;
+                  .fas{
+                     margin-left: 1rem;
+                  }
                }
                .dropdown-content{
                   display: none;
@@ -184,6 +190,54 @@
                      display: block;
                      &:hover{
                         background-color: #ddd;
+                     }
+                  }
+               }
+            }
+         }
+         .header_footer_find_right{
+            flex: 2 1 auto;
+            .header_footer_find_right_form{
+               width: 100%;
+               max-width: 940px;
+               .inner-form{
+                  display: flex;
+                  width: 100%;
+                  justify-content: space-between;
+                  align-items: center;
+                  .input-field{
+                     height: 68px;
+                     #search{
+                        border-right: 0;
+                        height: 100%;
+                        background: #fff;
+                        border: 0;
+                        display: block;
+                        width: 100%;
+                        padding: 10px 32px;
+                        font-size: 16px;
+                        color: #333;
+                        border: 1px solid #e5e5e5;
+                     }
+                  }
+                  .first-wrap{
+                     flex-grow: 1;
+                  }
+                  .third-wrap{
+                     width: 164px;
+                     .btn-search{
+                        height: 100%;
+                        width: 100%;
+                        white-space: nowrap;
+                        font-size: 20px;
+                        color: #fff;
+                        border: 0;
+                        cursor: pointer;
+                        position: relative;
+                        z-index: 0;
+                        background-color: $primary_color;
+                        transition: all .2s ease-out,color .2s ease-out;
+                        font-weight: 300;
                      }
                   }
                }
