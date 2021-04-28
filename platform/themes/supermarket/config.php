@@ -61,7 +61,12 @@ return [
             $theme->asset()->container('after_header')->add('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css'); //bootstrap
             $theme->asset()->container('after_header')->add('animate', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'); //aminate 4.1.1
             $theme->asset()->container('after_header')->usePath()->add('common', 'css/common.css'); //css
-            $theme->asset()->container('after_header')->usePath()->add('style', 'css/style.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('style', 'css/style.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('animate', 'css/animate.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('bootstrap', 'css/bootstrap.min.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('fancySelect', 'css/fancySelect.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('flexslider', 'css/flexslider.css'); //css
+            // $theme->asset()->container('after_header')->usePath()->add('flipclock', 'css/flipclock.css'); //css
             $theme->asset()->add('swiper_css', 'https://unpkg.com/swiper/swiper-bundle.min.css'); //swiper
             $theme->asset()->add('swiper_codebean', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css'); //swiper
 
@@ -74,6 +79,21 @@ return [
             $theme->asset()->container('footer')->add('aos.js', 'https://unpkg.com/aos@next/dist/aos.js');
             
             $theme->asset()->container('footer')->add('cloudflare.js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js');
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/animate.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/bootstrap.min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/fancySelect.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/script.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/flipclock.min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jquery.flexslider-min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jquery.jcarousel.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jquery.magnific-popup.min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jquery.min.js'); //js
+
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jquery.sticky.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/jqueryui.custom.min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/myscript.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/parallax.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('script', 'js/superfish.min.js'); //js
             $theme->asset()->container('footer')->usePath()->add('script', 'js/common.js'); //js
 
             if (function_exists('shortcode')) {

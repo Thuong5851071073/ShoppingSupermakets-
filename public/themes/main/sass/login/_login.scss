@@ -1,0 +1,48 @@
+/*===================================*
+  20.START LOGIN REGISTER STYLE
+*===================================*/
+.login_register_wrap{
+  font-size: 16px;
+
+  padding-top: 12rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    .justify-content-center{
+      margin-bottom: 2rem;
+      // justify-content: center!important;
+      .justify-content-center-config{
+        width: 100%;
+        .login_wrap{
+            box-shadow: 0 0 10px rgba(119, 228, 76, 0.2);
+            .padding_eight_all{
+              padding: 8%;
+              .heading_s1{
+                font-size: 25px;
+                text-align: center;
+                margin-bottom: 2rem;
+                .font_s1{
+                  font-family: $ROBOTO-BOLD;
+                }
+              }
+              .form_login{
+                .btn-fill-out{
+                  border: 0.5px solid #333;
+                  &:hover{
+                    background-color: $primary_color;
+                  }
+                }
+              }
+            }
+        }
+
+      }
+    }
+}
+
+
+
+/*===================================*
+  20.END LOGIN REGISTER STYLE
+*===================================*/

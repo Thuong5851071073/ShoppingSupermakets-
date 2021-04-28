@@ -1,0 +1,39 @@
+ .menu_block{
+    box-shadow: 0px 1px 5px $primary_color;
+     .clearfix{
+         .logo{
+             .logo_header{
+                 margin: 1rem;
+             }
+         }
+     }
+ }
+
+ .love_list{
+     .love_list_btn{
+        &:hover{
+            color: $primary_color;
+        }
+     }
+     .cart{
+         .cart_list{
+             .cart_list_name{
+                 .cart_list_name_item{
+                    &:hover{
+                        color: $primary_color;
+                    } 
+                    .cart_list_name_item{
+                       
+                    }
+                    .cart_list_name_item_title{
+                        &:hover{
+                            color: $primary_color;
+                        }
+                        .cart_list_name_item_title_item{
+                        }
+                    }
+                 }
+             }
+         }
+     }
+ }

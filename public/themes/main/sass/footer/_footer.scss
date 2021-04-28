@@ -1,0 +1,84 @@
+.background {
+    font-family: $ROBOTO-BOLD;
+    color: $primary_color_text_white;
+    font-size: 16px;
+    .container_footer {
+        display: flex;
+        justify-content: space-around;
+        @include maxWidth(991){
+            flex-direction: column;
+           
+        }
+        .footer_infor {
+            margin-top: 2rem;
+            @include maxWidth(991){  
+                margin-left: 2rem;
+            }
+            .footer_infor-logo--link {
+                .footer_infor-logo--link---item {
+                    margin-bottom: 1rem;
+                }
+            }
+            .footer_infor-item {
+                .address {
+                    .address_item {
+                        margin-top: 1rem;
+                    }
+                    .address_icon{
+                        .icon_link{
+                            color: $primary_color_text_white;
+                            .icon_item{
+                                margin-right: 1rem;
+                                background-color: $primary_color;
+                                padding: 4px;
+                                &:hover{
+                                    background: $primary_color_text_white;
+                                    color: $primary_color
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .menu_top {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            @include maxWidth(991){
+               
+                margin-left: 2rem;
+            }
+            .menu_link {
+                color: $primary_color_text_white;
+                display: flex;
+                margin-bottom: 1rem;
+                &:hover{
+                    color: $primary_color;
+                }
+            }
+            .menu_link_item {
+                color: $primary_color_text_white;
+                display: flex;
+                flex-direction: column;
+                .menu_link_item_name {
+                    color: $primary_color_text_white;
+                    margin-top: 1rem;
+                    &:hover{
+                        color: $primary_color;
+                    }
+                }
+            }
+        }
+    }
+    .copyright{
+       
+        .copy{
+            
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            margin-top: 1rem;
+            padding: 2rem;
+            color: $primary_color_text_white;
+            text-align: center;
+        }
+    }
+}

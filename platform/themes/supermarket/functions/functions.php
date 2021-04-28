@@ -9,7 +9,7 @@ register_sidebar([
     'name'        => 'Second sidebar',
     'description' => 'This is a sample sidebar for supermarket theme',
 ]);
-
+ 
 theme_option()
     ->setField([
         'id'         => 'copyright',
@@ -81,6 +81,18 @@ theme_option()
                 'label' =>"logo header",
                 'attributes' => [
                     'name' => 'logo',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'logo_footer',
+                'type' => 'mediaImage',
+                'label' =>"logo footer",
+                'attributes' => [
+                    'name' => 'logo_footer',
                     'value' => null,
                     'options' => [
                         'class' => 'form-control'

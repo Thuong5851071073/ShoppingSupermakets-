@@ -1,0 +1,17 @@
+
+.navmenu {
+    .sub-menu{
+        .sub_menu-item{
+            &:hover{
+                color: $primary_color;
+            }
+        }
+    }
+    .sale_menu{
+        .sale_menu-item{
+            &:hover{
+                color: $primary_color;
+            }
+        }
+    }
+}

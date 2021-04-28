@@ -3,8 +3,8 @@
 <!-- START LOGIN SECTION -->
 <div class="login_register_wrap section">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-6 col-md-10">
+        <div class="row justify-content-center ">
+            <div class="col-xl-6 ">
                 <div class="login_wrap">
                     <div class="padding_eight_all bg-white">
                         <div class="heading_s1">

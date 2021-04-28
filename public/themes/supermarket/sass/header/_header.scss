@@ -3,6 +3,7 @@
    color: $primary_color_text;
    font-size: 16px;
    background-color: #ffff;
+
    .header_top{
       background-color: $primary_color;
       line-height: 1.7;
@@ -49,6 +50,7 @@
       }
    }
    .header_body{
+      margin-top: 1rem;
       padding: 0 20px 0;
       .sticky_waper{
          .header_sticky{
@@ -151,6 +153,7 @@
       }
    }
    .header_footer{
+      margin-top: 1rem;
       .header_footer_find{
          display: flex;
          .header_footer_find-left{
@@ -169,7 +172,7 @@
                .dropbtn{
                   background-color: $primary_color;
                   color: white;
-                  padding: 21px;
+                  padding: 15px;
                   font-size: 16px;
                   border: none;
                   .fas{
@@ -206,7 +209,7 @@
                   justify-content: space-between;
                   align-items: center;
                   .input-field{
-                     height: 68px;
+                     height: 56px;
                      #search{
                         border-right: 0;
                         height: 100%;
@@ -214,7 +217,7 @@
                         border: 0;
                         display: block;
                         width: 100%;
-                        padding: 10px 32px;
+                        padding: 15px ;
                         font-size: 16px;
                         color: #333;
                         border: 1px solid #e5e5e5;

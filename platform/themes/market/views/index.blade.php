@@ -1,1 +1,2 @@
-<h2>This is the homepage</h2>
+{{-- @includeIf('theme.market::views.market.index') --}}
+22222

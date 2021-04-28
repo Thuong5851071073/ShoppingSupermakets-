@@ -21,7 +21,7 @@
         {!! Theme::header() !!}
     </head>
     <body>
-        <header class="header">
+        <header class="header" id="header_desktop" >
             <div class="header_top">
                 <div class="container header_top-item">
                     <ul class="header_top_left">
