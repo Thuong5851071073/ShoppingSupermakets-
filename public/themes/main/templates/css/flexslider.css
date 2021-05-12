@@ -145,7 +145,7 @@ html[xmlns] .slides {display: block;}
 
 
 /* Top Slider Caption */
-.flexslider.top_slider .slide1 {
+.flexslider.top_slider .slide1 { 
 	width:100%;
 	background-image:url(../images/slider/woman_bg1.jpg);
 	background-size:cover;

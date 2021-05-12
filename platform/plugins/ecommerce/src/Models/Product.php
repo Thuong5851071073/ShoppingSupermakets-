@@ -31,7 +31,7 @@ class Product extends BaseModel
     /**
      * @var array
      */
-    protected $fillable = [
+    protected $fillable = [ 
         'name',
         'description',
         'content',

@@ -1,0 +1,22 @@
+
+.new_arrivals{
+    .jcarousel{
+        .tovar_item_new{
+            .tovar_description{
+                text-align: center;
+                .tovar_title{
+                    padding-bottom: 0;
+                    min-height: 23px;
+                }
+                .tovar_price_product{
+                    text-decoration: line-through;
+                }
+                .tovar_price_sale{
+                    color: red;
+                    font-weight: bold;
+                    
+                }
+            }
+        }
+    }
+}

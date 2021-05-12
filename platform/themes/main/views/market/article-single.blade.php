@@ -30,7 +30,8 @@
 		
 		
 		<!-- PAGE HEADER -->
-		<section class="page_header">
+		@includeIf('theme.main::partials.breadcrumbs')
+		{{-- <section class="page_header">
 			
 			<!-- CONTAINER -->
 			<div class="container">
@@ -40,7 +41,7 @@
 					<a href="women.html" >Back to shop<i class="fa fa-angle-right"></i></a>
 				</div>
 			</div><!-- //CONTAINER -->
-		</section><!-- //PAGE HEADER -->
+		</section><!-- //PAGE HEADER --> --}}
 		
 		
 		<!-- ARTICLES BLOCK -->
@@ -72,7 +73,7 @@
 							<div class="flexslider article_slider">
 								<ul class="slides">
 									<li class="slide1">
-										<img src="images/articles/slide1.jpg" />
+										<img src="{{ Theme::asset()->url('images/articles/slide1.jpg') }}" />
 									</li>
 									<li class="slide2">
 										<img src="images/articles/slide2.jpg" />

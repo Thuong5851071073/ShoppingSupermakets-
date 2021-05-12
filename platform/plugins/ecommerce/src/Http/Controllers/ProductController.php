@@ -155,7 +155,6 @@ class ProductController extends BaseController
         StoreProductTagService $storeProductTagService
     ) {
         $product = $this->productRepository->getModel();
-
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
 

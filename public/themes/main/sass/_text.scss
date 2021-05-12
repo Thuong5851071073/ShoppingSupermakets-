@@ -4,7 +4,7 @@
         font-size: 30px;
     }
 }
-.text30{
+.text30 {
     font-size: 30px;
     @include maxWidth(991){
         font-size: 25px;
@@ -27,4 +27,8 @@
 }
 .text15{
     font-size: 15px;
+}
+
+.text_label{
+    font-weight: 500px;
 }

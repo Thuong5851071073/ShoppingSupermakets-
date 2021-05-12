@@ -26,7 +26,7 @@ class ShopwiseController extends PublicController
      * @return BaseHttpResponse
      */
     public function ajaxGetProducts(Request $request, BaseHttpResponse $response)
-    {
+    { 
         if (!$request->ajax() || !$request->wantsJson()) {
             abort(404);
         }

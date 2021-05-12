@@ -220,7 +220,8 @@
 		
 		
 		<!-- PAGE HEADER -->
-		<section class="page_header">
+		@includeIf('theme.main::partials.breadcrumbs')
+		{{-- <section class="page_header">
 			
 			<!-- CONTAINER -->
 			<div class="container">
@@ -230,7 +231,7 @@
 					<a href="women.html" >Back to shop<i class="fa fa-angle-right"></i></a>
 				</div>
 			</div><!-- //CONTAINER -->
-		</section><!-- //PAGE HEADER -->
+		</section><!-- //PAGE HEADER --> --}}
 		
 		
 		<!-- BLOG BLOCK -->

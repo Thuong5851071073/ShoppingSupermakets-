@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	
-	<meta charset="utf-8">
-	<title>Glammy | Modern eCommerce html Template </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	
-	<link rel="shortcut icon" href="images/favicon.ico">
-    
-</head>
-<body>
-
 <!-- PRELOADER -->
 <div id="preloader"><img src="images/preloader.gif" alt="" /></div>
 <!-- //PRELOADER -->
 <div class="preloader_hide">
-
 	<!-- PAGE -->
 	<div id="page">
 	

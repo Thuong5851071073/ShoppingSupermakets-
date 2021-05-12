@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	
-	<meta charset="utf-8">
-	<title>Glammy | Modern eCommerce html Template </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	
-	<link rel="shortcut icon" href="images/favicon.ico">
-    
-	
-	
-</head>
-<body>
+
 
 <!-- PRELOADER -->
 <div id="preloader"><img src="images/preloader.gif" alt="" /></div>
@@ -31,17 +16,8 @@
 		
 		
 		<!-- PAGE HEADER -->
-		<section class="page_header">
-			
-			<!-- CONTAINER -->
-			<div class="container">
-				<h3 class="pull-left"><b>Contacts</b></h3>
-				
-				<div class="pull-right">
-					<a href="women.html" >Back to shop<i class="fa fa-angle-right"></i></a>
-				</div>
-			</div><!-- //CONTAINER -->
-		</section><!-- //PAGE HEADER -->
+		@includeIf('theme.main::partials.breadcrumbs')
+		<!-- //PAGE HEADER -->
 		
 		
 		<!-- CONTACTS BLOCK -->
@@ -120,5 +96,3 @@
 
 	
 	
-</body>
-</html>

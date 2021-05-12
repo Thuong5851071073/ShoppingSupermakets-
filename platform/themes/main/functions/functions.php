@@ -2,6 +2,7 @@
 
 register_page_template([
     'default' => 'Default',
+    'home-page' => 'Home Page', 
 ]);
 
 register_sidebar([

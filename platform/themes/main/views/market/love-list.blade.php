@@ -222,7 +222,8 @@
 		
 		
 		<!-- PAGE HEADER -->
-		<section class="page_header">
+		@includeIf('theme.main::partials.breadcrumbs')
+		{{-- <section class="page_header">
 			
 			<!-- CONTAINER -->
 			<div class="container">
@@ -232,7 +233,7 @@
 					<a href="shopping-bag.html" >Back to shopping bag<i class="fa fa-angle-right"></i></a>
 				</div>
 			</div><!-- //CONTAINER -->
-		</section><!-- //PAGE HEADER -->
+		</section><!-- //PAGE HEADER --> --}}
 		
 		
 		<!-- LOVE LIST BLOCK -->

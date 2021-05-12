@@ -39,7 +39,7 @@ Route::group(['namespace' => 'Platform\Ecommerce\Http\Controllers\Customers', 'm
 
             Route::get('get-customer-order-numbers/{id}', [
                 'as'         => 'get-customer-order-numbers',
-                'uses'       => 'CustomerController@getCustomerOrderNumbers',
+                'uses'       => 'CustomerController@getCustomerOrderNumbers', 
                 'permission' => ['customers.index', 'orders.index'],
             ]);
 

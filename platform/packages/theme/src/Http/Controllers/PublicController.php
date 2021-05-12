@@ -19,32 +19,32 @@ use Theme;
 
 class PublicController extends Controller
 {
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getIndex()
-    {
-        if (defined('PAGE_MODULE_SCREEN_NAME')) {
-            $homepageId = BaseHelper::getHomepageId();
-            if ($homepageId) {
-                $slug = SlugHelper::getSlug(null, SlugHelper::getPrefix(Page::class), Page::class, $homepageId);
+    // /**
+    //  * @return \Illuminate\Http\Response|Response
+    //  */
+    // public function getIndex()
+    // {
+    //     if (defined('PAGE_MODULE_SCREEN_NAME')) {
+    //         $homepageId = BaseHelper::getHomepageId();
+    //         if ($homepageId) { 
+    //             $slug = SlugHelper::getSlug(null, SlugHelper::getPrefix(Page::class), Page::class, $homepageId);
 
-                if ($slug) {
-                    $data = (new PageService)->handleFrontRoutes($slug);
+    //             if ($slug) {
+    //                 $data = (new PageService)->handleFrontRoutes($slug);
 
-                    return Theme::scope($data['view'], $data['data'], $data['default_view'])->render();
-                }
-            }
-        }
+    //                 return Theme::scope($data['view'], $data['data'], $data['default_view'])->render();
+    //             }
+    //         }
+    //     }
 
-        SeoHelper::setTitle(theme_option('site_title'));
+    //     SeoHelper::setTitle(theme_option('site_title'));
 
-        Theme::breadcrumb()->add(__('Home'), url('/'));
+    //     Theme::breadcrumb()->add(__('Home'), url('/'));
 
-        event(RenderingHomePageEvent::class);
+    //     event(RenderingHomePageEvent::class);
 
-        return Theme::scope('index')->render();
-    }
+    //     return Theme::scope('index')->render();
+    // }
 
     /**
      * @param string $key
