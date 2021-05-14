@@ -8,29 +8,17 @@
             
             <!-- SIDEBAR TOVAR DETAILS -->
             <div class="col-lg-3 col-md-3 sidebar_tovar_details">
-                <h3><b>other sweaters</b></h3>
+                <h3><b>Sản Phẩm Khuyến Mãi</b></h3>
                 
                 <ul class="tovar_items_small clearfix">
-                    <li class="clearfix">
-                        <img class="tovar_item_small_img" src="images/tovar/women/1.jpg" alt="" />
-                        <a href="product-page.html" class="tovar_item_small_title">Embroidered bib peasant top</a>
-                        <span class="tovar_item_small_price">$88.00</span>
-                    </li>
-                    <li class="clearfix">
-                        <img class="tovar_item_small_img" src="images/tovar/women/2.jpg" alt="" />
-                        <a href="product-page.html" class="tovar_item_small_title">Merino tippi sweater in geometric</a>
-                        <span class="tovar_item_small_price">$67.00</span>
-                    </li>
-                    <li class="clearfix">
-                        <img class="tovar_item_small_img" src="images/tovar/women/3.jpg" alt="" />
-                        <a href="product-page.html" class="tovar_item_small_title">Merino triple-stripe elbow-patch sweater</a>
-                        <span class="tovar_item_small_price">$94.00</span>
-                    </li>
-                    <li class="clearfix">
-                        <img class="tovar_item_small_img" src="images/tovar/women/4.jpg" alt="" />
-                        <a href="product-page.html" class="tovar_item_small_title">Collection cashmere getaway hoodie</a>
-                        <span class="tovar_item_small_price">$228.00</span>
-                    </li>
+                    @foreach ($product_sale as $k ) 
+                        <li class="clearfix">
+                            <img class="tovar_item_small_img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /> 
+                            <a href="product-page.html" class="tovar_item_small_title">{{$k->name}}</a>
+                            <span class="tovar_price_product tovar_item_small_price text17 ">{{$k->price}} VNĐ</span>
+                            <span class="tovar_price_sale tovar_item_small_price text17">{{$k->sale_price}} VNĐ</span>
+                        </li>
+                    @endforeach
                 </ul>
             </div><!-- //SIDEBAR TOVAR DETAILS -->
             

@@ -49,9 +49,10 @@ return [
             // $theme->partialComposer('header', function($view) {
             //     $view->with('auth', \Auth::user());
             // });
-
+          
             // You may use this event to set up your assets.
             $theme->asset()->add('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'); //fontawesome
+           
             $theme->asset()->add('fontawesome2', 'https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'); //fontawesome
             $theme->asset()->container('after_header')->add('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css'); //bootstrap
             $theme->asset()->container('after_header')->add('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
@@ -62,6 +63,8 @@ return [
             $theme->asset()->container('after_header')->usePath()->add('flexslider', 'templates/css/flexslider.css');
             $theme->asset()->container('after_header')->usePath()->add('flipclock', 'templates/css/flipclock.css');
             $theme->asset()->container('after_header')->usePath()->add('animate', 'templates/css/animate.css');
+            $theme->asset()->add('swiper_css', 'https://unpkg.com/swiper/swiper-bundle.min.css'); //swiper
+            $theme->asset()->add('swiper_codebean', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css'); //swiper
             $theme->asset()->container('after_header')->usePath()->add('common', 'css/common.css'); //css
    
             $theme->asset()->container('footer')->usePath()->add('jquery', 'templates/js/jquery.min.js'); //js
@@ -80,7 +83,13 @@ return [
             $theme->asset()->container('footer')->usePath()->add('superfish', 'templates/js/superfish.min.js'); //js
             $theme->asset()->container('footer')->usePath()->add('animate', 'templates/js/animate.js'); //js
             $theme->asset()->container('footer')->add('jqueryboostrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
+            // $theme->asset()->container('footer')->add('jqueryboostrap4', 'https://code.jquery.com/jquery-3.2.1.slim.min.js');
+            // $theme->asset()->container('footer')->add('boostrap4ajax', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+            // $theme->asset()->container('footer')->add('boostrap4js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
             // $theme->asset()->container('footer')->add('aos.js', 'https://unpkg.com/aos@next/dist/aos.js');
+          
+            $theme->asset()->container('footer')->add('swiper_js', 'https://unpkg.com/swiper/swiper-bundle.min.js');
+
             $theme->asset()->container('footer')->usePath()->add('common', 'js/common.js'); //js
 
             if (function_exists('shortcode')) {

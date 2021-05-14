@@ -5,10 +5,11 @@
 <div class="preloader_hide">
 
 	<!-- PAGE -->
-	<div id="page">
+	<div id="page"> 
 		<!-- BREADCRUMBS -->
 		<section class="breadcrumb parallax margbot30"></section>
 		<!-- //BREADCRUMBS -->
+		@includeIf('theme.main::partials.breadcrumbs')
 		<!-- TOVAR DETAILS -->
 		@includeIf('theme.main::partials.detail.product_detail')
 		<!-- //TOVAR DETAILS -->
@@ -21,7 +22,9 @@
 
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
-	<div id="tovar_content"></div>
+	<div id="tovar_content">
+		@includeIf('theme.main::views.market.quickview');
+	</div>
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 	

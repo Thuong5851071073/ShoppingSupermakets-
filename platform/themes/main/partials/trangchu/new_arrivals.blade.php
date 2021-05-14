@@ -19,16 +19,18 @@
                     {{-- @dd($k->logo)    --}}
                     <li>
                         <!-- TOVAR -->
-                        <div class="tovar_item_new">
-                            <div class="tovar_img">
-                                <img src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
-                                <div class="open-project-link"><a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/1.html" >Xem </a></div>
-                            </div>
-                            <div class="tovar_description clearfix">
-                                <a class="tovar_title" href="{{$k->url}}" >{{$k->name}}</a>
-                                <span class="tovar_price">{{$k->price}} VNĐ</span>
-                            </div>
-                        </div><!-- //TOVAR -->
+                        <a href="{{route('get_product_detail')}}">
+                            <div class="tovar_item_new">
+                                <div class="tovar_img">
+                                    <img src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
+                                    <div class="open-project-link"><a class="open-project tovar_view" href="{{route('get_product_detail')}}" >Xem </a></div>
+                                </div>
+                                <div class="tovar_description clearfix">
+                                    <a class="tovar_title " href="{{$k->url}}" >{{$k->name}}</a>
+                                    <span class="tovar_price">{{$k->price}} VNĐ</span>
+                                </div>
+                            </div><!-- //TOVAR -->
+                        </a>
                     </li>
                     @endforeach
                 </ul>

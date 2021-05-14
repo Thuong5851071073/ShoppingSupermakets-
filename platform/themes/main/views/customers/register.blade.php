@@ -4,13 +4,13 @@
 <div class="login_register_wrap section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-xl-6 col-md-10 justify-content-center-config">
+            <div class="col-xl-6 col-md-10">
                 <div class="login_wrap">
                     <div class="padding_eight_all bg-white">
                         <div class="heading_s1">
-                            <h3>{{ __('Đăng Ký') }}</h3>
+                            <h3>{{ __('Login') }}</h3>
                         </div>
-                        <form method="POST" action="{{ route('customer.register.post') }}" class=" form_login">
+                        <form method="POST" action="{{ route('customer.register.post') }}">
                             @csrf
                             <div class="form-group">
                                 <input class="form-control" name="name" id="txt-name" type="text" value="{{ old('name') }}" placeholder="{{ __('Your Name') }}">

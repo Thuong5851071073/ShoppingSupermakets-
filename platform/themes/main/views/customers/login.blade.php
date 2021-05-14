@@ -1,27 +1,27 @@
 @php Theme::set('pageName', __('Login')) @endphp
-
  <div class="login_register_wrap section">
-     <div class="container">
+     <div class="container">  
          <div class="row justify-content-center">
              <div class="col-xl-6 col-md-10 justify-content-center-config">
                  <div class="login_wrap">
                      <div class="padding_eight_all bg-white">
                          <div class="heading_s1">
-                             <h3 class="font_s1">{{ __('Login') }}</h3>
+                             <h3>{{ __('Login') }}</h3>
                          </div>
-                         <form method="POST" action="{{ route('customer.login.post') }}" class=" form_login">
+                         
+                         <form method="POST" action="{{ route('guest.login') }}">
                              @csrf
                              <div class="form-group">
-                                 <input class="form-control" name="email" id="txt-email" type="email" value="{{ old('email') }}" placeholder="{{ __('Your Email') }}">
-                                 @if ($errors->has('email'))
-                                     <span class="text-danger">{{ $errors->first('email') }}</span>
-                                 @endif
+                                <input class="form-control" name="email" id="txt-email" type="email" value="{{ old('email') }}" placeholder="{{ __('Your Email') }}">
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif
                              </div>
                              <div class="form-group">
                                  <input class="form-control" type="password" name="password" id="txt-password" placeholder="{{ __('Password') }}">
-                                 @if ($errors->has('password'))
+                                 {{-- @if ($errors->has('password'))
                                      <span class="text-danger">{{ $errors->first('password') }}</span>
-                                 @endif
+                                 @endif --}}
                              </div>
                              <div class="login_footer form-group">
                                  <div class="chek-form">

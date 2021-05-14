@@ -2,15 +2,17 @@
 						
     <!-- CATEGORIES -->
     <div class="sidepanel widget_categories">
-        <h3>Product Categories</h3>
+        <h3>Danh Mục Sản Phẩm </h3>
         <ul>
-            <li><a href="javascript:void(0);" >Sweaters</a></li>
-            <li><a href="javascript:void(0);" >SHIRTS &amp; TOPS</a></li>
+            @foreach ($product_category as $k )
+                <li><a href="javascript:void(0);" >{{$k->name}}</a></li>    
+            @endforeach
+            {{-- <li><a href="javascript:void(0);" >SHIRTS &amp; TOPS</a></li>
             <li><a href="javascript:void(0);" >KNITS &amp; TEES</a></li>
             <li><a href="javascript:void(0);" >PANTS</a></li>
             <li><a href="javascript:void(0);" >DENIM</a></li>
             <li><a href="javascript:void(0);" >DRESSES</a></li>
-            <li><a href="javascript:void(0);" >Maternity</a></li>
+            <li><a href="javascript:void(0);" >Maternity</a></li> --}}
         </ul>
     </div><!-- //CATEGORIES -->
     

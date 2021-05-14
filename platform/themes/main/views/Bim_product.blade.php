@@ -1,7 +1,7 @@
 
 
 <!-- PRELOADER -->
-<div id="preloader"><img src="images/preloader.gif" alt="" /></div>
+<div id="preloader"><img src="{{ Theme::asset()->url('images/preloader.gif') }}" alt="" /></div>
 <!-- //PRELOADER -->
 <div class="preloader_hide">
 
@@ -23,15 +23,12 @@
 				<div class="row">
 					
 					<!-- SIDEBAR -->
-					@includeIf('theme.main::partials.product.category')
+					@includeIf('theme.main::partials.product.category') 
 					<!-- //SIDEBAR -->
 					<!-- SHOP PRODUCTS -->
 					<div class="col-lg-9 col-sm-9 padbot20">
 						
-						<!-- SHOP BANNER -->
-						<div class="banner_block margbot15">
-							<a class="banner nobord" href="javascript:void(0);" ><img src="{{ Theme::asset()->url('images/tovar/banner24.jpg') }}" alt="" /></a>
-						</div><!-- //SHOP BANNER -->
+						@includeIf('theme.main::partials.product.slider') 
 						
 						<!-- SORTING TOVAR PANEL -->
 						<div class="sorting_options clearfix">
@@ -108,7 +105,9 @@
 
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
-	<div id="tovar_content"></div>
+	<div id="tovar_content">
+		@includeIf('theme.main::views.market.quickview');
+	</div>
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 	

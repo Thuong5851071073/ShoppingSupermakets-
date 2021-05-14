@@ -87,9 +87,9 @@
 					<!-- LOVE LIST  onclick="show_love()  "-->
 					<div class="love_list">
 						{!!
-							Menu::renderMenuLocation('main-menu', [
+							Menu::renderMenuLocation('category-menu', [
 								'options' => [],
-								'theme' => true,
+								'theme' => true, 
 								'view' => 'category.menu_list',
 							])
 						!!}

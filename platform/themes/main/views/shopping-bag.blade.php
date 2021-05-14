@@ -1,5 +1,5 @@
 <!-- PRELOADER -->
-<div id="preloader"><img src="images/preloader.gif" alt="" /></div>
+<div id="preloader"><img src="{{ Theme::asset()->url('images/preloader.gif') }}" alt="" /></div>
 <!-- //PRELOADER -->
 <div class="preloader_hide">
 
@@ -179,7 +179,9 @@
 
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
-	<div id="tovar_content"></div>
+	<div id="tovar_content">
+		@includeIf('theme.main::views.market.quickview');
+	</div>
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 

@@ -98,67 +98,27 @@
                 @foreach ( $products as $k )
                     {{-- @dd(($k->images)) --}}
                     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-ss-12 padbot40">
-                        <div class="tovar_item">
-                            <div class="tovar_img">
-                                <div class="tovar_img_wrapper">
-                                    <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
-                                    <img class="img_h" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
+                        <a href="{{route('get_product_detail')}}">
+                            <div class="tovar_item">
+                                <div class="tovar_img">
+                                    <div class="tovar_img_wrapper">
+                                        <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
+                                        <img class="img_h" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
+                                    </div>
+                                    <div class="tovar_item_btns">
+                                        <div class="open-project-link"><a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/4.html" >xem</a></div>
+                                        <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
+                                    </div>
                                 </div>
-                                <div class="tovar_item_btns">
-                                    <div class="open-project-link"><a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/4.html" >quick view</a></div>
-                                    <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
+                                <div class="tovar_description clearfix">
+                                    <a class="tovar_title" href="product-page.html" >{{ $k->name }}</a>
+                                    <span class="tovar_price">{{$k->price}} VNĐ</span>
                                 </div>
                             </div>
-                            <div class="tovar_description clearfix">
-                                <a class="tovar_title" href="product-page.html" >{{ $k->name }}</a>
-                                <span class="tovar_price">{{$k->price}} VNĐ</span>
-                            </div>
-                        </div>
+                        </a>
                     </div><!-- //TOVAR4 --> 
                 @endforeach
-                
-                {{-- <!-- TOVAR5 -->
-                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-ss-12 padbot40">
-                    <div class="tovar_item tovar_sale">
-                        <div class="tovar_img">
-                            <div class="tovar_img_wrapper">
-                                <img class="img" src="images/tovar/women/5.jpg" alt="" />
-                                <img class="img_h" src="images/tovar/women/5_2.jpg" alt="" />
-                            </div>
-                            <div class="tovar_item_btns">
-                                <div class="open-project-link"><a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/5.html" >quick view</a></div>
-                                <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i></a>
-                                <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="tovar_description clearfix">
-                            <a class="tovar_title" href="product-page.html" >Schoolboy blazer in italian wool</a>
-                            <span class="tovar_price">$194.00</span>
-                        </div>
-                    </div>
-                </div><!-- //TOVAR5 -->
-                
-                <!-- TOVAR6 -->
-                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 col-ss-12 padbot40">
-                    <div class="tovar_item">
-                        <div class="tovar_img">
-                            <div class="tovar_img_wrapper">
-                                <img class="img" src="images/tovar/women/6.jpg" alt="" />
-                                <img class="img_h" src="images/tovar/women/6_2.jpg" alt="" />
-                            </div>
-                            <div class="tovar_item_btns">
-                                <div class="open-project-link"><a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/6.html" >quick view</a></div>
-                                <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i></a>
-                                <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="tovar_description clearfix">
-                            <a class="tovar_title" href="product-page.html" >Cashmere mockneck sweater</a>
-                            <span class="tovar_price">$257.00</span>
-                        </div>
-                    </div>
-                </div><!-- //TOVAR6 --> --}}
             </div><!-- //TOVAR WRAPPER -->
         </div><!-- //ROW -->
         

@@ -6,7 +6,7 @@
 	
 	<div class="clearfix">
 		<div class="tovar_view_fotos clearfix">
-			<div id="slider1" class="flexslider">
+			<div id="slider1" class="flexslider"> 
 				<ul class="slides">
 					<li><a href="javascript:void(0);" ><img src="images/tovar/men/1.jpg" alt="" /></a></li>
 					<li><a href="javascript:void(0);" ><img src="images/tovar/men/1_2.jpg" alt="" /></a></li>

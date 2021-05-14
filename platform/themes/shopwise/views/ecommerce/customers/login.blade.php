@@ -1,7 +1,7 @@
 @php Theme::set('pageName', __('Login')) @endphp
 
  <div class="login_register_wrap section">
-     <div class="container">
+     <div class="container">  
          <div class="row justify-content-center">
              <div class="col-xl-6 col-md-10 justify-content-center-config">
                  <div class="login_wrap">

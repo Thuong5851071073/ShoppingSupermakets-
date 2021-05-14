@@ -20,20 +20,22 @@
                             @foreach ($product_sale as $k )                              
                                 <li>
                                     <!-- TOVAR -->
-                                    <div class="tovar_item_new tovar_sale">
-                                        <div class="tovar_img">
-                                            <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
-                                            <div class="open-project-link">
-                                                <a class="open-project tovar_view" href="javascript:void(0);" data-url="!projects/women/1.html" >quick view</a>
+                                    <a href="{{route('get_product_detail')}}">
+                                        <div class="tovar_item_new tovar_sale">
+                                            <div class="tovar_img">
+                                                <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
+                                                <div class="open-project-link">
+                                                    <a class="open-project tovar_view" href="https://google.com">xem</a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="tovar_description clearfix">
-                                            <a class="tovar_title" href="product-page.html" >{{$k->name}}</a>
-                                            <span class="tovar_price_product text17">{{$k->price}} VNĐ</span>
-                                            <br>
-                                            <span class="tovar_price_sale text17">{{$k->sale_price}} VNĐ</span>
-                                        </div>
-                                    </div><!-- //TOVAR -->
+                                            <div class="tovar_description clearfix">
+                                                <a class="tovar_title" href="product-page.html" >{{$k->name}}</a>
+                                                <span class="tovar_price_product text17">{{$k->price}} VNĐ</span>
+                                                <br>
+                                                <span class="tovar_price_sale text17">{{$k->sale_price}} VNĐ</span>
+                                            </div>
+                                        </div><!-- //TOVAR -->
+                                    </a>
                                 </li>
                             @endforeach
 						</ul>

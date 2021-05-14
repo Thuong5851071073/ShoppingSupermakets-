@@ -265,7 +265,9 @@
 
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
-	<div id="tovar_content"></div>
+	<div id="tovar_content">
+		@includeIf('theme.main::views.market.quickview');
+	</div>
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 	

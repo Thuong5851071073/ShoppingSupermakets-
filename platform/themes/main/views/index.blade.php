@@ -10,12 +10,9 @@
 		<!-- TOVAR SECTION -->
 		@includeIf('theme.main::partials.trangchu.tovar_section')
 		<!-- //TOVAR SECTION -->
-		
 		<!-- NEW ARRIVALS -->
 		@includeIf('theme.main::partials.trangchu.new_arrivals')
-		<!-- //NEW ARRIVALS -->
-		
-		
+		<!-- //NEW ARRIVALS -->	
 		<!-- BRANDS -->
 		@includeIf('theme.main::partials.trangchu.brands');
 		<!-- //BRANDS -->
@@ -27,9 +24,7 @@
 		<!-- SERVICES SECTION -->
 		@includeIf('theme.main::partials.trangchu.services');
 		<!-- //SERVICES SECTION -->
-		
-		<hr class="container">
-				
+		<hr class="container">	
 		<!-- RECENT POSTS -->
 		@includeIf('theme.main::partials.trangchu.recent_posts');
 		<!-- //RECENT POSTS -->
@@ -38,9 +33,12 @@
 
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
-	<div id="tovar_content"></div>
+	<div id="tovar_content">
+		@includeIf('theme.main::views.market.quickview');
+	</div>
 	<div class="close_block"></div>
-</div><!-- TOVAR MODAL CONTENT -->
+</div>
+<!-- TOVAR MODAL CONTENT -->
 
 	
 	

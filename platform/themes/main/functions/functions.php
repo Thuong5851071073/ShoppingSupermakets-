@@ -169,6 +169,18 @@ theme_option()
                     ]
                 ],
             ],
+            [
+                'id' => 'Phone2',
+                'type' => 'text',
+                'label' => __('Nhập Số Điện Thoại 2'),
+                'attributes' => [
+                    'name' => 'phone2',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
 
         ],
     ])
