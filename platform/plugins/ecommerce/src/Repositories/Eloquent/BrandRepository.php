@@ -22,4 +22,14 @@ class BrandRepository extends RepositoriesAbstract implements BrandInterface
 
         return $data;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBrandById($brandId)
+    {
+        $data = $this->model
+                ->where('id', $brandId);
+        return $data->first();
+    }
 }

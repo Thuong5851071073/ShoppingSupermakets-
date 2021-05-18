@@ -184,11 +184,11 @@ $(window).load(function() {
 				$items.removeClass('active');
 				$(this).addClass('active');
 	
-				var myUrl = $(this).find('.open-project').attr("data-url") + " .tover_view_page"; 
+				var myUrl = $(this).find('.open-project').attr("data-url") + " .tover_view_page";
+				console.log(myUrl); 
 		  
 				$('#tovar_content').animate({opacity:0},function(){
 					$("#tovar_content").load(myUrl,function(e){
-						
 						//Tovar View Carousel
 						$('#carousel1').flexslider({
 							animation: "slide",
@@ -239,7 +239,6 @@ $(window).load(function() {
 			$('#tovar_content').animate({opacity:0}, 400,function(){	
 				$('#modal-body').removeClass('modal-active').hide(400);
 			});
-			
 			$items.removeClass('active');
 			return false;
 		});

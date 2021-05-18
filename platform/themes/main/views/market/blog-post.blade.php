@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	
-	<meta charset="utf-8">
-	<title>Glammy | Modern eCommerce html Template </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	
-	<link rel="shortcut icon" href="images/favicon.ico">
-    
 
-	
-</head>
-<body>
 
 <!-- PRELOADER -->
 <div id="preloader"><img src="images/preloader.gif" alt="" /></div>
@@ -23,219 +8,11 @@
 	<!-- PAGE -->
 	<div id="page">
 	
-		{{-- <!-- HEADER -->
-		<header>
-			
-			<!-- TOP INFO -->
-			<div class="top_info">
-				
-				<!-- CONTAINER -->
-				<div class="container clearfix">
-					<ul class="secondary_menu">
-						<li><a href="my-account.html" >my account</a></li>
-						<li><a href="my-account.html" >Register</a></li>
-					</ul>
-					
-					<div class="live_chat"><a href="javascript:void(0);" ><i class="fa fa-comment-o"></i> Live chat</a></div>
-					
-					<div class="phone_top">have a question? <a href="tel:1 800 888 2828" >1 800 888 2828</a></div>
-				</div><!-- //CONTAINER -->
-			</div><!-- TOP INFO -->
-			
-			
-			<!-- MENU BLOCK -->
-			<div class="menu_block">
-			
-				<!-- CONTAINER -->
-				<div class="container clearfix">
-					
-					<!-- LOGO -->
-					<div class="logo">
-						<a href="index.html" ><img src="images/logo.png" alt="" /></a>
-					</div><!-- //LOGO -->
-					
-					
-					<!-- SEARCH FORM -->
-					<div class="top_search_form">
-						<a class="top_search_btn" href="javascript:void(0);" ><i class="fa fa-search"></i></a>
-						<form method="get" action="#">
-							<input type="text" name="search" value="Search" onFocus="if (this.value == 'Search') this.value = '';" onBlur="if (this.value == '') this.value = 'Search';" />
-						</form>
-					</div><!-- SEARCH FORM -->
-					
-					
-					<!-- SHOPPING BAG -->
-					<div class="shopping_bag">
-						<a class="shopping_bag_btn" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i><p>shopping bag</p><span>2</span></a>
-						<div class="cart">
-							<ul class="cart-items">
-								<li class="clearfix">
-									<img class="cart_item_product" src="images/tovar/women/1.jpg" alt="" />
-									<a href="product-page.html" class="cart_item_title">popover sweatshirt in floral jacquard</a>
-									<span class="cart_item_price">1 × $98.00</span>
-								</li>
-								<li class="clearfix">
-									<img class="cart_item_product" src="images/tovar/women/3.jpg" alt="" />
-									<a href="product-page.html" class="cart_item_title">japanese indigo denim jacket</a>
-									<span class="cart_item_price">2 × $158.00</span>
-								</li>
-							</ul>
-							<div class="cart_total">
-								<div class="clearfix"><span class="cart_subtotal">bag subtotal: <b>$414</b></span></div>
-								<a class="btn active" href="checkout.html">Checkout</a>
-							</div>
-						</div>
-					</div><!-- //SHOPPING BAG -->
-					
-					
-					<!-- LOVE LIST -->
-					<div class="love_list">
-						<a class="love_list_btn" href="javascript:void(0);" ><i class="fa fa-heart-o"></i><p>Love list</p><span>0</span></a>
-						<div class="cart">
-							<ul class="cart-items">
-								<li>Cart is empty</li>
-							</ul>
-							<div class="cart_total">
-								<div class="clearfix"><span class="cart_subtotal">bag subtotal: <b>$0</b></span></div>
-								<a class="btn active" href="checkout.html">Checkout</a>
-							</div>
-						</div>
-					</div><!-- //LOVE LIST -->
-					
-					
-					<!-- MENU -->
-					<ul class="navmenu center">
-						<li class="sub-menu first"><a href="javascript:void(0);" >Home</a>
-							<!-- MEGA MENU -->
-							<ul class="mega_menu megamenu_col1 clearfix">
-								<li class="col">
-									<ol>
-										<li><a href="index.html" >Home slider</a></li>
-										<li><a href="index2.html" >Home men promo</a></li>
-										<li><a href="index3.html" >Home kids</a></li>
-										<li><a href="index4.html" >Home video</a></li>
-										<li><a href="sale.html" >Home Sale<span>sale</span></a></li>
-										<li><a href="shoes.html" >Home shoes</a></li>
-									</ol>
-								</li>
-							</ul><!-- //MEGA MENU -->
-						</li>
-						<li class="sub-menu"><a href="javascript:void(0);" >women</a>
-							<!-- MEGA MENU -->
-							<ul class="mega_menu megamenu_col1 clearfix">
-								<li class="col">
-									<ol>
-										<li><a href="women.html" >sweaters</a></li>
-										<li><a href="women.html" >shirts & tops<span>hot</span></a></li>
-										<li><a href="women.html" >knits & tees</a></li>
-										<li><a href="women.html" >pants</a></li>
-										<li><a href="women.html" >denim</a></li>
-										<li><a href="women.html" >dresses</a></li>
-										<li><a href="women.html" >maternity</a></li>
-									</ol>
-								</li>
-							</ul><!-- //MEGA MENU -->
-						</li>
-						<li class="sub-menu"><a href="javascript:void(0);" >Men</a>
-							<!-- MEGA MENU -->
-							<ul class="mega_menu megamenu_col2 clearfix">
-								<li class="col">
-									<ol>
-										<li><a href="men.html" >sweaters</a></li>
-										<li><a href="men.html" >shirts & tops</a></li>
-										<li><a href="men.html" >knits & tees</a></li>
-										<li><a href="men.html" >pants</a></li>
-										<li><a href="men.html" >denim</a></li>
-										<li><a href="men.html" >dresses</a></li>
-										<li><a href="men.html" >maternity</a></li>
-									</ol>
-								</li>
-								<li class="col">
-									<ol>
-										<li><a href="men.html" >skirts</a></li>
-										<li><a href="men.html" >shorts</a></li>
-										<li><a href="men.html" >blazers</a></li>
-										<li><a href="men.html" >outerwear</a></li>
-										<li><a href="men.html" >suiting</a></li>
-										<li><a href="men.html" >swim</a></li>
-										<li><a href="men.html" >sleepwear</a></li>
-									</ol>
-								</li>
-							</ul><!-- //MEGA MENU -->
-						</li>
-						<li><a href="shoes.html" >shoes</a></li>
-						<li class="sub-menu"><a href="javascript:void(0);" >Pages</a>
-							<!-- MEGA MENU -->
-							<ul class="mega_menu megamenu_col3 clearfix">
-								<li class="col">
-									<ol>
-										<li><a href="about.html" >About Us</a></li>
-										<li><a href="gallery.html" >Gallery<span>new</span></a></li>
-										<li><a href="product-page.html" >Product Page</a></li>
-										<li><a href="love-list.html" >Love List</a></li>
-										<li><a href="shopping-bag.html" >Shopping Bag</a></li>
-										<li><a href="my-account.html" >My Account</a></li>
-										
-									</ol>
-								</li>
-								<li class="col">
-									<ol>
-										<li><a href="product-catalog.html" >Product Catalog</a></li>
-										<li><a href="brands-list.html" >Brands List</a></li>
-										<li><a href="update.html" >Site Update</a></li>
-										<li><a href="contacts.html" >Contacts</a></li>
-										<li><a href="shortcodes.html" >Shortcodes</a></li>
-									</ol>
-								</li>
-								<li class="col">
-									<ol>
-										<li><a href="404.html" >404 Page</a></li>
-										<li><a href="articles.html" >Articles</a></li>
-										<li><a href="article-single.html" >Article Single</a></li>
-										<li><a href="checkout.html" >Checkout</a></li>
-										<li><a href="faq.html" >FAQ</a></li>
-									</ol>
-								</li>
-							</ul><!-- //MEGA MENU -->
-						</li>
-						<li class="sub-menu active"><a href="javascript:void(0);" >Blog</a>
-							<!-- MEGA MENU -->
-							<ul class="mega_menu megamenu_col1 clearfix">
-								<li class="col">
-									<ol>
-										<li><a href="blog.html" >Blog</a></li>
-										<li class="active"><a href="blog-post.html" >Blog Post</a></li>
-									</ol>
-								</li>
-							</ul><!-- //MEGA MENU -->
-						</li>
-						<li class="last sale_menu"><a href="sale.html" >Sale</a></li>
-					</ul><!-- //MENU -->
-				</div><!-- //MENU BLOCK -->
-			</div><!-- //CONTAINER -->
-		</header><!-- //HEADER --> --}}
-		
-		
 		<!-- BREADCRUMBS -->
 		<section class="breadcrumb parallax margbot30"></section>
 		<!-- //BREADCRUMBS -->
-		
-		
 		<!-- PAGE HEADER -->
 		@includeIf('theme.main::partials.breadcrumbs')
-		{{-- <section class="page_header">
-			
-			<!-- CONTAINER -->
-			<div class="container">
-				<h3 class="pull-left"><b>Blog Post</b></h3>
-				
-				<div class="pull-right">
-					<a href="women.html" >Back to shop<i class="fa fa-angle-right"></i></a>
-				</div>
-			</div><!-- //CONTAINER -->
-		</section><!-- //PAGE HEADER --> --}}
-		
-		
 		<!-- BLOG BLOCK -->
 		<section class="blog">
 			
@@ -249,21 +26,23 @@
 					<div class="col-lg-9 col-md-9 col-sm-9">
 						
 						<article class="post blog_post clearfix margbot20" data-appear-top-offset='-100' data-animated='fadeInUp'>
-							<div class="post_title" href="blog-post.html" >See All the Ridiculously Hot, Nearly Naked Looks From Shakira and Rihanna's New Video</div>
+							<div class="post_title" href="blog-post.html" >{{ $contentPost->name }}</div>
 							<ul class="post_meta">
-								<li><i class="fa fa-user"></i><a href="javascript:void(0);" >Anna Balashova</a></li>
-								<li><i class="fa fa-comments"></i>Commetcs <span class="sep">|</span> 15</li>
-								<li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li>
+								<li><i class="fa fa-user"></i><a href="javascript:void(0);" >{{ $contentPost->author->getFullName() }}</a></li>
+								<li><i class="fa fa-comments"></i>Bình luận <span class="sep">|</span> 15</li>
+								<li><i class="fa fa-eye"></i>Lượt xem <span class="sep">|</span> 259</li>
 							</ul>
 							<div class="post_large_image">
-								<div class="recent_post_date">15<span>dec</span></div>
-								<img src="images/blog/large_image.jpg" alt="" />
+								<div class="recent_post_date">{{ date_format($contentPost->created_at,"d") }}<span>{{ substr(date_format($contentPost->created_at, "F"), 0, 3) }}</span></div>
+								<img src="{{ RvMedia::getImageUrl($contentPost->image, 'post_detail', false, RvMedia::getDefaultImage()) }}" alt="" />
 							</div>
 							
 							<div class="blog_post_content">
-								<h3>You could say Barbara Casasola has had a charmed run. After a critically acclaimed London Fashion Week debut last September, the Porto Alegre, Brazil–born, London-based upstart was tapped to be the sole women’s wear presenter at Pitti Uomo, the biannual menswear trade show in Florence, an honor previously accorded to Peter Pilotto and Rodarte.</h3>
+								<h3>{{ $contentPost->description }}</h3>
+
+								{!! $contentPost->content !!}
 								
-								<h2>Single Post Whit Sidebar</h2>
+								{{-- <h2>Single Post Whit Sidebar</h2>
 								
 								<p>The cousin had a point. Consider Casasola’s spring/ summer 2014 lineup, which, inspired by the work of Brazilian constructivist master Lygia Clark, explores the duality of discipline and sensuality: There is something decidedly not of this century about the evening dresses—and they are almost all evening dresses, with a few soigné jumpsuits and pencil skirts in the mix—that she crafts from unembellished satins, cadys, and organzas, with hems cropped just above the ankle. “A lot of people think it makes you look shorter,” says Casasola of her preferred silhouette. “But it’s the other way around.”</p>
 								
@@ -273,7 +52,7 @@
 									<i>Eveningwear was my starting point for my first, AW 2012 collection, because my sense of what was out there tended to reference a different generation. I went for a kind of Madame Gres-meets-1990s Helmut Lang; or a certain mix of elegance and attitude.</i>
 								</blockquote>
 								
-								<p>You could say Barbara Casasola has had a charmed run. After a critically acclaimed London Fashion Week debut last September, the Porto Alegre, Brazil–born, London-based upstart was tapped to be the sole women’s wear presenter at Pitti Uomo, the biannual menswear trade show in Florence, an honor previously accorded to Peter Pilotto and Rodarte. But the 29-year-old wasn’t always sure she’d have industry support—or even familial understanding. “When my cousin saw my first collection, she started laughing—hard,” the designer says sheepishly. She was like, “It looks like grandma’s clothes!”</p>
+								<p>You could say Barbara Casasola has had a charmed run. After a critically acclaimed London Fashion Week debut last September, the Porto Alegre, Brazil–born, London-based upstart was tapped to be the sole women’s wear presenter at Pitti Uomo, the biannual menswear trade show in Florence, an honor previously accorded to Peter Pilotto and Rodarte. But the 29-year-old wasn’t always sure she’d have industry support—or even familial understanding. “When my cousin saw my first collection, she started laughing—hard,” the designer says sheepishly. She was like, “It looks like grandma’s clothes!”</p> --}}
 							</div>
 							
 						</article>
@@ -301,14 +80,14 @@
 						
 						<!-- COMMENTS -->
 						<div id="comments" data-appear-top-offset='-100' data-animated='fadeInUp'>
-							<h2>Comments (3)</h2>
+							<h2>Bình luận (3)</h2>
 							<ol>
 								<li>
 									<div class="pull-left avatar"><a href="javascript:void(0);"><img src="images/avatar1.jpg" alt="" /></a></div>
 									<div class="comment_right">
 										<div class="comment_info">
 											<a class="comment_author" href="javascript:void(0);" >Anna Balashova</a>
-											<a class="comment_reply" href="javascript:void(0);" ><i class="fa fa-share"></i> Reply</a>
+											<a class="comment_reply" href="javascript:void(0);" ><i class="fa fa-share"></i> Trả lời</a>
 											<div class="clear"></div>
 											<div class="comment_date">13 January 2014</div>
 										</div>
@@ -350,15 +129,15 @@
 						
 						<!-- LEAVE A COMMENT -->
 						<div id="comment_form" data-appear-top-offset='-100' data-animated='fadeInUp'>
-							<h2>Leave a Comment</h2>
+							<h2>Để lại bình luận</h2>
 							<div class="comment_form_wrapper">
 								<form action="javascript:void(0);" method="post">
-									<input type="text" name="name" value="Name" onFocus="if (this.value == 'Name') this.value = '';" onBlur="if (this.value == '') this.value = 'Name';" />
-									<input class="email" type="text" name="email" value="Email" onFocus="if (this.value == 'Email') this.value = '';" onBlur="if (this.value == '') this.value = 'Email';" /></br>
-									<textarea name="message" onFocus="if (this.value == 'Your comment') this.value = '';" onBlur="if (this.value == '') this.value = 'Your comment';">Your comment</textarea>
+									<input type="text" name="name" value="Name" value="{{ old('name') }}" placeholder="Tên của bạn" />
+									<input class="email" type="text" name="email" value="{{ old('email') }}" placeholder="Email của bạn" /></br>
+									<textarea name="message" placeholder="Bình luận"></textarea>
 									<div class="clear"></div>
-									<span class="comment_note">Your email address will not be published. Required fields are marked *</span>
-									<input type="submit" value="Send comment" />
+									<span class="comment_note">Tài khoản email của bạn sẽ không hiển thị *</span>
+									<input type="submit" value="Gửi" />
 									<div class="clear"></div>
 								</form>
 							</div>
@@ -585,5 +364,3 @@
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 	
-</body>
-</html>

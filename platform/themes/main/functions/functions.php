@@ -11,6 +11,8 @@ register_sidebar([
     'description' => 'This is a sample sidebar for main theme',
 ]);
 
+RvMedia::addSize('new_post', 270, 230)
+    ->addSize('post_detail', 760, 380);
 theme_option()
     ->setField([
         'id'         => 'copyright',
@@ -56,6 +58,15 @@ theme_option()
         'attributes' => [
             'name'  => 'primary_color_text',
             'value' => '#000000',
+        ],
+    ])
+    ->setField([
+        'id'         => 'product_slider',
+        'section_id' => 'opt-text-subsection-general',
+        'type'       => 'mediaImages',
+        'label'      => 'Slider Product',
+        'attributes' => [
+            'name'   => 'product_slider[]',
         ],
     ])
     ->setField([
@@ -183,8 +194,7 @@ theme_option()
             ],
 
         ],
-    ])
-    ;
+    ]);
 
 add_action('init', function () {
     config(['filesystems.disks.public.root' => public_path('storage')]);

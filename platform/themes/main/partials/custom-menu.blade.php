@@ -1,5 +1,4 @@
 
-
 @foreach ($menu_nodes as $menu)
     @if ($menu->has_child)
     <li class="sub-menu first"><a class="sub_menu-item" title="" href="{{$menu->url}}" >{{ $menu->title }}</a>

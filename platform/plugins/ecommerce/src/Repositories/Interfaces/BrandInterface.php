@@ -11,4 +11,10 @@ interface BrandInterface extends RepositoryInterface
      * @return mixed
      */
     public function getAll(array $condition = []);
+
+    /**
+     * @param int $brandId
+     * @return mixed
+     */
+    public function getBrandById(int $brandId);
 }

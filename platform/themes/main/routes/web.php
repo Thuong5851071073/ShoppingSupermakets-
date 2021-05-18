@@ -1,55 +1,48 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Platform\Slug\SlugHelper;
+
 // Custom routes
 // You can delete this route group if you don't need to add your custom routes.
 Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['web', 'core']], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
 
-        // Add your custom route here
-        // Ex: Route::get('hello', 'MainController@getHello');
-        //category
-        // Route::get(SlugHelper::getPrefix(\Platform\Blog\Models\Category::class,'/{slug}'),[
-        //     'uses'=>'MainController@getCategory',
-        // ])->name('public.category');
-
-        // chi tiết bài viết
-        // Route::get(SlugHelper::getPrefix(\Platform\Blog\Models\Category::class, '{slug}') . '/{slugpost}', [
-        //     'uses' => 'MainController@getDetailpost',
-        // ])->name('detail-post');
-        // Route::get('/quick_view', 'MainController@quikview')->name('public.quikview');
-        
+       
         Route::get('/lien-he', 'MainController@getcontact')->name('public.get_contact');
         Route::get('/thuong-hieu', 'MainController@getbrand')->name('get_brand');
-      
+        
         Route::get('/gio-hang', 'MainController@getshoppingbag')->name('get_shoppingbag');
-        Route::get('/ve-chung-toi', 'MainController@getaboutus')->name('get_about_us');
+        Route::get('/tin-tuc', 'MainController@getaboutus')->name('get_about_us');
+
+        Route::prefix('nguoi-dung')->group(function(){
+            Route::get('/dang-nhap', 'MainController@getlogin')->name('get_login');
+            Route::post('/dang-nhap', 'MainController@login')->name('guest.login');
+            Route::get('/lay-lai-mat-khau', 'MainController@getreset') ->name('get_reset');
+            Route::get('/dang-ky', 'MainController@getregister')->name('get_dangky');
+        });
+        Route::prefix('tin-tuc')->group(function(){
+            Route::get('/', 'MainController@getblog') ->name('get_reset');
+            Route::get('/chi-tiet', 'MainController@getdetailblog') ->name('get_reset');
+        });
+
+        Route::prefix('check-pay')->group(function(){
+            Route::get('/thong-tin-nguoi-nhan', 'MainController@getinforreship') ->name('get_inforreship');
+            Route::get('/hinh-thuc-giao-hang', 'MainController@getwayshiping')->name('get_wayshiping');
+            Route::get('/hinh-thuc-thanh-toan', 'MainController@getwaypay')->name('get_waypay');
+            Route::get('/hinh-thuc-thanh-toan2', 'MainController@getwaypay2')->name('get_waypay2');
+        });
+
+        Route::prefix('san-pham')->group(function() {
+            Route::get('{slug}', 'MainController@getCategory')->name('product.category');
+            Route::get('{slug}/{slugPost}', 'MainController@getproductdetail')->name('product.detail');
+        });
+
+        Route::prefix('tin-tuc')->group(function() {
+            Route::get('{slug}/{slugPost}', 'MainController@getBlogDetail')->name('blog.detail');
+        });
     });
 }); 
-
-Route::group(['namespace'=> 'Theme\Main\Http\Controllers'],function(){
-    Route::prefix('check-pay')->group(function(){
-        Route::get('/thong-tin-nguoi-nhan', 'MainController@getinforreship') ->name('get_inforreship');
-        Route::get('/hinh-thuc-giao-hang', 'MainController@getwayshiping')->name('get_wayshiping');
-        Route::get('/hinh-thuc-thanh-toan', 'MainController@getwaypay')->name('get_waypay');
-        Route::get('/hinh-thuc-thanh-toan2', 'MainController@getwaypay2')->name('get_waypay2');
-    });
-});
-
-Route::group(['namespace'=> 'Theme\Main\Http\Controllers'],function(){
-    Route::prefix('nguoi-dung')->group(['middleware' => 'web'], function(){
-        Route::get('/dang-nhap', 'MainController@getlogin')->name('get_login');
-        Route::post('/dang-nhap', 'MainController@login')->name('guest.login');
-        Route::get('/lay-lai-mat-khau', 'MainController@getreset') ->name('get_reset');
-        Route::get('/dang-ky', 'MainController@getregister')->name('get_dangky');
-    });
-});
-Route::group(['namespace'=> 'Theme\Main\Http\Controllers'],function(){
-    Route::prefix('san-pham')->group(function(){
-        Route::get('/', 'MainController@getproduct')->name('get_product');
-        Route::get('/chi-tiet-san-pham', 'MainController@getproductdetail')->name('get_product_detail');
-    });
-});
 
 
 Theme::routes();

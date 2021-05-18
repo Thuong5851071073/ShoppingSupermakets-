@@ -36,4 +36,16 @@ interface ProductCategoryInterface extends RepositoryInterface
      * @return mixed
      */
     public function getAllCategories($active = true);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getCategoryProductById($id);
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getCategoryById($id);
 }

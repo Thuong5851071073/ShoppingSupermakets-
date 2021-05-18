@@ -11,12 +11,12 @@
                 <h3><b>Sản Phẩm Khuyến Mãi</b></h3>
                 
                 <ul class="tovar_items_small clearfix">
-                    @foreach ($product_sale as $k ) 
+                    @foreach ($product_sale as $product ) 
                         <li class="clearfix">
-                            <img class="tovar_item_small_img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /> 
-                            <a href="product-page.html" class="tovar_item_small_title">{{$k->name}}</a>
-                            <span class="tovar_price_product tovar_item_small_price text17 ">{{$k->price}} VNĐ</span>
-                            <span class="tovar_price_sale tovar_item_small_price text17">{{$k->sale_price}} VNĐ</span>
+                            <img class="tovar_item_small_img" src="{{ RvMedia::getImageUrl($product->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /> 
+                            <a href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" class="tovar_item_small_title">{{$product->name}}</a>
+                            <span class="tovar_price_product tovar_item_small_price text17 ">{{$product->price}} VNĐ</span>
+                            <span class="tovar_price_sale tovar_item_small_price text17">{{$product->sale_price}} VNĐ</span>
                         </li>
                     @endforeach
                 </ul>
@@ -25,7 +25,7 @@
             <!-- TOVAR DETAILS WRAPPER -->
             <div class="col-lg-9 col-md-9 tovar_details_wrapper clearfix">
                 <div class="tovar_details_header clearfix margbot35">
-                    <h3 class="pull-left"><b>Sweaters</b></h3>
+                    <h3 class="pull-left"><b>{{ get_category_by_id(get_category_by_product($contentProduct->id)->category_id)->name }}</b></h3>
                     
                     <div class="tovar_details_pagination pull-right">
                         <a class="fa fa-angle-left" href="javascript:void(0);" ></a>
@@ -39,28 +39,25 @@
                     <div class="tovar_view_fotos clearfix">
                         <div id="slider2" class="flexslider">
                             <ul class="slides">
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_2.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_3.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_4.jpg" alt="" /></a></li>
+                                @foreach ($contentProduct->images as $image)
+                                    <li><a href="javascript:void(0);" ><img src="{{ RvMedia::getImageUrl($image, 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /></a></li>
+                                @endforeach
                             </ul>
                         </div>
                         <div id="carousel2" class="flexslider">
                             <ul class="slides">
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_2.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_3.jpg" alt="" /></a></li>
-                                <li><a href="javascript:void(0);" ><img src="images/tovar/women/1_4.jpg" alt="" /></a></li>
+                                @foreach ($contentProduct->images as $image)
+                                    <li><a href="javascript:void(0);" ><img src="{{ RvMedia::getImageUrl($image, 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /></a></li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                     
                     <div class="tovar_view_description">
-                        <div class="tovar_view_title">Popover Sweatshirt in Floral Jacquard</div>
-                        <div class="tovar_article">88-305-676</div>
+                        <div class="tovar_view_title">{{ $contentProduct->name }}</div>
                         <div class="clearfix tovar_brend_price">
-                            <div class="pull-left tovar_brend">Calvin Klein</div>
-                            <div class="pull-right tovar_view_price">$98.00</div>
+                            <div class="pull-left tovar_brend">{{ get_brand_by_id($contentProduct->brand_id)->name }}</div>
+                            <div class="pull-right tovar_view_price">{{ $contentProduct->price }} VNĐ</div>
                         </div>
                         <div class="tovar_color_select">
                             <p>Select color</p>

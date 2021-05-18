@@ -28,6 +28,8 @@ use EmailHandler;
 use Platform\Ecommerce\Models\Brand;
 use Platform\Ecommerce\Models\Product;
 use Platform\Ecommerce\Models\ProductCategory;
+use Platform\Ecommerce\Repositories\Interfaces\ProductCategoryInterface;
+use Platform\Ecommerce\Repositories\Interfaces\ProductInterface;
 use Theme\Main\Http\Request\LoginRequest;
 
 class MainController extends PublicController
@@ -66,8 +68,9 @@ class MainController extends PublicController
         ->Where('brand_id', '=' ,1 )
         ->take(12)
         ->get();
-      
 
+        //lấy ra 2 bài viết mới nhất thuộc tin tức
+        $data['newPosts'] = get_posts_by_category(5);
         Theme::breadcrumb()->add(__('Home'), url('/'));
         return Theme::scope('index', $data)->render();
     }
@@ -95,41 +98,21 @@ class MainController extends PublicController
         return Theme::scope('Bim_product',$data)->render();
     }
 
-
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getproductdetail(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
-        // $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
-        $data = [];
-        // $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.sanpham')]); 
-       // sản phẩm thương hiệu
-        $data['products_1']=Product::query()
-        ->Where('brand_id', '=' ,1 )
-        ->take(12)
-        ->get();
-
-         // lấy ra danh sách sản phẩm sale   
-         $data['product_sale']=Product::query()
-         ->where('sale_price','>',0 )
-         ->take(4)
-         ->get();
-      
-        return Theme::scope('detail_page',$data)->render();
-    }
-    
-
     public function getlogin()
     {
-        return Theme::scope('customers.login-guest')->render();
+        return Theme::scope('customers.login')->render();
     }
 
-    
     public function login(LoginRequest $request)
     {
        $input = $request->all();
-       dd($input);
+       $auth = auth()->attempt(['email' => $request->email, 'password' => $request->password]);
+       if ($auth) {
+           return redirect()->route('get_shoppingbag');
+       }
+       return back()->withErrors([
+           'error' => 'Sai thông tin đăng nhập'
+       ]);
     }
 
 
@@ -280,9 +263,15 @@ class MainController extends PublicController
      */
     public function getcontact(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
     {
-       
+        $slug = $slugRepository->getFirstBy(['key' => 'lien-he', 'reference_type' => Page::class]);
+        $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
+        $data = [];
+        $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.lienhe')]); 
+        if (!$page) {
+            return view('theme.main::views.404');
+        }
         Theme::breadcrumb()->add(__('Liên Hệ'), route('public.get_contact')); 
-        return Theme::scope('contacts')->render();
+        return Theme::scope('contacts',$data)->render();
     }
 
     /**
@@ -338,14 +327,14 @@ class MainController extends PublicController
 
         return Theme::scope('market.about')->render();
     }
-    //  /**
-    //  * @return \Illuminate\Http\Response|Response
-    //  */
-    // public function get_blog(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    // {
+     /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getdetailblog(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
+    {
 
-    //     return Theme::scope('market.blog')->render();
-    // }
+        return Theme::scope('market.blog-post')->render();
+    }
 
        /**
      * @return \Illuminate\Http\Response|Response
@@ -361,5 +350,70 @@ class MainController extends PublicController
             
         //     return Theme::scope('market.quickview')->render();
         // }
-     
+
+    public function getCategory($slug, SlugInterface $slugRepository, Request $request)
+    {
+        $slug = $slugRepository->getFirstBy([
+            'key' => $slug,
+            'reference_type' => ProductCategory::class,
+            'prefix' => SlugHelper::getPrefix(ProductCategory::class),
+        ]);
+        if (!$slug) {
+            abort('404');
+        }
+        $data['category'] = get_category_by_id($slug->reference_id);
+        $data['products'] = get_products_by_category($data['category']->id, 20);
+        $data['categories'] = get_product_categories();
+        //sliders product
+        $data['sliders'] = theme_option('product_slider');
+        $data['sliders'] = explode(",", $data['sliders']);
+        unset($data['sliders'][0]);
+        foreach ($data['sliders'] as $k => $value) {
+            if ($k == 0) {
+                continue;
+            }
+            if ($k == count($data['sliders'])) {
+                $data['sliders'][$k] = str_ireplace( array( '\'', '"', ',' , ';', '<', '>', ']'), ' ', $value);
+            } else {
+                $data['sliders'][$k] = str_ireplace( array( '\'', '"', ',' , ';', '<', '>' ), ' ', $value);
+            }
+            $data['sliders'][$k] = trim($data['sliders'][$k]);
+        }
+        return Theme::scope('Bim_product', $data)->render();
+    }
+     /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getproductdetail($slug,$slugPost, ProductInterface $productRepository, SlugInterface $slugRepository)
+    {
+        $slug = $slugRepository->getFirstBy(['key' => $slug, 'reference_type' => ProductCategory::class]);
+        if (!$slugPost) {
+            abort('404');
+        }
+        
+        $slugPost = $slugRepository->getFirstBy(['key' => $slugPost, 'reference_type' => Product::class]);
+        $data['contentProduct'] = $productRepository->getFirstBy(['id' => $slugPost->reference_id]);
+
+        $data['products_related']= get_related_products($slug);
+        //  lấy ra danh sách sản phẩm sale   
+         $data['product_sale']=Product::query()
+         ->where('sale_price','>',0 )
+         ->take(4)
+         ->get();
+        return Theme::scope('detail_page',$data)->render();
+    }
+
+    /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getBlogDetail($slug, $slugPost, PostInterface $postRepository, SlugInterface $slugRepository)
+    {
+        if (!$slugPost) {
+            abort('404');
+        }
+        $slugPost = $slugRepository->getFirstBy(['key' => $slugPost, 'reference_type' => Post::class]);
+        $data['contentPost'] = $postRepository->getFirstBy(['id' => $slugPost->reference_id]);
+        return Theme::scope('market.blog-post', $data)->render();
+    }
+    
 }

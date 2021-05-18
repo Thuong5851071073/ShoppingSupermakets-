@@ -173,12 +173,12 @@ if (!function_exists('get_popular_categories')) {
     }
 }
 
-if (!function_exists('get_category_by_id')) {
+if (!function_exists('get_category_product_by_id')) {
     /**
      * @param integer $id
      * @return \Platform\Base\Models\BaseModel
      */
-    function get_category_by_id($id)
+    function get_category_product_by_id($id)
     {
         return app(CategoryInterface::class)->getCategoryById($id);
     }
@@ -253,5 +253,27 @@ if (!function_exists('get_post_formats')) {
     function get_post_formats($convertToList = false)
     {
         return PostFormat::getPostFormats($convertToList);
+    }
+}
+
+if (!function_exists('get_category_by_post_id')) {
+    /**
+     * @param int $postId
+     * @return array
+     */
+    function get_category_by_post_id($postId)
+    {
+        return app(CategoryInterface::class)->getCategoryByPostId($postId);
+    }
+}
+
+if (!function_exists('get_category_post_by_id')) {
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    function get_category_post_by_id($id)
+    {
+        return app(CategoryInterface::class)->getCategoryById($id);
     }
 }

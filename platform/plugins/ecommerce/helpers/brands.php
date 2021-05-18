@@ -47,3 +47,14 @@ if (!function_exists('get_all_brands')) {
         ]);
     }
 }
+
+if (!function_exists('get_brand_by_id')) {
+    /**
+     * @param int $brandId
+     * @return Collection
+     */
+    function get_brand_by_id(int $brandId)
+    {
+        return app(BrandInterface::class)->getBrandById($brandId);
+    }
+}

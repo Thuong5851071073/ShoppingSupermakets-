@@ -14,4 +14,12 @@ class BrandCacheDecorator extends CacheAbstractDecorator implements BrandInterfa
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBrandById(int $brandId)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
 }

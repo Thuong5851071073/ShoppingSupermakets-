@@ -4,15 +4,9 @@
     <div class="sidepanel widget_categories">
         <h3>Danh Mục Sản Phẩm </h3>
         <ul>
-            @foreach ($product_category as $k )
-                <li><a href="javascript:void(0);" >{{$k->name}}</a></li>    
+            @foreach ($categories as $category )
+                <li><a href="{{ route('product.category', $category->slug) }}" >{{$category->name}}</a></li>    
             @endforeach
-            {{-- <li><a href="javascript:void(0);" >SHIRTS &amp; TOPS</a></li>
-            <li><a href="javascript:void(0);" >KNITS &amp; TEES</a></li>
-            <li><a href="javascript:void(0);" >PANTS</a></li>
-            <li><a href="javascript:void(0);" >DENIM</a></li>
-            <li><a href="javascript:void(0);" >DRESSES</a></li>
-            <li><a href="javascript:void(0);" >Maternity</a></li> --}}
         </ul>
     </div><!-- //CATEGORIES -->
     

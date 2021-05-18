@@ -10,9 +10,6 @@
 		<!-- TOVAR SECTION -->
 		@includeIf('theme.main::partials.trangchu.tovar_section')
 		<!-- //TOVAR SECTION -->
-		<!-- NEW ARRIVALS -->
-		@includeIf('theme.main::partials.trangchu.new_arrivals')
-		<!-- //NEW ARRIVALS -->	
 		<!-- BRANDS -->
 		@includeIf('theme.main::partials.trangchu.brands');
 		<!-- //BRANDS -->

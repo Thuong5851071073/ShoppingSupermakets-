@@ -87,13 +87,35 @@ class ProductCategoryRepository extends RepositoriesAbstract implements ProductC
     /**
      * {@inheritDoc}
      */
+    public function getCategoryProductById($id)
+    {
+        $data = $this->model->with('slugable')->where([
+            'ec_product_category_product.product_id'     => $id,
+            'ec_product_categories.status' => BaseStatusEnum::PUBLISHED,
+        ]);
+        return $this->applyBeforeExecuteQuery($data, true)->first();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public function getAllCategories($active = true)
     {
         $data = $this->model->select('ec_product_categories.*');
         if ($active) {
             $data = $data->where(['ec_product_categories.status' => BaseStatusEnum::PUBLISHED]);
         }
-
         return $this->applyBeforeExecuteQuery($data)->get();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCategoryById($id)
+    {
+        $data = $this->model->where('id', $id);
+        return $this->applyBeforeExecuteQuery($data)->first();
+    }
+
 }

@@ -38,4 +38,20 @@ class ProductCategoryCacheDecorator extends CacheAbstractDecorator implements Pr
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCategoryProductById($id)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCategoryById($id)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
 }

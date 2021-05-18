@@ -916,4 +916,43 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 
         return $this->advancedGet($params);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getproductsByCategory($categoryId, $paginate = 12)
+    {
+        if (!is_array($categoryId)) {
+            $categoryId = [$categoryId];
+        }
+
+        $data = $this->model
+            ->where('ec_products.status', BaseStatusEnum::PUBLISHED)
+            ->join('ec_product_category_product', 'ec_product_category_product.product_id', '=', 'ec_products.id')
+            ->join('ec_product_categories', 'ec_product_category_product.category_id', '=', 'ec_product_categories.id')
+            ->whereIn('ec_product_category_product.category_id', $categoryId)
+            ->select('ec_products.*')
+            ->distinct()
+            ->with('slugable')
+            ->orderBy('ec_products.created_at', 'desc');
+
+        if ($paginate != 0) {
+            return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+        }
+
+        return $this->applyBeforeExecuteQuery($data)->get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCategoryByProduct(int $product_id)
+    {
+        $data = $this->model
+                ->join('ec_product_category_product', 'ec_product_category_product.product_id', '=', 'ec_products.id')
+                ->where('ec_product_category_product.product_id', $product_id)
+                ->select('ec_product_category_product.*')
+                ->with('slugable');
+        return $this->applyBeforeExecuteQuery($data)->first();
+    }
 }

@@ -20,7 +20,7 @@
                             @foreach ($product_sale as $k )                              
                                 <li>
                                     <!-- TOVAR -->
-                                    <a href="{{route('get_product_detail')}}">
+                                    <a href="">
                                         <div class="tovar_item_new tovar_sale">
                                             <div class="tovar_img">
                                                 <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />

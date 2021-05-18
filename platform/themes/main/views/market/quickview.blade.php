@@ -1,7 +1,7 @@
 <div class="tover_view_page element_fade_in">
 	<div class="tover_view_header clearfix">
-		<p>Quick view</p>
-		<a id="tover_view_page_close" href="javascript:void(0);">Close<i>X</i></a>
+		<p>Thông tin</p>
+		<a id="tover_view_page_close" href="javascript:void(0);">Đóng<i>X</i></a>
 	</div>
 	
 	<div class="clearfix">
