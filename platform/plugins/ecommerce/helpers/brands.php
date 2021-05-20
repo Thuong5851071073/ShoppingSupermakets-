@@ -48,7 +48,7 @@ if (!function_exists('get_all_brands')) {
     }
 }
 
-if (!function_exists('get_brand_by_id')) {
+if (!function_exists('get_brand_by_id')) { 
     /**
      * @param int $brandId
      * @return Collection

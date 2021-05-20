@@ -35,16 +35,7 @@
 								<p>{{$category->name}}</p>
 								<span>{{count($products)}} Sản phẩm</span>
 							</div>
-							<!-- //COUNT TOVAR ITEMS -->
-							{{-- <!-- TOVAR FILTER -->
-							<div class="product_sort">
-								<p>SORT BY</p>
-								<select class="basic">
-									<option value="">Popularity</option>
-									<option>Reting</option>
-									<option>Date</option>
-								</select>
-							</div><!-- //TOVAR FILTER --> --}}
+						
 							<!-- PRODUC SIZE -->
 							<div id="toggle-sizes">
 								<a class="view_box active" href="javascript:void(0);"><i class="fa fa-th-large"></i></a>

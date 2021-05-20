@@ -92,7 +92,7 @@ if (!function_exists('get_category_product_by_id')) {
 }
 
 if (!function_exists('get_category_by_id')) {
-    /**
+    /** 
      * @param integer $id
      * @return array
      */

@@ -426,7 +426,7 @@ if (!function_exists('get_products_by_category')) {
      * @param int $paginate
      * @return array
      */
-    function get_products_by_category($categoryId, $paginate)
+    function get_products_by_category($categoryId, $paginate) 
     {
         return app(ProductInterface::class)->getproductsByCategory($categoryId, $paginate);
     }

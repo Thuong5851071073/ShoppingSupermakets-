@@ -11,10 +11,8 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
        
         Route::get('/lien-he', 'MainController@getcontact')->name('public.get_contact');
         Route::get('/thuong-hieu', 'MainController@getbrand')->name('get_brand');
-        
         Route::get('/gio-hang', 'MainController@getshoppingbag')->name('get_shoppingbag');
-        Route::get('/tin-tuc', 'MainController@getaboutus')->name('get_about_us');
-
+        
         Route::prefix('nguoi-dung')->group(function(){
             Route::get('/dang-nhap', 'MainController@getlogin')->name('get_login');
             Route::post('/dang-nhap', 'MainController@login')->name('guest.login');

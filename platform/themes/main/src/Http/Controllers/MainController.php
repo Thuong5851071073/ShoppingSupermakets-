@@ -70,7 +70,8 @@ class MainController extends PublicController
         ->get();
 
         //lấy ra 2 bài viết mới nhất thuộc tin tức
-        $data['newPosts'] = get_posts_by_category(5);
+        $data['newPosts'] = get_posts_by_category(5); 
+      
         Theme::breadcrumb()->add(__('Home'), url('/'));
         return Theme::scope('index', $data)->render();
     }
@@ -139,11 +140,16 @@ class MainController extends PublicController
      * @return \Illuminate\Http\Response|Response
      */
     public function getbrand(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
+    {   
         $slug = $slugRepository->getFirstBy(['key' => 'thuong-hieu', 'reference_type' => Page::class]);
         $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
         $data = [];
         $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.thuonghieu')]); 
+        dd($page);
+         //  lấy sản phẩm từ brand
+        // $data['brand']=get_brand_by_id($slug->reference_id);
+        // dd(get_brand_by_id($slug->reference_id));
+        // $data['products_br']=get_product_by_brand($data['brand']->id);
 
         $data['A']=Brand::query()
         ->where('name','like','a%')
@@ -327,14 +333,7 @@ class MainController extends PublicController
 
         return Theme::scope('market.about')->render();
     }
-     /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getdetailblog(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
 
-        return Theme::scope('market.blog-post')->render();
-    }
 
        /**
      * @return \Illuminate\Http\Response|Response
@@ -361,9 +360,19 @@ class MainController extends PublicController
         if (!$slug) {
             abort('404');
         }
+        // $slugPost = $slugRepository->getFirstBy([
+        //     'key' => $slugPost,
+        //     'reference_type' => Brand::class,
+        //     'prefix' => SlugHelper::getPrefix(Brand::class),
+        // ]);
+        // if (!$slugbr) {
+        //     abort('404');
+        // }
         $data['category'] = get_category_by_id($slug->reference_id);
         $data['products'] = get_products_by_category($data['category']->id, 20);
         $data['categories'] = get_product_categories();
+
+       
         //sliders product
         $data['sliders'] = theme_option('product_slider');
         $data['sliders'] = explode(",", $data['sliders']);
@@ -408,7 +417,7 @@ class MainController extends PublicController
      */
     public function getBlogDetail($slug, $slugPost, PostInterface $postRepository, SlugInterface $slugRepository)
     {
-        if (!$slugPost) {
+        if (!$slugPost) { 
             abort('404');
         }
         $slugPost = $slugRepository->getFirstBy(['key' => $slugPost, 'reference_type' => Post::class]);
