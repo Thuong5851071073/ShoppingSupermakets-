@@ -107,4 +107,14 @@ class Customer extends Authenticatable
             Wishlist::where('customer_id', $customer->id)->delete();
         });
     }
+
+    public static function saveCustomer($input)
+    {
+        $customer = new Customer();
+        $customer->name = $input['nameCustomer'];
+        $customer->email = $input['emailCustomer'];
+        $customer->password = Hash::make($input['passwordCustomer']);
+        $customer->save();
+        return $customer;
+    }
 }

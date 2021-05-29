@@ -205,4 +205,17 @@ interface ProductInterface extends RepositoryInterface
      * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Collection|mixed
      */
     public function getCategoryByProduct(int $product_id);
+
+    /**
+     * @param int $brandId
+     * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Collection|mixed
+     */
+    public function getProductByBrand(int $brandId);
+    
+    /**
+     * @param int $price
+     * @param int $price2
+     * @return LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection|Collection|mixed
+     */
+    public function findproductByPrice(int $price, int $price2);
 }

@@ -108,8 +108,8 @@ html[xmlns] .slides {display: block;}
 	height:21px;
 	background-repeat:no-repeat;
 }
-.flex-control-nav:before {right:-24px; background-image:url(../images/slider/pagin_bg_r.png);}
-.flex-control-nav:after {left:-24px; background-image:url(../images/slider/pagin_bg_l.png);}
+/* .flex-control-nav:before {right:-24px; background-image:url(../images/slider/pagin_bg_r.png);}
+.flex-control-nav:after {left:-24px; background-image:url(../images/slider/pagin_bg_l.png);} */
 
 .flex-control-nav li {
 	display:inline-block;

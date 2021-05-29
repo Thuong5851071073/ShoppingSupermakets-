@@ -6,6 +6,7 @@ use Platform\Ecommerce\Repositories\Interfaces\ProductCategoryInterface;
 use Platform\Ecommerce\Repositories\Interfaces\ProductCollectionInterface;
 use Platform\Ecommerce\Repositories\Interfaces\ProductInterface;
 use Platform\Support\Repositories\Caches\CacheAbstractDecorator;
+use Stripe\Price;
 
 class ProductCacheDecorator extends CacheAbstractDecorator implements ProductInterface
 {
@@ -311,4 +312,21 @@ class ProductCacheDecorator extends CacheAbstractDecorator implements ProductInt
     {
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
+
+     /**
+     * {@inheritDoc}
+     */
+    public function getProductByBrand(int $brandId)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function findproductByPrice(int $price, int $price2)
+    {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+    }
+
 }

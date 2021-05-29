@@ -32,4 +32,8 @@ class BrandRepository extends RepositoriesAbstract implements BrandInterface
                 ->where('id', $brandId);
         return $data->first();
     }
+
+    
+
+    
 }

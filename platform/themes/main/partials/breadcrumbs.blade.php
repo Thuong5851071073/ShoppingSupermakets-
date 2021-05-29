@@ -5,7 +5,7 @@
             {!! Theme::breadcrumb()->render() !!} 
         </h3>
         <div class="pull-right" style="margin-top: 3rem;">
-            <a href="#" >Back to shop<i class="fa fa-angle-right"></i></a>
+            <a href="{{route('public.index')}}" >Về Trang Chủ<i class="fa fa-angle-right"></i></a>
         </div>
     </div><!-- //CONTAINER -->
 </section>

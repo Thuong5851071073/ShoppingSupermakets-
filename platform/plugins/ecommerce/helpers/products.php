@@ -442,4 +442,33 @@ if (!function_exists('get_category_by_product')) {
     {
         return app(ProductInterface::class)->getCategoryByProduct($product_id);
     }
+
 }
+
+if (!function_exists('get_products_by_brand')) {
+   /**
+     * Get Product by brand
+     * @param int $brandId
+     * @return array
+     */
+    function get_products_by_brand($brandId)
+    {
+        return app(ProductInterface::class)->getProductByBrand($brandId);
+    }
+}
+
+if (!function_exists('find_product_By_Price')) {
+    /**
+      * Get Product by price
+      * @param int $price
+       * @param int $price2
+      * @return array
+      */
+     function find_product_By_Price($price,$price2)
+     {
+         return app(ProductInterface::class)->getProductByBrand($price,$price2);
+     }
+ }
+ 
+
+

@@ -955,4 +955,30 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                 ->with('slugable');
         return $this->applyBeforeExecuteQuery($data)->first();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getProductByBrand($brandId)
+    {
+        $data = $this->model
+                    ->where('brand_id', $brandId)
+                    ->select('ec_products.*')
+                    ->with('slugable');
+        return $this->applyBeforeExecuteQuery($data)->get();
+    }
+
+     /**
+     * {@inheritDoc}
+     */
+    public function findproductByPrice($price ,$price2)
+    {
+        $data = $this->model
+                    ->where('price', 'BETWEEN', $price ,'and', $price2)
+                    ->select('ec_products.*')
+                    ->with('slugable');
+        return $this->applyBeforeExecuteQuery($data)->get();
+
+    }
 }
+

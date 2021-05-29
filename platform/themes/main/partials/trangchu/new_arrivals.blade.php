@@ -2,7 +2,7 @@
 			
     <!-- CONTAINER -->
     <div class="container">
-        <h2 class="text_label text20" style="margin-top: 2rem; margin-bottom:2rem;  ">Sản Phẩm Liên Quan</h2>
+        <h2 class="text_label text20" style="margin-top: 2rem; margin-bottom:2rem;  ">Sản Phẩm Khác</h2>
         
         <!-- JCAROUSEL -->
         <div class="jcarousel-wrapper">
@@ -28,10 +28,10 @@
                                     <img src="{{ RvMedia::getImageUrl($product_related->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
                                     <div class="open-project-link">
                                         <a class="open-project tovar_view" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product_related->id)->category_id)->slug, $product_related->slug]) }}" >Xem </a></div>
-                                </div>
+                                     </div>
                                 <div class="tovar_description clearfix">
                                     <a class="tovar_title " href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product_related->id)->category_id)->slug, $product_related->slug]) }}" >{{$product_related->name}}</a>
-                                    <span class="tovar_price">{{$product_related->price}} VNĐ</span>
+                                    <span class="tovar_price">{{number_format($product_related->price)}} VNĐ</span>
                                 </div>
                             </div><!-- //TOVAR -->
                         </a>

@@ -1,43 +1,4 @@
-{{-- <div class="menu_top">
-    <a href="#" class="menu_link" title="">
-        Help
-    </a>
-    <div class="menu_link_item">
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-    </div>
 
-</div>
-<div class="menu_top">
-    <a href="#" class="menu_link" title="">
-        Help
-    </a>
-    <div class="menu_link_item">
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-        <a href="" class="menu_link_item_name">
-            information
-        </a>
-    </div>
-
-</div> --}}
 @foreach ($menu_nodes as $menu)
     @if ($menu->has_child)
             <div class="menu_top">

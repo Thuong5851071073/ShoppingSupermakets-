@@ -28,18 +28,18 @@
                                          <label class="form-check-label" for="remember-me"><span>{{ __('Remember me') }}</span></label>
                                      </div>
                                  </div>
-                                 <a href="{{ route('customer.password.reset') }}">{{ __('Forgot password?') }}</a>
+                                 {{-- <a href="{{ route('get_resetPass') }}">{{ __('Quên Mật Khẩu') }}</a> --}}
                              </div>
                              <div class="form-group">
-                                 <button type="submit" class="btn btn-fill-out btn-block">{{ __('Log in') }}</button>
+                                 <button type="submit" class="btn btn-fill-out btn-block">{{ __('Đăng Nhập') }}</button>
                              </div>
                          </form>
 
                          <div class="text-center">
                              {!! apply_filters(BASE_FILTER_AFTER_LOGIN_OR_REGISTER_FORM, null, \Platform\Ecommerce\Models\Customer::class) !!}
                          </div>
-
-                         <div class="form-note text-center">{{ __("Don't Have an Account?") }} <a href="{{ route('customer.register') }}">{{ __('Sign up now') }}</a></div>
+                         <div class="form-note text-center">{{ __("Nếu Bạn Chưa Có Tài Khoản") }} <a href="{{ route('get_dangky') }}">{{ __('Đăng Ký ') }}</a></div>
+                         <div class="form-note text-center">{{ __('Nếu Bạn Mất Tài Khoản Vui Lòng Liên Hệ Số : 0326912693') }} </div>
                      </div>
                  </div>
              </div>

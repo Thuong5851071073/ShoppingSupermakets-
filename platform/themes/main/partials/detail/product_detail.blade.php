@@ -9,14 +9,13 @@
             <!-- SIDEBAR TOVAR DETAILS -->
             <div class="col-lg-3 col-md-3 sidebar_tovar_details">
                 <h3><b>Sản Phẩm Khuyến Mãi</b></h3>
-                
                 <ul class="tovar_items_small clearfix">
-                    @foreach ($product_sale as $product ) 
+                    @foreach ($product_sale as $product )
                         <li class="clearfix">
                             <img class="tovar_item_small_img" src="{{ RvMedia::getImageUrl($product->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" /> 
                             <a href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" class="tovar_item_small_title">{{$product->name}}</a>
-                            <span class="tovar_price_product tovar_item_small_price text17 ">{{$product->price}} VNĐ</span>
-                            <span class="tovar_price_sale tovar_item_small_price text17">{{$product->sale_price}} VNĐ</span>
+                            <span class="tovar_price_product tovar_item_small_price text17 ">{{number_format($product->price)}} VNĐ</span>
+                            <span class="tovar_price_sale tovar_item_small_price text17">{{number_format($product->sale_price)}} VNĐ</span>
                         </li>
                     @endforeach
                 </ul>
@@ -26,14 +25,13 @@
             <div class="col-lg-9 col-md-9 tovar_details_wrapper clearfix">
                 <div class="tovar_details_header clearfix margbot35">
                     <h3 class="pull-left"><b>{{ get_category_by_id(get_category_by_product($contentProduct->id)->category_id)->name }}</b></h3>
-                    
+                           
                     <div class="tovar_details_pagination pull-right">
                         <a class="fa fa-angle-left" href="javascript:void(0);" ></a>
                         <span>2 of 34</span>
                         <a class="fa fa-angle-right" href="javascript:void(0);" ></a>
                     </div>
                 </div>
-                
                 <!-- CLEARFIX -->
                 <div class="clearfix padbot40">
                     <div class="tovar_view_fotos clearfix">
@@ -52,81 +50,40 @@
                             </ul>
                         </div>
                     </div>
-                    
+           
                     <div class="tovar_view_description">
                         <div class="tovar_view_title">{{ $contentProduct->name }}</div>
                         <div class="clearfix tovar_brend_price">
                             <div class="pull-left tovar_brend">{{ get_brand_by_id($contentProduct->brand_id)->name }}</div>
-                            <div class="pull-right tovar_view_price">{{ $contentProduct->price }} VNĐ</div>
+                            <div class="pull-right tovar_view_price">Giá: {{ number_format($contentProduct->price) }} VNĐ</div>
                         </div>
                         <div class="tovar_color_select">
-                            <p>Select color</p>
-                            <a class="color1" href="javascript:void(0);" ></a>
-                            <a class="color2 active" href="javascript:void(0);" ></a>
-                            <a class="color3" href="javascript:void(0);" ></a>
-                            <a class="color4" href="javascript:void(0);" ></a>
                         </div>
                         <div class="tovar_size_select">
-                            <div class="clearfix">
-                                <p class="pull-left">Select SIZE</p>
-                                <span>Size & Fit</span>
-                            </div>
-                            <a class="sizeXS" href="javascript:void(0);" >XS</a>
-                            <a class="sizeS active" href="javascript:void(0);" >S</a>
-                            <a class="sizeM" href="javascript:void(0);" >M</a>
-                            <a class="sizeL" href="javascript:void(0);" >L</a>
-                            <a class="sizeXL" href="javascript:void(0);" >XL</a>
-                            <a class="sizeXXL" href="javascript:void(0);" >XXL</a>
-                            <a class="sizeXXXL" href="javascript:void(0);" >XXXL</a>
+                           <p>Cam kết chất lượng, không hài lòng trả hàng!</p>
+                           <p>Giao hàng đúng hẹn</p>
+                           <p>Được tích điểm giảm giá</p>
                         </div>
                         <div class="tovar_view_btn">
-                            <select class="basic">
-                                <option value="">QTY</option>
-                                <option>Lo</option>
-                                <option>Ips</option>
-                                <option>Dol</option>
-                                <option>Sit</option>
-                                <option>Amet</option>
-                            </select>
                             <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i>Add to bag</a>
                             <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
                         </div>
-                        <div class="tovar_shared clearfix">
-                            <p>Share item with friends</p>
-                            <ul>
-                                <li><a class="facebook" href="javascript:void(0);" ><i class="fa fa-facebook"></i></a></li>
-                                <li><a class="twitter" href="javascript:void(0);" ><i class="fa fa-twitter"></i></a></li>
-                                <li><a class="linkedin" href="javascript:void(0);" ><i class="fa fa-linkedin"></i></a></li>
-                                <li><a class="google-plus" href="javascript:void(0);" ><i class="fa fa-google-plus"></i></a></li>
-                                <li><a class="tumblr" href="javascript:void(0);" ><i class="fa fa-tumblr"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    </div> 
                 </div><!-- //CLEARFIX -->
                 
                 <!-- TOVAR INFORMATION -->
                 <div class="tovar_information">
                     <ul class="tabs clearfix">
-                        <li class="current">Details</li>
-                        <li>Information</li>
+                        <li class="current">Chi Tiết Sản Phẩm</li>
+                        <li>Thông Tin Sản Phẩm</li>
                         <li>Reviews (2)</li>
                     </ul>
                     <div class="box visible">
-                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p>Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst. </p>
+                        <p>{!! $contentProduct->description !!} </p>
                     </div>
                     <div class="box">
-                        Original Levi 501 <br>
-                        Button fly<br>
-                        Regular fit<br>
-                        waist 28"-32 =16"hem<br>
-                        waist 33" = 17" hem<br>
-                        waist 34"-40"=18" hem<br>
-                        Levi's have started to introduce the red tab with just the (R) (registered trade mark) on the red tab<br><br>
-
-                        Size Details:<br>
-                        All sizes from 28-40 waist<br>
-                        Leg length 30", 32", 34", 36"
+                        {!! $contentProduct->content !!} 
+                       
                     </div>
                     <div class="box">
                         <ul class="comments">

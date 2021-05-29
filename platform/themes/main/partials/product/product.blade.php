@@ -20,12 +20,13 @@
                         <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
                     </div>
                 </div>
-                <div class="tovar_description clearfix">
+                <div class="tovar_description clearfix" style=" display: flex;flex-direction: column;text-align: center;">
                     <a class="tovar_title" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" >{{ $product->name }}</a>
-                    <span class="tovar_price">{{ $product->sale_price }} VNĐ</span>
+                    <span class="tovar_price">Giá: {{number_format( $product->price )}} VNĐ</span>
                 </div>
-                <div class="tovar_content">{{$product->description}}</div>
+                <div class="tovar_content">{!!$product->description!!}</div>
             </div>
         </div><!-- //TOVAR1 -->
-    @endforeach							
+    @endforeach
+    							
 </div>

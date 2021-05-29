@@ -1,9 +1,44 @@
 .login_register_wrap{
-   .justify-content-center{
-       .login_wrap{
-           .padding_eight_all{
-               
-           }
-       }
-   }
+    font-size: 16px;
+
+    padding-top: 12rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative;
+    .justify-content-center{
+        margin-bottom: 2rem;
+        .login_wrap{
+            box-shadow: 0 0 10px rgba(119, 228, 76, 0.2);
+            .padding_eight_all{
+                padding: 8%;
+                .heading_s1{
+                    font-size: 25px;
+                    text-align: center;
+                    margin-bottom: 2rem;
+                }
+                .form-group{
+                    .form-control{
+                        display: block;
+                        width: 100%;
+                        height: 34px;
+                        padding: 6px 12px;
+                        font-size: 14px;
+                        line-height: 1.42857143;
+                        color: #555;
+                        background-color: #fff;
+                        background-image: none;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+                    .btn-fill-out{
+                        border: 0.5px solid #333;
+                        &:hover{
+                          background-color: $primary_color;
+                        }
+                      }
+                }
+            }
+        }
+    }
 }

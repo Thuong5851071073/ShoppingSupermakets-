@@ -12,7 +12,9 @@ register_sidebar([
 ]);
 
 RvMedia::addSize('new_post', 270, 230)
-    ->addSize('post_detail', 760, 380);
+    ->addSize('post_detail', 760, 380)
+    ->addSize('mini_post', 70, 60)
+    ->addSize('slider', 270, 180);
 theme_option()
     ->setField([
         'id'         => 'copyright',

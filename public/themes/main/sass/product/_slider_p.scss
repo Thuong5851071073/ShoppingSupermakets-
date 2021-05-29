@@ -33,10 +33,16 @@
             }
         }
         .swiper-button-next{
-
+            color: white;
+            &:hover{
+                color: black;
+            }
         }
         .swiper-button-prev{
-
+            color: white;
+            &:hover{
+                color: black;
+            }
         }
         .swiper-pagination{
 

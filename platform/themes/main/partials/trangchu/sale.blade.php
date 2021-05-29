@@ -29,10 +29,10 @@
                                                 </div>
                                             </div>
                                             <div class="tovar_description clearfix">
-                                                <a class="tovar_title" href="product-page.html" >{{$k->name}}</a>
-                                                <span class="tovar_price_product text17">{{$k->price}} VNĐ</span>
+                                                <a class="tovar_title" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($k->id)->category_id)->slug, $k->slug]) }}" >{{$k->name}}</a>
+                                                <span class="tovar_price_product text17">Giá: {{number_format($k->price)}} VNĐ</span>
                                                 <br>
-                                                <span class="tovar_price_sale text17">{{$k->sale_price}} VNĐ</span>
+                                                <span class="tovar_price_sale text17">Còn: {{number_format($k->sale_price)}} VNĐ</span>
                                             </div>
                                         </div><!-- //TOVAR -->
                                     </a>
