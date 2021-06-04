@@ -58,6 +58,9 @@ class CustomerTable extends TableAbstract
             ->editColumn('email', function ($item) {
                 return $item->email;
             })
+            ->editColumn('phone', function ($item) {
+                return $item->phone;
+            })
             ->editColumn('checkbox', function ($item) {
                 return $this->getCheckbox($item->id);
             })
@@ -83,6 +86,7 @@ class CustomerTable extends TableAbstract
             'ec_customers.id',
             'ec_customers.name',
             'ec_customers.email',
+            'ec_customers.phone',
             'ec_customers.avatar',
             'ec_customers.created_at',
         ];
@@ -107,6 +111,11 @@ class CustomerTable extends TableAbstract
             'name'       => [
                 'name'  => 'ec_customers.name',
                 'title' => trans('core/base::forms.name'),
+                'class' => 'text-left',
+            ],
+            'phone'       => [
+                'name'  => 'ec_customers.phone',
+                'title' => trans('Phone'),
                 'class' => 'text-left',
             ],
             'email'      => [

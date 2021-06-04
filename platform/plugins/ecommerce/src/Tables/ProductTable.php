@@ -156,18 +156,18 @@ class ProductTable extends TableAbstract
             ],
             'image'      => [
                 'name'  => 'ec_products.images',
-                'title' => trans('plugins/ecommerce::products.image'),
+                'title' => trans('Ảnh Sản Phẩm'),
                 'width' => '100px',
                 'class' => 'text-center',
             ],
             'name'       => [
                 'name'  => 'ec_products.name',
-                'title' => trans('core/base::tables.name'),
+                'title' => trans('Tên Sản Phẩm'),
                 'class' => 'text-left',
             ],
             'price'        => [
                 'name'  => 'ec_products.price',
-                'title' => trans('plugins/ecommerce::products.price'),
+                'title' => trans('Giá Sản Phẩm'),
                 'class' => 'text-left',
             ],
             'sku'        => [
@@ -183,13 +183,13 @@ class ProductTable extends TableAbstract
             ],
             'created_at' => [
                 'name'  => 'ec_products.created_at',
-                'title' => trans('core/base::tables.created_at'),
+                'title' => trans('Ngày Tạo'),
                 'width' => '100px',
                 'class' => 'text-center',
             ],
             'status'     => [
                 'name'  => 'ec_products.status',
-                'title' => trans('core/base::tables.status'),
+                'title' => trans('Trạng Thái'),
                 'width' => '100px',
                 'class' => 'text-center',
             ],

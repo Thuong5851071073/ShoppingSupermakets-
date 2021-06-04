@@ -3,6 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Platform\Slug\SlugHelper;
 
+Route::group([
+    'namespace'  => 'Platform\Ecommerce\Http\Controllers\Customers',
+    'middleware' => ['web', 'core', 'customer.guest'],
+], function () {
+    Route::post('dang-nhap', 'LoginController@login')->name('login.post');
+});
 // Custom routes
 // You can delete this route group if you don't need to add your custom routes.
 Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['web', 'core']], function () {
@@ -11,19 +17,30 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
         Route::get('/tim-kiem','MainController@getViewSeach')->name('public.search');
        
         Route::get('/lien-he', 'MainController@getcontact')->name('public.get_contact');
-     
-        Route::get('/gio-hang', 'MainController@getshoppingbag')->name('get_shoppingbag');
-        
+        Route::get('tag','MainController@getTag')->name('blog.tag');
+        // Route::get('/gio-hang', 'MainController@getshoppingbag')->name('get_shoppingbag');
+
+        // Route::group(['middleware' => 'customer'], function () {
+        //     Route::get('gio-hang', 'MainController@getshoppingbag')->name('get_shoppingbag');
+        // });
+        Route::prefix('gio-hang')->group(function () {
+            Route::post('them-vao-gio', 'CartController@addCart')->name('cart.add');
+            Route::group(['middleware' => 'customer'], function () {
+                Route::get('', 'CartController@getCart')->name('public.get-cart');
+                Route::post('cap-nhat-gio-hang', 'CartController@updateCart')->name('public.update');
+                Route::post('xoa-gio-hang', 'CartController@removeDetailCart')->name('cart.remove-detail');
+            });
+        });
+
         Route::prefix('nguoi-dung')->group(function(){
             Route::get('/dang-nhap', 'MainController@getlogin')->name('get_login');
-            Route::post('/dang-nhap', 'MainController@login')->name('guest.login');
-            Route::get('/lay-lai-mat-khau', 'MainController@getreset') ->name('get_resetPass');
             Route::get('/dang-ky', 'MainController@getregister')->name('get_dangky');
             Route::post('/dang-ky', 'MainController@register')->name('guest.register');
 
         });
+     
 
-        Route::prefix('check-pay')->group(function(){
+        Route::prefix('thanh-toan')->group(function(){
             Route::get('/thong-tin-nguoi-nhan', 'MainController@getinforreship') ->name('get_inforreship');
             Route::get('/hinh-thuc-giao-hang', 'MainController@getwayshiping')->name('get_wayshiping');
             Route::get('/hinh-thuc-thanh-toan', 'MainController@getwaypay')->name('get_waypay');
@@ -44,6 +61,7 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
             Route::get('', 'MainController@getBlogTotal')->name('blog.index');
             Route::get('{slug}', 'MainController@getblog') ->name('get_reset');
             Route::get('{slug}/{slugPost}', 'MainController@getBlogDetail')->name('blog.detail');
+           
         });
 
       

@@ -26,8 +26,8 @@
                             <div class="tovar_item_new">
                                 <div class="tovar_img">
                                     <img src="{{ RvMedia::getImageUrl($product_related->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
-                                    <div class="open-project-link">
-                                        <a class="open-project tovar_view" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product_related->id)->category_id)->slug, $product_related->slug]) }}" >Xem </a></div>
+                                    <div class="open-project">
+                                        <a class="add_lovelist btn_all_item" style="font-weight: bold; " href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product_related->id)->category_id)->slug, $product_related->slug]) }}" >Xem </a></div>
                                      </div>
                                 <div class="tovar_description clearfix">
                                     <a class="tovar_title " href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product_related->id)->category_id)->slug, $product_related->slug]) }}" >{{$product_related->name}}</a>

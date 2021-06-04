@@ -5,3 +5,4 @@
 </div>
 
 {!! Theme::partial('footer') !!}
+{!! Theme::partial('social-contact') !!}

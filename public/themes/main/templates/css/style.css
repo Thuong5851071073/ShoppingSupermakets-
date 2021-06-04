@@ -1313,7 +1313,7 @@ a.add_lovelist:hover {
 	line-height:46px;
 	font-size:16px;
 	color:#333;
-	border:2px solid #333;
+	/* border:2px solid #333; */
 }
 .tovar_description {
 	padding:18px 0 0;

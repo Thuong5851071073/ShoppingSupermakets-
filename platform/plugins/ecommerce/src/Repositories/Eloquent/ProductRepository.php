@@ -980,5 +980,32 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
         return $this->applyBeforeExecuteQuery($data)->get();
 
     }
+
+
+
+     /**
+     * {@inheritDoc}
+     */
+    public function getproductsByBrandsPaginate($BrandId, $paginate = 12)
+    {
+        if (!is_array($BrandId)) {
+            $BrandId = [$BrandId];
+        }
+
+        $data = $this->model
+            ->where('ec_products.status', BaseStatusEnum::PUBLISHED)
+            ->join('ec_brands', 'ec_products.brand_id', '=', 'ec_brands.id')
+            ->whereIn('ec_products.brand_id', $BrandId)
+            ->select('ec_products.*')
+            ->distinct()
+            ->with('slugable')
+            ->orderBy('ec_products.created_at', 'desc');
+
+        if ($paginate != 0) {
+            return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+        }
+
+        return $this->applyBeforeExecuteQuery($data)->get();
+    }
 }
 

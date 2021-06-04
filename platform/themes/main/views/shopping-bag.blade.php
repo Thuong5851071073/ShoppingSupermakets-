@@ -2,170 +2,110 @@
 <div id="preloader"><img src="{{ Theme::asset()->url('images/preloader.gif') }}" alt="" /></div>
 <!-- //PRELOADER -->
 <div class="preloader_hide">
-
 	<!-- PAGE -->
 	<div id="page">
-	
 		<!-- BREADCRUMBS -->
 		<section class="breadcrumb parallax margbot30"></section>
 		<!-- //BREADCRUMBS -->
-		
-		
 		<!-- PAGE HEADER -->
 		@includeIf('theme.main::partials.breadcrumbs')
-		{{-- <section class="page_header">
-			
-			<!-- CONTAINER -->
-			<div class="container">
-				<h3 class="pull-left"><b>Shopping bag</b></h3>
-				
-				<div class="pull-right">
-					<a href="women.html" >Back to shop<i class="fa fa-angle-right"></i></a>
-				</div>
-			</div><!-- //CONTAINER -->
-		</section> --}}
-		<!-- //PAGE HEADER -->
-		
-		
 		<!-- SHOPPING BAG BLOCK -->
 		<section class="shopping_bag_block">
-			
 			<!-- CONTAINER -->
-			<div class="container">
-			
+			<div class="container-fluid">
 				<!-- ROW -->
 				<div class="row">
-					
 					<!-- CART TABLE -->
-					<div class="col-lg-9 col-md-9 padbot40">
-						
+					<div class="col-lg-9 col-md-12 col-12 padbot40">
 						<table class="shop_table">
 							<thead>
 								<tr>
 									<th class="product-thumbnail"></th>
-									<th class="product-name">Item</th>
-									<th class="product-price">Price</th>
-									<th class="product-quantity">Quantity</th>
-									<th class="product-subtotal">Total</th>
-									<th class="product-remove"></th>
+									<th class="product-name">Sản Phẩm</th>
+									<th class="product-price">Giá</th>
+									<th class="product-quantity">Số Lượng</th>
+									<th class="product-subtotal">Thành Tiền</th>
+									<th class="product-remove"> Cật nhập</th>
+									<th class="product-remove"> Xóa Khỏi Giỏ</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="cart_item">
-									<td class="product-thumbnail"><a href="product-page.html" ><img src="images/tovar/women/1.jpg" width="100px" alt="" /></a></td>
-									<td class="product-name">
-										<a href="product-page.html">Embroidered bib peasant top</a>
-										<ul class="variation">
-											<li class="variation-Color">Color: <span>Brown</span></li>
-											<li class="variation-Size">Size: <span>XS</span></li>
-										</ul>
-									</td>
 
-									<td class="product-price">$88.00</td>
+								@foreach ($detailCart as $k => $cart )
+									<tr class="cart_item">
+										<td class="product-thumbnail"><a href="product-page.html" ><img src="{{ RvMedia::getImageUrl($cart->getProduct->image, 'cart', false, RvMedia::getDefaultImage()) }}" width="100px" alt="" /></a></td>
+										<td class="product-name">
+											<a href="product-page.html">{{$cart->getProduct->name}}</a>
+											{{-- <ul class="variation">
+												<li class="variation-Color">Color: <span>Brown</span></li>
+												<li class="variation-Size">Size: <span>XS</span></li>
+											</ul> --}}
+										</td>
+										@if(!empty($cart->getProduct->sale_price))
+											<td class="product-price">{{ number_format($cart->getProduct->sale_price)}} VNĐ</td>
+										@else
+											<td class="product-price">{{ number_format($cart->getProduct->price)}} VNĐ</td>
+										@endif
 
-									<td class="product-quantity">
-										<select class="basic">
-											<option value="">2</option>
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</select>
-									</td>
-									
-									<td class="product-subtotal">$176.00</td>
+										<td class="product-quantity">
+											<div class="number-input">
+												<button class="number-input_btn" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
+												<input class="quantity cart-{{ $cart->id }}" min="0" name="quantity" value="{{$cart->quantity}}" data-cart-detail-{{ $cart->id  }}={{ $cart->id }} value="{{ $cart->quantity }}" type="number">
+												<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+											  </div>
+											
+										</td>
+										
+										<td class="product-subtotal">{{number_format($allPrice[$k])}}Đ</td>
 
-									<td class="product-remove"><a href="javascript:void(0);" ><span>Delete</span> <i>X</i></a></td>
-								</tr>
-								
-								<tr class="cart_item">
-									<td class="product-thumbnail"><a href="product-page.html" ><img src="images/tovar/women/2.jpg" width="100px" alt="" /></a></td>
-									<td class="product-name">
-										<a href="product-page.html">Merino tippi sweater in geometric stripe</a>
-										<ul class="variation">
-											<li class="variation-Color">Color: <span>Brown</span></li>
-											<li class="variation-Size">Size: <span>XS</span></li>
-										</ul>
-									</td>
-
-									<td class="product-price">$96.00</td>
-
-									<td class="product-quantity">
-										<select class="basic">
-											<option value="">1</option>
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</select>
-									</td>
-									
-									<td class="product-subtotal">$96.00</td>
-
-									<td class="product-remove"><a href="javascript:void(0);" ><span>Delete</span> <i>X</i></a></td>
-								</tr>
-								
-								<tr class="cart_item">
-									<td class="product-thumbnail"><a href="product-page.html" ><img src="images/tovar/women/3.jpg" width="100px" alt="" /></a></td>
-									<td class="product-name">
-										<a href="product-page.html">Collection cashmere getaway hoodie</a>
-										<ul class="variation">
-											<li class="variation-Color">Color: <span>Brown</span></li>
-											<li class="variation-Size">Size: <span>XS</span></li>
-										</ul>
-									</td>
-
-									<td class="product-price">$88.00</td>
-
-									<td class="product-quantity">
-										<select class="basic">
-											<option value="">3</option>
-											<option>1</option>
-											<option>2</option>
-											<option>3</option>
-											<option>4</option>
-											<option>5</option>
-										</select>
-									</td>
-									
-									<td class="product-subtotal">$264.00</td>
-
-									<td class="product-remove"><a href="javascript:void(0);" ><span>Delete</span> <i>X</i></a></td>
-								</tr>
-								
+										<td class="product-remove" >
+											<a href="javascript:void(0);" onclick="updateCart('{{$cart->id}}', '{{ $cart->product_id }}')" style="display: flex; "><span>Cập Nhật</span><i>+</i></a>
+											
+										</td>
+										<td class="product-remove" >
+											<a href="javascript:void(0);" onclick="removeCart({{$cart->id}})"  style="display: flex; "><span>Xóa</span><i>-</i></a>
+											
+										</td>
+										
+									</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div><!-- //CART TABLE -->
 					
 					
 					<!-- SIDEBAR -->
-					<div id="sidebar" class="col-lg-3 col-md-3 padbot50">
+					<div id="sidebar" class="col-lg-3 col-md-12 col-12 padbot50">
 						
 						<!-- BAG TOTALS -->
 						<div class="sidepanel widget_bag_totals">
-							<h3>BAG TOTALS</h3>
+							<h3>Thanh Toán</h3>
 							<table class="bag_total">
 								<tr class="cart-subtotal clearfix">
-									<th>Sub total</th>
-									<td>$258.00</td>
+									<th>Tổng Mặt Hàng</th>
+									<td> 
+										@if (!empty(auth('customer')->user()))
+											<span>  {{ auth('customer')->user()->getCart->getDetailcart->count() }} Sản Phẩm</span>
+										@else
+											<span>0 Sản Phẩm</span>
+										@endif
+								</td>
 								</tr>
-								<tr class="shipping clearfix">
+								{{-- <tr class="shipping clearfix">
 									<th>SHIPPING</th>
 									<td>Free</td>
-								</tr>
+								</tr> --}}
 								<tr class="total clearfix">
-									<th>Total</th>
-									<td>$528.00</td>
+									<th>Tổng Tiền</th>
+									<td>{{number_format($money)}} VNĐ</td>
 								</tr>
 							</table>
-							<form class="coupon_form" action="javascript:void(0);" method="get">
+							{{-- <form class="coupon_form" action="javascript:void(0);" method="get">
 								<input type="text" name="coupon" value="Have a coupon?" onFocus="if (this.value == 'Have a coupon?') this.value = '';" onBlur="if (this.value == '') this.value = 'Have a coupon?';" />
 								<input type="submit" value="Apply">
-							</form>
-							<a class="btn active" href="javascript:void(0);" >Check out</a>
-							<a class="btn inactive" href="javascript:void(0);" >Continue shopping</a>
+							</form> --}}
+							<a class="btn active" href="javascript:void(0);" >Thanh Toán</a>
+							<a class="btn inactive" href="javascript:void(0);" >Tiếp Tục Mua Hàng</a>
 						</div><!-- //REGISTRATION FORM -->
 					</div><!-- //SIDEBAR -->
 				</div><!-- //ROW -->
@@ -185,4 +125,92 @@
 	<div class="close_block"></div>
 </div><!-- TOVAR MODAL CONTENT -->
 
+{{--  javacrit --}}
+
+<script>
+	 function updateCart(cart_detail_id, product_cart_id) {
+   
+   var data = {
+	   cart_detail_id : cart_detail_id,
+	   product_cart_id : product_cart_id,
+	   cart_detail_quantity : $('[data-cart-detail-' + cart_detail_id + '=' + cart_detail_id + ']').val()
+   };
+   $.ajax({
+	   url: "/gio-hang/cap-nhat-gio-hang",
+	   headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+	   type: 'POST',
+	   data: data,
+	   success: function(response) {
+		   console.log(response.error)
+		   if (response.success) {
+				   Swal.fire({
+				   title: 'Thành công',
+				   text: "Cập nhật thành công",
+				   icon: 'success',
+				   confirmButtonColor: '#3085d6',
+				   confirmButtonText: 'Xác nhận'
+			   }).then((result) => {
+				   if (result.value) {
+					   window.location.reload();
+				   }
+			   })
+		   } else {
+			   toastr.error('Có lỗi xảy ra vui lòng thử lại sau.')
+		   }
+	   },
+	   error: function(response) {
+		   toastr.error('Có lỗi xảy ra vui lòng thử lại sau.')
+	   }
+   });
+ }
+
+
+ function removeCart(cart_detail_id)
+{
+    var data = {
+        detail_cart_id : $('.cart-' + cart_detail_id).data('cart-detail-'+ cart_detail_id)
+    };
 	
+	// console.log(data);
+    Swal.fire({
+        title: 'Bạn có chắc muốn xóa sản phẩm này không?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Xác nhận',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Hủy'
+    }).then((result) => {
+        if (result.value) {
+            $('.loader').show();
+            $.ajax({
+                url: "gio-hang/xoa-gio-hang",
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    $('.loader').hide();
+                    if (response.success) {
+                            Swal.fire({
+                            title: 'Thành công',
+                            text: "Đã xóa sản phẩm",
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác nhận'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.reload();
+                            }
+                        })
+                    } else {
+                        toastr.error('Có lỗi xảy ra vui lòng thử lại sau.')
+                    }
+                    },
+                    error: function(response) {
+                        toastr.error('Có lỗi xảy ra vui lòng thử lại sau.')
+                    }
+                });
+            }
+    })
+}
+</script>

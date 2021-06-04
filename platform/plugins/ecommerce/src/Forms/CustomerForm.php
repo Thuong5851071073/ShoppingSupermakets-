@@ -34,6 +34,14 @@ class CustomerForm extends FormAbstract
                     'data-counter' => 60,
                 ],
             ])
+            ->add('phone', 'number', [
+                'label'      => trans('plugins/ecommerce::customer.phone'),
+                'label_attr' => ['class' => 'control-label required'],
+                'attr'       => [
+                    'placeholder'  => trans('phone'),
+                    'data-counter' => 60,
+                ],
+            ])
             ->add('is_change_password', 'checkbox', [
                 'label'      => trans('plugins/ecommerce::customer.change_password'),
                 'label_attr' => ['class' => 'control-label'],

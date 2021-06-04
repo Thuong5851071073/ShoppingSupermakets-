@@ -40,6 +40,8 @@ Use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Platform\ACL\Models\User as PlatformUser;
 use Platform\ACL\Models\User as PlatformACLUser;
+use Platform\Cart\Models\Cart;
+use Platform\CartDetail\Models\CartDetail;
 use Platform\Ecommerce\Models\Customer;
 use Stripe\Price;
 use Theme\Main\Http\Request\RegisterRequest;
@@ -84,6 +86,9 @@ class MainController extends PublicController
         //lấy ra 2 bài viết mới nhất thuộc tin tức
         $data['newPosts'] = get_posts_by_category(5); 
       
+        //  card header
+        
+        
         Theme::breadcrumb()->add(__('Home'), url('/'));
         return Theme::scope('index', $data)->render();
     }
@@ -101,22 +106,12 @@ class MainController extends PublicController
     //     return Theme::scope('Bim_product',$data)->render();
     // }
 
+     /** 
+     * @return \Illuminate\Http\Response|Response
+     */
     public function getlogin()
     {
         return Theme::scope('customers.login')->render();
-    }
-
-    public function login(LoginRequest $request)
-    {
-  
-       $input = $request->all();
-       $auth = auth()->attempt(['email' => $request->email, 'password' => $request->password]);
-       if ($auth) {
-           return redirect()->route('get_shoppingbag');
-       }
-       return back()->withErrors([
-           'error' => 'Sai thông tin đăng nhập'
-       ]);
     }
 
 
@@ -133,6 +128,7 @@ class MainController extends PublicController
      */
     public function register(RegisterRequest $request)
     {
+
         try {
            
             $user= Customer::query()->where('email',$request->email)->first();
@@ -140,8 +136,13 @@ class MainController extends PublicController
                 $newUser=new Customer();
                 $newUser->name=$request->name;
                 $newUser->email=$request->email;
+                $newUser->phone=$request->phone;
                 $newUser->password= Hash::make($request->get('password'));
                 $newUser->save();
+                //create cart customer
+                $dataCart = [];
+                $dataCart['customerId'] = $newUser->id;
+                $saveCart = Cart::saveCart($dataCart);
                 return redirect()->route('get_dangky')->with('success','Bạn Đã tạo tài khoản, mời bạn đăng nhập');
             }
             else{
@@ -154,14 +155,14 @@ class MainController extends PublicController
     }
 
 
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getreset(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
+    // /**
+    //  * @return \Illuminate\Http\Response|Response
+    //  */
+    // public function getreset(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
+    // {
 
-        return Theme::scope('customers.passwords.email')->render();
-    }
+    //     return Theme::scope('customers.passwords.email')->render();
+    // }
 
     /**
      * @return \Illuminate\Http\Response|Response
@@ -295,9 +296,11 @@ class MainController extends PublicController
         abort('404');
     }
         $data['brand_slug'] = get_brand_by_id($slug->reference_id);
-        $data['product_brand'] = get_products_by_brand($data['brand_slug']->id);
+        // $data['product_brand'] = get_products_by_brand($data['brand_slug']->id);
+        $data['products'] = get_products_By_Brands_Paginate($data['brand_slug']->id, 6);
+    
         
-        // $data['products'] = get_products_by_category($data['brand_slug']->id, 1);
+    // dd(  $data['products']);
 
         $data['categories'] = get_product_categories();
         $data['brand']= get_all_brands();
@@ -335,14 +338,14 @@ class MainController extends PublicController
         return Theme::scope('contacts',$data)->render();
     }
 
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getshoppingbag(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
+    // /**
+    //  * @return \Illuminate\Http\Response|Response
+    //  */
+    // public function getshoppingbag(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
+    // {
 
-        return Theme::scope('shopping-bag')->render();
-    }
+    //     return Theme::scope('shopping-bag')->render();
+    // }
 
     /**
      * @return \Illuminate\Http\Response|Response
@@ -503,8 +506,8 @@ class MainController extends PublicController
      * @return \Illuminate\Http\Response|Response
      */
      public function getViewSeach(Request $request)
-    {
-          
+    {      
+          $data['search']=getSearch();
         
         //sliders product
            $data['sliders'] = theme_option('product_slider');
@@ -521,24 +524,23 @@ class MainController extends PublicController
                }
                $data['sliders'][$k] = trim($data['sliders'][$k]);
            }
-
-           $key = $request['q'];
-            if ($key != '') {
-                $data['search_result'] = (new Search())
-                    ->registerModel(
-                        Product::class,
-                        function (ModelSearchAspect $modelSearchAspect) {
-                            $modelSearchAspect->addSearchableAttribute('name')
-                                ->addSearchableAttribute('description');
-                        }
-                    )->search($key);
-
-                return Theme::scope('search',$data)->render();
-            } else {
-                $data['search_result'] = '';
-                return Theme::scope('search',$data)->render();
-            }
+           return Theme::scope('search',$data)->render();
+        
         
     }
-    
+
+    // /**
+    //  * @return \Illuminate\Http\Response|Response
+    //  */
+    // public function getTag($tag, PostInterface $postRepository, SlugInterface $slugRepository ,Request $request){
+        
+    //     // // dd(1);
+    //     // $tag = $slugRepository->getFirstBy(['key' => $tag, 'reference_type' => Category::class]);
+    //     // if(!$tag)
+    //     // {
+    //     //     abort('404');
+    //     // }
+
+    //     return Theme::scope('market.blog-tag')->render();
+    // }
 }

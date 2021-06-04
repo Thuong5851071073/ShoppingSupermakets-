@@ -21,6 +21,15 @@
         {!! Theme::header() !!}
     </head>
     <body>
+		
+		{{-- @php
+
+			$cartId = auth('customer')->user()->getCart->id;
+			$detailCart = Platform\CartDetail\Models\CartDetail::getDetailCartByCardId($cartId);
+
+		
+		
+		@endphp --}}
         <!-- HEADER -->
 		<header>
 			
@@ -30,9 +39,12 @@
 				<!-- CONTAINER -->
 				<div class="container clearfix">
 					<ul class="secondary_menu">
-						
-						<li><a href="{{route('get_login')}}" >Đăng Nhập</a></li>
-						<li><a href="{{route('get_dangky')}}" >Tạo Tài Khoản</a></li>
+						@if (auth('customer')->user())
+							<li><a href="{{route('customer.logout')}}" >Đăng Xuất</a></li>
+						@else
+							<li><a href="{{route('get_login')}}" >Đăng Nhập</a></li>
+						@endif
+						{{-- <li><a href="{{route('get_dangky')}}" >Tạo Tài Khoản</a></li> --}}
 
 					</ul>
 					
@@ -66,24 +78,30 @@
 					
 					<!-- SHOPPING BAG -->
 					<div class="shopping_bag">
-						<a class="shopping_bag_btn" href="javascript:void(0);"  onclick="show_cart()"><i class="fa fa-shopping-cart"></i><p>Giỏ Hàng</p><span>2</span></a>
+						<a class="shopping_bag_btn" href="javascript:void(0);"  onclick="show_cart()"><i class="fa fa-shopping-cart"></i><p>Giỏ Hàng</p>
+							@if (!empty(auth('customer')->user()))
+								<span>  {{ auth('customer')->user()->getCart->getDetailcart->count() }}</span>
+							@else
+								<span>0</span>
+							@endif
+						</a>
 						<div class="cart"  id="cart_header">
-							<ul class="cart-items">
-								<li class="clearfix">
-									<img class="cart_item_product" src="images/tovar/women/1.jpg" alt="" />
-									<a href="product-page.html" class="cart_item_title">popover sweatshirt in floral jacquard</a>
-									<span class="cart_item_price">1 × $98.00</span>
-								</li>
-								<li class="clearfix">
-									<img class="cart_item_product" src="images/tovar/women/3.jpg" alt="" />
-									<a href="product-page.html" class="cart_item_title">japanese indigo denim jacket</a>
-									<span class="cart_item_price">2 × $158.00</span>
-								</li>
-							</ul>
+							{{-- <ul class="cart-items">
+								@foreach ($detailCart as $k => $cart)
+									@if ( $k <= 2 )
+										<li class="clearfix">
+											<img class="cart_item_product" src="{{ RvMedia::getImageUrl($cart->getProduct->image, 'mini_post', false, RvMedia::getDefaultImage()) }}" alt="" />
+											<a href="product-page.html" class="cart_item_title">{{$cart->getProduct->name}}</a>
+											<span class="cart_item_price">{{$cart->quantity}} × {{$cart->getProduct->price}}</span>
+										</li>
+									@endif
+								@endforeach
+							
+							</ul> --}}
 							<div class="cart_total">
-								<div class="clearfix"><span class="cart_subtotal">bag subtotal: <b>$414</b></span></div>
-								<a class="btn active mb-4" href="checkout.html">Thanh Toán</a>
-								<a class="btn active" href="checkout.html">Xem Giỏ</a>
+								{{-- <div class="clearfix"><span class="cart_subtotal">bag subtotal: <b>$414</b></span></div>
+								<a class="btn active mb-4" href="{{route('public.get-cart')}}">Thanh Toán</a> --}}
+								<a class="btn active" href="{{route('public.get-cart')}}">Xem Chi Tiết</a>
 							</div>
 						</div>
 					</div><!-- //SHOPPING BAG -->

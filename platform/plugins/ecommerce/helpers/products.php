@@ -469,6 +469,20 @@ if (!function_exists('find_product_By_Price')) {
          return app(ProductInterface::class)->getProductByBrand($price,$price2);
      }
  }
+
+ if(!function_exists('get_products_By_Brands_Paginate')){
+
+    /**
+      * Get Product By Brands Paginate
+      * @param int $BrandId
+      * @param int $paginate
+      * @return array
+      */
+      function get_products_By_Brands_Paginate($BrandId, $paginate)
+      {
+        return app(ProductInterface::class)->getproductsByBrandsPaginate($BrandId, $paginate);
+      }
+ }
  
 
 

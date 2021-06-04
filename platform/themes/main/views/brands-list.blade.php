@@ -47,7 +47,7 @@
 						<div class="brand_letter">C</div>
 						@foreach ($C as $k )
 							<ul class="product_catalog_list">
-								<li><a href={{ route('get_brand', $k->slug) }}" >{{$k->name}}</a></li>
+								<li><a href="{{ route('get_brand', $k->slug) }}" >{{$k->name}}</a></li>
 							</ul>
 							@endforeach
 					</div>
@@ -299,7 +299,7 @@
 					
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-ss-12 brand_list_item padbot40 clearfix">
 						<div class="brand_letter">w</div>
-						@foreach ($V as $k )
+						@foreach ($W as $k )
 							<ul class="product_catalog_list">
 								<li><a href="{{ route('get_brand', $k->slug) }}" >{{$k->name}}</a></li>
 								

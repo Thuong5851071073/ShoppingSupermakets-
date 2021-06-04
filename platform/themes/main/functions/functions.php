@@ -14,7 +14,8 @@ register_sidebar([
 RvMedia::addSize('new_post', 270, 230)
     ->addSize('post_detail', 760, 380)
     ->addSize('mini_post', 70, 60)
-    ->addSize('slider', 270, 180);
+    ->addSize('slider', 270, 180)
+    ->addSize('cart', 100, 150);
 theme_option()
     ->setField([
         'id'         => 'copyright',
@@ -164,6 +165,18 @@ theme_option()
                 'label' => __('Nhập gmail'),
                 'attributes' => [
                     'name' => 'Email',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'Facebook',
+                'type' => 'text',
+                'label' => __('Nhập gmail'),
+                'attributes' => [
+                    'name' => 'Facebook',
                     'value' => null,
                     'options' => [
                         'class' => 'form-control'

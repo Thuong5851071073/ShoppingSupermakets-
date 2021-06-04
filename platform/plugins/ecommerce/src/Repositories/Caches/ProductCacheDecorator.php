@@ -329,4 +329,14 @@ class ProductCacheDecorator extends CacheAbstractDecorator implements ProductInt
         return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+
+     public function getproductsByBrandsPaginate(int $BrandId ,int $paginate)
+     {
+        return $this->getDataIfExistCache(__FUNCTION__, func_get_args());
+     }
+
+
 }

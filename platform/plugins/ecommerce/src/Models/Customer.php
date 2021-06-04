@@ -6,8 +6,10 @@ use Platform\Base\Supports\Avatar;
 use Platform\Ecommerce\Notifications\CustomerResetPassword;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Platform\Cart\Models\Cart;
 use RvMedia;
 
 /**
@@ -116,5 +118,10 @@ class Customer extends Authenticatable
         $customer->password = Hash::make($input['passwordCustomer']);
         $customer->save();
         return $customer;
+    }
+
+    public function getCart(): HasOne
+    {
+        return $this->hasOne(Cart::class, 'customer_id', 'id');
     }
 }

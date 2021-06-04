@@ -20,13 +20,12 @@
                             @foreach ($product_sale as $k )                              
                                 <li>
                                     <!-- TOVAR -->
-                                    <a href="">
                                         <div class="tovar_item_new tovar_sale">
                                             <div class="tovar_img">
                                                 <img class="img" src="{{ RvMedia::getImageUrl($k->images[0], 'featured', false, RvMedia::getDefaultImage()) }}" alt="" />
-                                                <div class="open-project-link">
-                                                    <a class="open-project tovar_view" href="https://google.com">xem</a>
-                                                </div>
+                                                {{-- <div class="open-project "> --}}
+                                                    <a class=" add_lovelist btn_all_item btn_all_item_two " style="font-weight: bold;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($k->id)->category_id)->slug, $k->slug]) }}">Xem </a>
+                                                {{-- </div> --}}
                                             </div>
                                             <div class="tovar_description clearfix">
                                                 <a class="tovar_title" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($k->id)->category_id)->slug, $k->slug]) }}" >{{$k->name}}</a>
@@ -35,7 +34,6 @@
                                                 <span class="tovar_price_sale text17">Còn: {{number_format($k->sale_price)}} VNĐ</span>
                                             </div>
                                         </div><!-- //TOVAR -->
-                                    </a>
                                 </li>
                             @endforeach
 						</ul>

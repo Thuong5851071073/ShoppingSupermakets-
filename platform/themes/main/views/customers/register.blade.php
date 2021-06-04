@@ -34,6 +34,12 @@
                                 @endif
                             </div>
                             <div class="form-group">
+                                <input class="form-control" name="phone" id="txt-email" type="number" value="{{ old('phone') }}" placeholder="{{ __('số điện thoại Của Bạn') }}">
+                                @if ($errors->has('phone'))
+                                    <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                @endif
+                            </div>
+                            <div class="form-group">
                                 <input class="form-control" type="password" name="password" id="txt-password" placeholder="{{ __('Mật Khẩu') }}">
                                 @if ($errors->has('password'))
                                     <span class="text-danger">{{ $errors->first('password') }}</span>

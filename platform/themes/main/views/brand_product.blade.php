@@ -31,7 +31,7 @@
 							<!-- COUNT TOVAR ITEMS -->
 							<div class="count_tovar_items">
 								<p>{{$brand_slug->name}}</p>
-								<span>{{count($product_brand)}} Sản phẩm</span>
+								<span>{{count($products)}} Sản phẩm</span>
 							</div>
 						
 							<!-- PRODUC SIZE -->
@@ -45,10 +45,10 @@
 						<!-- ROW -->
 						@includeIf('theme.main::partials.product.brand_product')
 						<!-- //ROW -->
-						{{-- <div class="detail-pagination">
+						<div class="detail-pagination">
 							{{ $products->links('theme.main::partials.pagination') }}
 							
-						</div> --}}
+						</div>
 						
 						<!-- //SHOP BANNER -->
 					</div><!-- //SHOP PRODUCTS -->

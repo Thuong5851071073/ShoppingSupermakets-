@@ -26,11 +26,11 @@
                 <div class="tovar_details_header clearfix margbot35">
                     <h3 class="pull-left"><b>{{ get_category_by_id(get_category_by_product($contentProduct->id)->category_id)->name }}</b></h3>
                            
-                    <div class="tovar_details_pagination pull-right">
+                    {{-- <div class="tovar_details_pagination pull-right">
                         <a class="fa fa-angle-left" href="javascript:void(0);" ></a>
-                        <span>2 of 34</span>
+                        {{-- <span>2 of 34</span> 
                         <a class="fa fa-angle-right" href="javascript:void(0);" ></a>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- CLEARFIX -->
                 <div class="clearfix padbot40">
@@ -64,10 +64,17 @@
                            <p>Giao hàng đúng hẹn</p>
                            <p>Được tích điểm giảm giá</p>
                         </div>
-                        <div class="tovar_view_btn">
-                            <a class="add_bag" href="javascript:void(0);" ><i class="fa fa-shopping-cart"></i>Add to bag</a>
-                            <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a>
-                        </div>
+                        <form action="{{route('cart.add')}}" method="POST">
+                            @csrf
+                            <input type="text" name="productId" value="{{$product->id}}" hidden>
+                           
+                            <div class="tovar_view_btn" style="display: flex;  flex-direction: column;" >
+                                <h5 class="" style=" font-weight: bold;">Số lượng</h5>
+                                <input class="input_title-item" type="number" value="1" id="quantity" name="quantityProduct" min="1" max="10" style=" margin-bottom: 1rem;">
+                                <button class="add_bag" type="submit" ><i class="fa fa-shopping-cart"></i>Thêm Vào giỏ</button>
+                                {{-- <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a> --}}
+                            </div>
+                        </form>
                     </div> 
                 </div><!-- //CLEARFIX -->
                 

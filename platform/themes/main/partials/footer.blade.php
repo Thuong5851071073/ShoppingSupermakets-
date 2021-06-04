@@ -1,6 +1,6 @@
 		<footer style=" background-image: url('https://cdn.shopify.com/s/files/1/0108/7370/0415/files/footer_1920X.jpg?v=1582192383');">
             <div class="background" >
-              <div class="container container_footer">
+              <div class="container-fluid container_footer">
                 <div class="footer_infor">
                     <a href="#kkk" class="footer_infor-logo--link" title="logo">
                         <img class="footer_infor-logo--link---item" src="{{ RvMedia::getImageUrl(theme_option('logo_footer')) }}" alt="logo">
@@ -37,7 +37,10 @@
                         'view' => 'custom-menu-footer',
                     ])
                 !!}  
-			<div class="footer_SocialNetwork">
+            <div class="footer_item " >
+                <a href="#" class="menu_link" title="" > FanPage </a>
+            
+			<div class="footer_SocialNetwork" style=" margin-top:1.5rem;">
 				<div class="fb-page" data-href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" data-tabs="timeline"
 					data-width="300" data-height="100" data-small-header="false" data-adapt-container-width="true"
 					data-hide-cover="false" data-show-facepile="false">
@@ -45,6 +48,7 @@
 							href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/">Săn Tây</a></blockquote>
 				</div>
 			</div>
+        </div>
               </div>
               <div class="copyright">
                   <h5 class="copy"> <a href="#" class="copy_item">{{ theme_option('copyright') }}</a> </h5>
@@ -60,3 +64,43 @@
 </html>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v10.0" nonce="SfF8mM31"></script>
+
+<script>
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 5000);
+    toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": true,
+    "positionClass": "toast-top-right",
+    "preventDuplicates": false,
+    "onclick": null,
+    "timeOut": "3000",
+    "extendedTimeOut": "3000"
+    }
+
+    @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}";
+        switch(type){
+            case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
+            
+            case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+
+            case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+            case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+    @endif
+</script>

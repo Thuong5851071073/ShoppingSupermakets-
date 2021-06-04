@@ -11,18 +11,6 @@
         </ul>
     </div><!-- //CATEGORIES -->
     
-    {{-- <!-- PRICE RANGE -->
-    <div class="sidepanel widget_pricefilter">
-        <h3>Chọn Mức Giá</h3>
-        <div id="price-range" class="clearfix">
-            <label for="amount">Khoảng Giá:</label>
-            <input type="text" id="amount"/>
-            <div class="padding-range">
-                <div id="slider-range">
-                </div>
-            </div>
-        </div>
-    </div><!-- //PRICE RANGE --> --}}
      
       <!-- CATEGORIES -->
       <div class="sidepanel widget_categories">
