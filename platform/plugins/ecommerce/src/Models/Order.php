@@ -149,4 +149,16 @@ class Order extends BaseModel
     {
         return in_array($this->status, [OrderStatusEnum::PENDING, OrderStatusEnum::PROCESSING]);
     }
+
+   /**
+     * @return mixed
+     */
+    public static function saveOrder($input)
+    {
+        $order = new Order();
+        $order->user_id = auth('customer')->user()->id;
+        $order->sub_total = $input['amountOrder'];
+        $order->save();
+        return $order;
+    }
 }

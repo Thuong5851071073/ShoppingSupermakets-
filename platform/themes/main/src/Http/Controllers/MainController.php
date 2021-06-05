@@ -114,6 +114,9 @@ class MainController extends PublicController
         return Theme::scope('customers.login')->render();
     }
 
+    // public function login(){
+    //     // return Theme::scope('index')->render();
+    // }
 
     /**
      * @return \Illuminate\Http\Response|Response
@@ -347,14 +350,7 @@ class MainController extends PublicController
     //     return Theme::scope('shopping-bag')->render();
     // }
 
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getinforreship(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
-
-        return Theme::scope('market.checkout')->render();
-    }
+ 
 
     /**
      * @return \Illuminate\Http\Response|Response
@@ -374,15 +370,7 @@ class MainController extends PublicController
         return Theme::scope('market.checkout3')->render();
     }
 
-    /**
-     * @return \Illuminate\Http\Response|Response
-     */
-    public function getwaypay2(PageInterface $pageRepository, SlugInterface $slugRepository, Request $request)
-    {
-
-        return Theme::scope('market.checkout4')->render();
-    }
-
+ 
     /**
      * @return \Illuminate\Http\Response|Response
      */

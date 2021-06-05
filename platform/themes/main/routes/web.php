@@ -41,10 +41,11 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
      
 
         Route::prefix('thanh-toan')->group(function(){
-            Route::get('/thong-tin-nguoi-nhan', 'MainController@getinforreship') ->name('get_inforreship');
-            Route::get('/hinh-thuc-giao-hang', 'MainController@getwayshiping')->name('get_wayshiping');
-            Route::get('/hinh-thuc-thanh-toan', 'MainController@getwaypay')->name('get_waypay');
-            Route::get('/hinh-thuc-thanh-toan2', 'MainController@getwaypay2')->name('get_waypay2');
+            Route::get('/thong-tin-nguoi-nhan', 'CartController@getinforreship') ->name('get_inforreship');
+            Route::post('/thong-tin-nguoi-nhan', 'CartController@inforreship') ->name('puplic.post_inforreship');
+            // Route::get('/hinh-thuc-giao-hang', 'MainController@getwayshiping')->name('get_wayshiping');
+            // Route::get('/hinh-thuc-thanh-toan', 'MainController@getwaypay')->name('get_waypay');
+            Route::get('/hinh-thuc-thanh-toan', 'CartController@getwaypay2')->name('get_waypay2');
         });
 
         Route::prefix('san-pham')->group(function() {

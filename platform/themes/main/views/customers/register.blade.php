@@ -14,13 +14,13 @@
                         <form method="POST" action="{{ route('guest.register') }}">
                             @csrf
                                 @if ($message = Session::get('success'))
-                                <div class="alert alert-success" role="alert">
-                                    <strong>Thông báo</strong> {{ $message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
+                                    <div class="alert alert-success" role="alert">
+                                        <strong>Thông báo</strong> {{ $message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
                             <div class="form-group">
                                 <input class="form-control" name="name" id="txt-name" type="text" value="{{ old('name') }}" placeholder="{{ __('Tên Của Bạn ') }}">
                                 @if ($errors->has('name'))

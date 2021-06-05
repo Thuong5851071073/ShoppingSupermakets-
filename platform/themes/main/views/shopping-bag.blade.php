@@ -49,9 +49,9 @@
 
 										<td class="product-quantity">
 											<div class="number-input">
-												<button class="number-input_btn" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
-												<input class="quantity cart-{{ $cart->id }}" min="0" name="quantity" value="{{$cart->quantity}}" data-cart-detail-{{ $cart->id  }}={{ $cart->id }} value="{{ $cart->quantity }}" type="number">
-												<button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+												<button id="down" class="number-input_btn" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
+													<input  class="quantity cart-{{ $cart->id }}" min="0" name="quantity" value="{{$cart->quantity}}" data-cart-detail-{{ $cart->id  }}={{ $cart->id }} value="{{ $cart->quantity }}" type="number">
+												<button id="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 											  </div>
 											
 										</td>
@@ -91,10 +91,10 @@
 										@endif
 								</td>
 								</tr>
-								{{-- <tr class="shipping clearfix">
-									<th>SHIPPING</th>
-									<td>Free</td>
-								</tr> --}}
+								<tr class="shipping clearfix">
+									<th>Giao Hàng</th>
+									<td>Free 1 Km</td>
+								</tr>
 								<tr class="total clearfix">
 									<th>Tổng Tiền</th>
 									<td>{{number_format($money)}} VNĐ</td>
@@ -104,8 +104,8 @@
 								<input type="text" name="coupon" value="Have a coupon?" onFocus="if (this.value == 'Have a coupon?') this.value = '';" onBlur="if (this.value == '') this.value = 'Have a coupon?';" />
 								<input type="submit" value="Apply">
 							</form> --}}
-							<a class="btn active" href="javascript:void(0);" >Thanh Toán</a>
-							<a class="btn inactive" href="javascript:void(0);" >Tiếp Tục Mua Hàng</a>
+							<a class="btn active" href="{{route('get_inforreship')}}" >Thanh Toán</a>
+							<a class="btn inactive" href="{{route('public.index')}}" >Tiếp Tục Mua Hàng</a>
 						</div><!-- //REGISTRATION FORM -->
 					</div><!-- //SIDEBAR -->
 				</div><!-- //ROW -->

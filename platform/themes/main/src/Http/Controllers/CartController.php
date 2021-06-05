@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Platform\Cart\Models\Cart;
 use Platform\CartDetail\Models\CartDetail;
+use Platform\Ecommerce\Models\City;
+use Platform\Ecommerce\Models\Order;
+use Platform\Ecommerce\Models\Product;
 use Platform\Theme\Http\Controllers\PublicController;
+use Theme\Main\Http\Request\InfoRequest;
 use Theme;
 
 class CartController extends PublicController
@@ -64,7 +68,8 @@ class CartController extends PublicController
                 else {
                     $saveDetailCart = CartDetail::updateDetailCart($dataDetailCart);
                 }
-                  if(!$saveDetailCart)
+                $updateQuantity = Product::updateQuantity( $dataDetailCart['quantityProduct'], $dataDetailCart['productId']);
+                  if( !$saveDetailCart ||  !$updateQuantity)
                    {
                     $notification = array(
                         'message' => 'Thêm vào giỏ hàng thất bại! Vui lòng thử lại',
@@ -114,4 +119,67 @@ class CartController extends PublicController
             logger($e->getMessage() . ' at ' . $e->getLine() .  ' in ' . $e->getFile());
         }
     }
+
+       /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getwaypay2()
+    {
+        $cartId = auth('customer')->user()->getCart->id;
+        $data['detailCart'] = CartDetail::getDetailCartByCardId($cartId);
+        $data['money']=0;
+        $data['allQuantity'] = 0;
+        $data['allPrice'] = [];
+        foreach ($data['detailCart'] as $k => $detail) {
+            $data['allQuantity'] = $data['allQuantity'] + $detail->quantity;
+            $data['allPrice'][$k] = 0;
+            if (!empty($detail->getProduct->sale_price)) {
+                $data['allPrice'][$k] = $data['allPrice'][$k] + $detail->quantity * $detail->getProduct->sale_price;
+                $data['money']= $data['money']+ $data['allPrice'][$k];
+                
+            } else {
+                $data['allPrice'][$k] = $data['allPrice'][$k] + $detail->quantity * $detail->getProduct->price;
+                $data['money']= $data['money']+ $data['allPrice'][$k];
+            }
+        }
+        Theme::breadcrumb()->add(__('Giỏ Hàng'), url('/'));
+        return Theme::scope('market.checkout4',$data)->render();
+    }
+
+       /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getinforreship()
+    { 
+        $data['get_city'] = City::all();
+        $cartId = auth('customer')->user()->getCart->id;
+        $data['customer'] = auth('customer')->user();
+        $data['detailCart'] = CartDetail::getDetailCartByCardId($cartId);
+        // dd( $data['detailCart']);
+        $data['money']=0;
+        $data['allQuantity'] = 0;
+        $data['allPrice'] = [];
+        foreach ($data['detailCart'] as $k => $detail) {
+            $data['allQuantity'] = $data['allQuantity'] + $detail->quantity;
+            $data['allPrice'][$k] = 0;
+            if (!empty($detail->getProduct->sale_price)) {
+                $data['allPrice'][$k] = $data['allPrice'][$k] + $detail->quantity * $detail->getProduct->sale_price;
+                $data['money']= $data['money']+ $data['allPrice'][$k];
+                
+            } else {
+                $data['allPrice'][$k] = $data['allPrice'][$k] + $detail->quantity * $detail->getProduct->price;
+                $data['money']= $data['money']+ $data['allPrice'][$k];
+            }
+        }
+        return Theme::scope('market.checkout',$data)->render();
+    }
+    public function inforreship( InfoRequest $request){
+        
+     
+        $data['save_order']= Order::saveOrder($request->all());
+        
+        
+        return Theme::scope('market.checkout',$data)->render();
+    }
+
 }
