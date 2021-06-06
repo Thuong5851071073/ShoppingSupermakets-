@@ -16,7 +16,7 @@ class RegisterRequest extends Request
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
-            'password' => 'required|min:6|max:10',
+            'password' => 'required|min:6',
             'passwordConfirm' => 'required|same:password',
         ];
         return $rule;
@@ -36,7 +36,6 @@ class RegisterRequest extends Request
             'password.required' => 'Vui lòng nhập mật khẩu',
             'password.min' => 'Mật khẩu không nhỏ hơn 6 ký tự',
             'phone.required'=> 'số điện thoại không được để trống !',
-            'password.max' => 'Mật khẩu không lớn hơn 10 ký tự',
             'passwordConfirm.required'=>'Không được để trống',
             'passwordConfirm.same' => ' Xác thực lại mật khẩu !',
         ];

@@ -5,6 +5,7 @@ namespace Platform\Ecommerce\Models;
 use Platform\Base\Models\BaseModel;
 use Platform\Base\Supports\Avatar;
 use Platform\Base\Supports\Helper;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderAddress extends BaseModel
 {
@@ -49,4 +50,30 @@ class OrderAddress extends BaseModel
     {
         return (string)(new Avatar)->create($this->name)->toBase64();
     }
+
+    public static function saveOrderAddress($input)
+    {
+        $order =  Order::where('id', $input['orderId'])->first();
+        if (!empty($order)) {
+            $orderAddress = new OrderAddress();
+            $orderAddress->name = auth('customer')->user()->name;
+            $orderAddress->phone = auth('customer')->user()->phone;
+            $orderAddress->email = auth('customer')->user()->email;
+            $orderAddress->address = $input['addressOrder'];
+            $orderAddress->city = $input['cityOrder'];
+            $orderAddress->order_id = $order->id;
+            $orderAddress->save();
+            return $orderAddress;
+        }
+    }
+    public static function getAddressOrderByOrderId($orderId)
+    {
+        return OrderAddress::where('order_id', $orderId)->first();
+    }
+
+    public function getProvince(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city', 'ma_tinh');
+    }
+   
 }

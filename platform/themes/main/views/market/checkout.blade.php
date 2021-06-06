@@ -22,16 +22,15 @@
 			
 			<!-- CONTAINER -->
 			<div class="container">
-
 				<!-- CHECKOUT BLOCK -->
 				<div class="checkout_block">
 					<ul class="checkout_nav">
 						<li class="active_step">1. Thông Tin Người Nhận </li>
-						<li class="last">2. Hoàn Thành Than Toán</li>
+						<li class="last">2. Hoàn Thành Thanh Toán</li>
 					</ul>
 					<form class="checkout_form clearfix" action="{{route('puplic.post_inforreship')}}" method="post">
 						@csrf
-						{{-- @dd($money) --}}
+				
 						<input type="text" name="amountOrder" value="{{ $money }}" hidden>
 						@if ($message = Session::get('success'))
 							<div class="alert alert-success" role="alert">
@@ -43,7 +42,7 @@
 						@endif
 						<div class="checkout_form_input  country">
 							<label>Thành phố <span class="color_red">*</span></label>
-							<select class="basic">
+							<select name="city" class="basic">
 								@foreach ($get_city as $value )
 									<option value="{{$value->ma_tinh}}">{{$value->ten_tinh}}</option>
 									
@@ -100,7 +99,7 @@
 						<div class="checkout_form_note">Toàn bộ trường không được để trống (<span class="color_red">*</span>)</div>
 						
 						<button type="submit" class="btn active pull-right" >Lưu Thông Tin</button>
-						<a class="btn active pull-right" href="checkout2.html" >Tiếp Tục Thanh Toán</a>
+						{{-- <a class="btn active pull-right" href="checkout2.html" >Tiếp Tục Thanh Toán</a> --}}
 					</form>
 				</div><!-- //CHECKOUT BLOCK -->
 			</div><!-- //CONTAINER -->

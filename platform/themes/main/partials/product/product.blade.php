@@ -32,7 +32,7 @@
                     </form>
                 </div>
                 <div class="tovar_description clearfix" style=" display: flex;flex-direction: column;text-align: center;">
-                    <a class="tovar_title" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" >{{ $product->name }}</a>
+                    <a class="tovar_title" style="text-transform: uppercase;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" >{{ $product->name }}</a>
                     <span class="tovar_price">Giá: {{number_format( $product->price )}} VNĐ</span>
                 </div>
                 <div class="tovar_content">{!!$product->description!!}</div>

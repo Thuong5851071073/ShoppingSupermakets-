@@ -28,7 +28,7 @@
 				<div class="checkout_block">
 					<ul class="checkout_nav">
 						<li class="done_step2">1. Thông Tin Người Nhận</li>
-						<li class="active_step last">2. Hoàn Thành Than Toán</li>
+						<li class="active_step last">2. Hoàn Thành Thanh Toán</li>
 					</ul>
 				</div><!-- //CHECKOUT BLOCK -->
 					
@@ -38,17 +38,18 @@
 						<div class="checkout_confirm_orded clearfix">
 							<div class="checkout_confirm_orded_bordright clearfix">
 								<div class="billing_information">
-									<p class="checkout_title margbot10">Thông Tin Đơn Hàng</p>
+									<p class="checkout_title margbot10">Địa chỉ nhận hàng</p>
 									
 									<div class="billing_information_content margbot40">
-										<span>Nguyễn Văn Thương</span>
-										<span>New York Street name 55</span>
-										<span>841 11 Bratislava</span>
-										<span>USA</span>
-										<span>mymail@glammy.com</span>
+										
+										<span>{{ auth('customer')->user()->name  }}</span>
+										<span>{{ auth('customer')->user()->email }}</span>
+										<span>{{ auth('customer')->user()->phone }}</span>
+										<span>{{ $orderAddress->address }}</span>
+										<span>{{ $orderAddress->getProvince->ten_tinh }}</span>
 									</div>
 									
-									<p class="checkout_title margbot10">Shipping adress</p>
+									<p class="checkout_title margbot10">Địa chỉ nhận</p>
 									
 									<div class="billing_information_content margbot40">
 										<span>Balashova Anna</span>
@@ -95,25 +96,28 @@
 					<div class="col-lg-3 col-md-3 padbot60">
 						
 						<!-- BAG TOTALS -->
-						<div class="sidepanel widget_bag_totals your_order_block">
-							<h3>Hóa Đơn Của Bạn</h3>
-							<table class="bag_total">
-								<tr class="cart-subtotal clearfix">
-									<th>Thành tiền</th>
-									<td>{{number_format($money)}} VNĐ</td>
-								</tr>
-								<tr class="shipping clearfix">
-									<th>Giao hàng</th>
-									<td>Miễn phí 1 Km</td>
-								</tr>
-								<tr class="total clearfix">
-									<th>Tổng Tiền</th>
-									<td>{{number_format($money)}} VNĐ</td>
-								</tr>
-							</table>
-							<a class="btn active" href="javascript:void(0);" >Xác nhận thông tin</a>
-							<a class="btn inactive" href="checkout.html" >Tiếp tục mua sắm </a>
-						</div><!-- //REGISTRATION FORM -->
+						<form action="{{route('public.waypay')}}" method="POST">
+							@csrf
+							<div class="sidepanel widget_bag_totals your_order_block">
+								<h3>Hóa Đơn Của Bạn</h3>
+								<table class="bag_total">
+									<tr class="cart-subtotal clearfix">
+										<th>Thành tiền</th>
+										<td>{{number_format($money)}} VNĐ</td>
+									</tr>
+									<tr class="shipping clearfix">
+										<th>Giao hàng</th>
+										<td>Miễn phí 1 Km</td>
+									</tr>
+									<tr class="total clearfix">
+										<th>Tổng Tiền</th>
+										<td>{{number_format($money)}} VNĐ</td>
+									</tr>
+								</table>
+								<button class="btn active" type="submit" >Xác nhận thông tin</button>
+								<a class="btn inactive" href="public.index" >Tiếp tục mua sắm </a>
+							</div>
+						</form><!-- //REGISTRATION FORM -->
 					</div><!-- //SIDEBAR -->
 				</div><!-- //ROW -->
 			</div><!-- //CONTAINER -->

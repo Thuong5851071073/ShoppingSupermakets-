@@ -43,14 +43,14 @@
         <div class="next-form-grid">
             <div class="next-form-grid-cell">
                 <label class="text-title-field required">{{ trans('plugins/ecommerce::shipping.city') }}</label>
-                <input type="text" class="next-input" name="city" placeholder="{{ trans('plugins/ecommerce::shipping.city') }}" value="{{ $address->city }}">
+                <input type="text" class="next-input" name="city" placeholder="{{ trans('plugins/ecommerce::shipping.city') }}" value="{{ $address->getProvince->ten_tinh }}">
             </div>
         </div>
 
         <div class="next-form-grid">
             <div class="next-form-grid-cell">
                 <label class="text-title-field required">{{ trans('plugins/ecommerce::shipping.address') }}</label>
-                <input type="text" class="next-input" name="address" placeholder="{{ trans('plugins/ecommerce::shipping.address') }}" value="{{ $address->address }}">
+                <input type="text" class="next-input" name="address" placeholder="{{ trans('plugins/ecommerce::shipping.address') }}" value="{{ $address->getProvince->ten_tinh }}">
             </div>
         </div>
 

@@ -68,21 +68,15 @@ trait AuthenticatesUsers
      */
     protected function validateLogin(Request $request)
     {
-        // $request->validate([
-        //     $this->username() => 'required|string',
-        //     'password'        => 'required|string',
-        // ]);
-
         $this->validate($request, [
             $this->username() => 'required|email',
-            'password' => 'required|min:6|max:10'
+            'password' => 'required|min:6'
         ],
 
         [
             'required' => ':attribute không được bỏ trống!',
             'email' => ':attribute Không hợp lệ!',
             'min' => ':attribute phải có nhiều hơn 6 ký tự',
-            'max' => ':attribute phải có ít hơn 10 ký tự',
         ],
 
         [

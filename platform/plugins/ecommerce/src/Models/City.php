@@ -18,4 +18,6 @@ class City extends BaseModel{
     {
         return City::all();
     }
+  
+
 }

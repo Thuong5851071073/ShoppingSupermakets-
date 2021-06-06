@@ -12,7 +12,7 @@
         <div>{{ $address->address }}</div>
     @endif
     @if ($address->city)
-        <div>{{ $address->city }}</div>
+        <div>{{ $address->getProvince->ten_tinh }}</div>
     @endif
     @if ($address->state)
         <div>{{ $address->state }}</div>
@@ -24,6 +24,6 @@
         <div>{{ $address->zip_code }}</div>
     @endif
     <div>
-        <a target="_blank" class="hover-underline" href="https://maps.google.com/?q={{ $address->address }}, {{ $address->city }}, {{ $address->state }}, {{ $address->country_name }}@if (EcommerceHelper::isZipCodeEnabled()), {{ $address->zip_code }} @endif">{{ trans('plugins/ecommerce::order.see_on_maps') }}</a>
+        <a target="_blank" class="hover-underline" href="https://maps.google.com/?q={{ $address->address }}, {{ $address->getProvince->ten_tinh }}, {{ $address->getProvince->ten_tinh }}, {{ $address->country_name }}@if (EcommerceHelper::isZipCodeEnabled()), {{ $address->zip_code }} @endif">{{ trans('plugins/ecommerce::order.see_on_maps') }}</a>
     </div>
 </li>

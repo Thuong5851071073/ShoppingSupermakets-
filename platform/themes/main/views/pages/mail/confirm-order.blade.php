@@ -1,0 +1,1 @@
+Cảm ơn bác đã tin tưởng chúng tôi. Xác nhận đơn hàng thành công và đang được xử lý ! Chúc quý khách có một ngày làm việc hiệu quả !

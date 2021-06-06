@@ -50,4 +50,12 @@ class OrderProduct extends BaseModel
     {
         return $this->belongsTo(Product::class)->withDefault();
     }
+
+    /**
+     * @return mixed
+     */
+    public static function saveOrderProduct($data)
+    {
+        return OrderProduct::insert($data);
+    }
 }

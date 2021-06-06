@@ -87,6 +87,10 @@ class CartDetail extends BaseModel
             return $cartDetail;
         }
     }
+    public static function deleteCartDetail($id)
+    {
+        return CartDetail::where('id', $id)->delete();
+    }
 
   
      

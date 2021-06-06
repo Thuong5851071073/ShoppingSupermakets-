@@ -13,6 +13,7 @@ class InfoRequest extends Request
     */
     public function rules()
     {
+        
         $rule = [
             'country' => 'required',
             'city' => 'required',
