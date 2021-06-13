@@ -290,23 +290,22 @@ class MainController extends PublicController
      * @return \Illuminate\Http\Response|Response
      */
     public function getbrand($slug,PageInterface $pageRepository,ProductInterface $productInterface,BrandInterface $brandRepository, SlugInterface $slugRepository, Request $request)
-    {    $slug = $slugRepository->getFirstBy([
-        'key' => $slug,
-        'reference_type' => Brand::class,
-        'prefix' => SlugHelper::getPrefix(Brand::class),
-    ]);
-    if (!$slug) {
-        abort('404');
-    }
+    {
+        $slug = $slugRepository->getFirstBy([
+            'key' => $slug,
+            'reference_type' => Brand::class,
+            'prefix' => SlugHelper::getPrefix(Brand::class),
+        ]);
+
+        if (!$slug) {
+            abort('404');
+        }
         $data['brand_slug'] = get_brand_by_id($slug->reference_id);
-        // $data['product_brand'] = get_products_by_brand($data['brand_slug']->id);
         $data['products'] = get_products_By_Brands_Paginate($data['brand_slug']->id, 6);
     
-        
-    // dd(  $data['products']);
-
         $data['categories'] = get_product_categories();
         $data['brand']= get_all_brands();
+
         //sliders product
         $data['sliders'] = theme_option('product_slider');
         $data['sliders'] = explode(",", $data['sliders']);

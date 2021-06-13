@@ -17,6 +17,7 @@
         <h3>Thương Hiệu</h3>
         <ul>
             @foreach ($brand as $item)
+                
                 <li><a href="{{ route('get_brand', $item->slug) }}" >{{$item->name}}</a></li>       
             @endforeach
         </ul>

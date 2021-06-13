@@ -40,26 +40,32 @@
             <div class="footer_item " >
                 <a href="#" class="menu_link" title="" > FanPage </a>
             
-			<div class="footer_SocialNetwork" style=" margin-top:1.5rem;">
-				<div class="fb-page" data-href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" data-tabs="timeline"
-					data-width="300" data-height="100" data-small-header="false" data-adapt-container-width="true"
-					data-hide-cover="false" data-show-facepile="false">
-					<blockquote cite="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" class="fb-xfbml-parse-ignore"><a
-							href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/">Săn Tây</a></blockquote>
-				</div>
-			</div>
-        </div>
+                <div class="footer_SocialNetwork" style=" margin-top:1.5rem;">
+                    <div class="fb-page" data-href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" data-tabs="timeline"
+                        data-width="300" data-height="100" data-small-header="false" data-adapt-container-width="true"
+                        data-hide-cover="false" data-show-facepile="false">
+                        <blockquote cite="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" class="fb-xfbml-parse-ignore"><a
+                                href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/">Săn Tây</a></blockquote>
+                    </div>
+                </div>
+             </div>
               </div>
               <div class="copyright">
                   <h5 class="copy"> <a href="#" class="copy_item">{{ theme_option('copyright') }}</a> </h5>
               </div>
             </div>
         </footer>
+        <div class="messenger"style="float: right;">
+           
+           
+        </div>
+       
         {!! Theme::footer() !!}
     </body>
 </html>
 
         {!! Theme::footer() !!}
+   
     </body>
 </html>
 <div id="fb-root"></div>

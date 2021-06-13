@@ -9,7 +9,7 @@
         </a>
     </li>
     <li class="sticky__list">
-        <a href="{{ theme_option('company_facebook_mess') }}" title="" class="sticky__list-link" id="mess-fb">
+        <a href="m.me/108609077160950" title="" class="sticky__list-link" id="mess-fb">
             <i class="fab fa-facebook-f sticky__list-link--icon"></i>
             <div class="sticky__list-link--hide">Nhắn tin facebook</div>
         </a>
@@ -29,4 +29,24 @@
     </li>
    
 </ul>
-
+{{-- <div id="fb-customer-chat"  class="fb-customerchat">
+</div>
+<script>
+    var chatbox = document.getElementById('fb-customer-chat');
+    chatbox.setAttribute("page_id", "108609077160950");
+    chatbox.setAttribute("attribution", "biz_inbox");
+    window.fbAsyncInit = function() {
+      FB.init({
+        xfbml            : true,
+        version          : 'v11.0'
+      });
+    };
+  
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script> --}}

@@ -17,7 +17,7 @@
         font-family: $ROBOTO-REGULAR;
         font-size: 13px;
         display: inline-block;
-        background: #ccc;
+        // background: #ccc;
         color: #000;
         margin-right: 5px;
         min-width: 32px;
@@ -70,6 +70,7 @@
 .pagination-other-current--link {
     color: white;
     width: 70px;
+    border: 1px solid #ddd;
     &:hover {
         color: black;
     }

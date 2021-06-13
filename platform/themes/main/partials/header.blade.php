@@ -38,13 +38,14 @@
 				
 				<!-- CONTAINER -->
 				<div class="container clearfix">
-					<ul class="secondary_menu">
+					<ul class="secondary_menu" style="font-weight: bold;">
 						@if (auth('customer')->user())
-							<li><a href="{{route('customer.logout')}}" >Đăng Xuất</a></li>
+						<li><a href="{{route('customer.logout')}}" >Đăng Xuất</a></li>
+						<li><a href="javascript:void(0)">Xin chào: {{ auth('customer')->user()->name }}</a></li>
 						@else
 							<li><a href="{{route('get_login')}}" >Đăng Nhập</a></li>
 						@endif
-						{{-- <li><a href="{{route('get_dangky')}}" >Tạo Tài Khoản</a></li> --}}
+						
 
 					</ul>
 					

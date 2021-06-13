@@ -207,6 +207,43 @@ theme_option()
                     ]
                 ],
             ],
+            [
+                'id' => 'zalo',
+                'type' => 'text',
+                'label' => __('Nhập link zalo'),
+                'attributes' => [
+                    'name' => 'zalo',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'facebook',
+                'type' => 'text',
+                'label' => __('Nhập link facebook'),
+                'attributes' => [
+                    'name' => 'facebook',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+            [
+                'id' => 'fanpages',
+                'type' => 'text',
+                'label' => __('Nhập link fanpages'),
+                'attributes' => [
+                    'name' => 'fanpages',
+                    'value' => null,
+                    'options' => [
+                        'class' => 'form-control'
+                    ]
+                ],
+            ],
+
 
         ],
     ]);
