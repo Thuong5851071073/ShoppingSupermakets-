@@ -29,7 +29,6 @@
 							<div class="post_title" href="blog-post.html" >{{ $contentPost->name }}</div>
 							<ul class="post_meta">
 								<li><i class="fa fa-user"></i><a href="javascript:void(0);" >{{ $contentPost->author->getFullName() }}</a></li>
-								<li><i class="fa fa-comments"></i>Bình luận <span class="sep">|</span> 15</li>
 								<li><i class="fa fa-eye"></i>Lượt xem <span class="sep">|</span> 259</li>
 							</ul>
 							<div class="post_large_image">
@@ -45,84 +44,13 @@
 							</div>
 							
 						</article>
-						
-					
-						
-						
-						<!-- COMMENTS -->
-						<div id="comments" data-appear-top-offset='-100' data-animated='fadeInUp'>
-							<h2>Bình luận (3)</h2>
-							<ol>
-								<li>
-									<div class="pull-left avatar"><a href="javascript:void(0);"><img src="images/avatar1.jpg" alt="" /></a></div>
-									<div class="comment_right">
-										<div class="comment_info">
-											<a class="comment_author" href="javascript:void(0);" >Anna Balashova</a>
-											<a class="comment_reply" href="javascript:void(0);" ><i class="fa fa-share"></i> Trả lời</a>
-											<div class="clear"></div>
-											<div class="comment_date">13 January 2014</div>
-										</div>
-										Thank you so much for putting this together Jeremy. Most of these seem like common sense but it is amazing how many times I see new employees having the worst days of their life because managers/leaders don’t want to be “bothered” with the new guy.
-									</div>
-									<div class="clear"></div>
-									<ul>
-										<li>
-											<div class="pull-left avatar"><a href="javascript:void(0);"><img src="images/avatar2.jpg" alt="" /></a></div>
-											<div class="comment_right">
-												<div class="comment_info">
-													<a class="comment_author" href="javascript:void(0);" >Anna Balashova</a>
-													<a class="comment_reply" href="javascript:void(0);" ><i class="fa fa-share"></i> Reply</a>
-													<div class="clear"></div>
-													<div class="comment_date">13 January 2014</div>
-												</div>
-												Thank you so much for putting this together Jeremy. Most of these seem like common sense but it is amazing how many times I see new employees having the worst days of their life because managers/leaders don’t want to be “bothered” with the new guy.
-											</div>
-											<div class="clear"></div>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<div class="pull-left avatar"><a href="javascript:void(0);"><img src="images/avatar3.jpg" alt="" /></a></div>
-									<div class="comment_right">
-										<div class="comment_info">
-											<a class="comment_author" href="javascript:void(0);" >Anna Balashova</a>
-											<a class="comment_reply" href="javascript:void(0);" ><i class="fa fa-share"></i> Reply</a>
-											<div class="clear"></div>
-											<div class="comment_date">13 January 2014</div>
-										</div>
-										Thank you so much for putting this together Jeremy. Most of these seem like common sense but it is amazing how many times I see new employees having the worst days of their life because managers/leaders don’t want to be “bothered” with the new guy.
-									</div>
-									<div class="clear"></div>
-								</li>
-							</ol>
-						</div><!-- //COMMENTS -->
-						
-						
-						<!-- LEAVE A COMMENT -->
-						<div id="comment_form" data-appear-top-offset='-100' data-animated='fadeInUp'>
-							<h2>Để lại bình luận</h2>
-							<div class="comment_form_wrapper">
-								<form action="javascript:void(0);" method="post">
-									<input type="text" name="name" value="Name" value="{{ old('name') }}" placeholder="Tên của bạn" />
-									<input class="email" type="text" name="email" value="{{ old('email') }}" placeholder="Email của bạn" /></br>
-									<textarea name="message" placeholder="Bình luận"></textarea>
-									<div class="clear"></div>
-									<span class="comment_note">Tài khoản email của bạn sẽ không hiển thị *</span>
-									<input type="submit" value="Gửi" />
-									<div class="clear"></div>
-								</form>
-							</div>
-						</div><!-- //LEAVE A COMMENT -->
 					</div><!-- //BLOG LIST -->
-					
-					
 					<!-- SIDEBAR -->
 					<div id="sidebar" class="col-lg-3 col-md-3 col-sm-3 padbot50">
-						
 						<!-- WIDGET SEARCH -->
 						<div class="sidepanel widget_search">
-							<form class="search_form" action="javascript:void(0);" method="get" name="search_form">
-								<input type="text" name="Search..." value="Search..." onFocus="if (this.value == 'Search...') this.value = '';" onBlur="if (this.value == '') this.value = 'Search...';" />
+							<form class="search_form" action="{{route('public.search-blog')}}" method="get" name="search_form">
+								<input type="text" name="q" value="{{ request()->input('q') }}" placeholder="Tìm Kiếm Bài Viết" />
 							</form>
 						</div><!-- //WIDGET SEARCH -->
 						
@@ -156,8 +84,8 @@
 						<!-- WIDGET POPULAR TAGS -->
 						<div class="sidepanel widget_tags">
 							<h3>Thẻ</h3>
-							@foreach ( $tag as $item)
-								<a href="{{route('get_reset', $item->slug)}}" >{{$item->name}}</a>
+							@foreach ( $tags as $item)
+								<a href="{{route('blog.tag', $item->slug)}}" >{{$item->name}}</a>
 							@endforeach
 							
 						</div><!-- //WIDGET POPULAR TAGS -->

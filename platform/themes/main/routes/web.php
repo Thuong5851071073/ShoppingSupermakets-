@@ -15,6 +15,7 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
 
         Route::get('/tim-kiem','MainController@getViewSeach')->name('public.search');
+        Route::get('/tim-kiem-bai-viet','MainController@getViewSeachBlog')->name('public.search-blog');
        
         Route::get('/lien-he', 'MainController@getcontact')->name('public.get_contact');
         Route::get('tag','MainController@getTag')->name('blog.tag');
@@ -61,6 +62,7 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
 
         Route::prefix('tin-tuc')->group(function() {
             Route::get('', 'MainController@getBlogTotal')->name('blog.index');
+            Route::get('tag/{slug}', 'MainController@getBlogTag')->name('blog.tag');
             Route::get('{slug}', 'MainController@getblog') ->name('get_reset');
             Route::get('{slug}/{slugPost}', 'MainController@getBlogDetail')->name('blog.detail');
            

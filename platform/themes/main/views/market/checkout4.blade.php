@@ -49,7 +49,7 @@
 										<span>{{ $orderAddress->getProvince->ten_tinh }}</span>
 									</div>
 									
-									<p class="checkout_title margbot10">Địa chỉ nhận</p>
+									{{-- <p class="checkout_title margbot10">Địa chỉ nhận</p>
 									
 									<div class="billing_information_content margbot40">
 										<span>Balashova Anna</span>
@@ -57,7 +57,7 @@
 										<span>841 11 Bratislava</span>
 										<span>USA</span>
 										<span>mymail@glammy.com</span>
-									</div>
+									</div> --}}
 								</div>
 								
 								<div class="payment_delivery">

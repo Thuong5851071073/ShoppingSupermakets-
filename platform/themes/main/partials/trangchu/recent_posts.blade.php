@@ -2,7 +2,7 @@
 			
     <!-- CONTAINER -->
     <div class="container">
-        <h2>Bài viết mới</h2>
+        <h2 style="font-size: 20px; font-weight:bold; ">Bài viết mới</h2>
         <!-- ROW -->
         <div class="row" data-appear-top-offset='-100' data-animated='fadeInUp'>
            
@@ -17,7 +17,6 @@
                             <a class="recent_post_title" href="{{ route('blog.detail', [get_category_post_by_id(get_category_by_post_id($post->id)->category_id)->slug, $post->slug]) }}" >{{ $post->name }}</a>
                             <div class="recent_post_content">{{ $post->description }}</div>
                             <ul class="post_meta">
-                                <li><i class="fa fa-comments"></i>Bình luận <span class="sep">|</span> 15</li>
                             </ul>
                         </div>
                     </div>

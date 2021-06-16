@@ -71,7 +71,7 @@
 					<!-- SEARCH FORM -->
 					<div class="top_search_form">
 						<a class="top_search_btn " href="javascript:void(0);" onclick="myFunction()" ><i class="fa fa-search"></i></a>
-						<form id="myDIV" method="get" action="#">
+						<form id="myDIV" method="get" action="{{route('public.search')}}">
 							<input type="text" name="q" value="{{ request()->input('q') }}"  required=""placeholder="Tìm kiếm sản phẩm" />
 						</form>
 					</div><!-- SEARCH FORM -->

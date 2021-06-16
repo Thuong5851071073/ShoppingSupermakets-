@@ -1,11 +1,11 @@
 {{ header }}
 
-<h2>Your order is delivering!</h2>
+<h2>Hàng của bạn đã giao thành công</h2>
 
-<p>Hi {{ customer_name }},</p>
+<p>Chào {{ customer_name }},</p>
 
-<p>Your products are on the way.</p>
+<p>Bạn Nhận Được hàng đúng hạn chứ</p>
 
-<p>If you have any question, please contact us via <a href="mailto:{{ site_admin_email }}">{{ site_admin_email }}</a></p>
+<p>nếu bạn có bất kỳ câu hỏi nào hãy liên hệ với chúng tôi qua số điện thoại: 0326912693 </a></p>
 
 {{ footer }}

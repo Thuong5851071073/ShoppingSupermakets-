@@ -1,3 +1,4 @@
+
 <form class="shipment-create-panel" action="{{ route('orders.create-shipment', $order->id) }}">
     <div class="pd-all-20 pt10">
         <div class="flexbox-grid-form flexbox-grid-form-no-outside-padding">

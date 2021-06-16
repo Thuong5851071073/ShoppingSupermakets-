@@ -8,6 +8,8 @@ use Platform\Table\Abstracts\TableAbstract;
 use Html;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
+use Platform\Ecommerce\Enums\OrderStatusEnum;
+
 
 class TopSellingProductsTable extends TableAbstract
 {
@@ -84,8 +86,9 @@ class TopSellingProductsTable extends TableAbstract
             ->getModel()
             ->join('ec_order_product', 'ec_products.id', '=', 'ec_order_product.product_id')
             ->join('ec_orders', 'ec_orders.id', '=', 'ec_order_product.order_id')
-            ->join('payments', 'payments.order_id', '=', 'ec_orders.id')
-            ->where('payments.status', PaymentStatusEnum::COMPLETED)
+            ->where('ec_orders.status', OrderStatusEnum::COMPLETED)
+            // ->join('payments', 'payments.order_id', '=', 'ec_orders.id')
+            // ->where('payments.status', PaymentStatusEnum::COMPLETED)
 
             ->whereDate('ec_orders.created_at', '>=', now()->startOfMonth()->toDateString())
             ->whereDate('ec_orders.created_at', '<=', now()->endOfMonth()->toDateString())

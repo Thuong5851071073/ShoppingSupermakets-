@@ -122,4 +122,9 @@ class Post extends BaseModel
             $post->tags()->detach();
         });
     }
+
+    public static function search($key)
+    {
+        return Post::where('name', "LIKE", "%".$key."%")->paginate(6);
+    }
 }

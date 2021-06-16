@@ -8,15 +8,10 @@
 		<!-- BREADCRUMBS -->
 		<section class="breadcrumb parallax margbot30"></section>
 		<!-- //BREADCRUMBS -->
-		
-		
 		<!-- PAGE HEADER -->
 		@includeIf('theme.main::partials.breadcrumbs')
-
-		
 		<!-- BLOG BLOCK -->
 		<section class="blog">
-			
 			<!-- CONTAINER -->
 			<div class="container">
 			
@@ -36,7 +31,6 @@
 								<a class="post_title" href="{{ route('blog.detail', [get_category_post_by_id(get_category_by_post_id($post->id)->category_id)->slug, $post->slug]) }}" >{{$post->name}}</a>
 								<div class="post_content">{{ $post->description }}</div>
 								<ul class="post_meta">
-									<li><i class="fa fa-comments"></i>Commetcs <span class="sep">|</span> 15</li>
 									<li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li>
 								</ul>
 							</article>
@@ -50,6 +44,14 @@
 					<!-- SIDEBAR -->
 					<div id="sidebar" class="col-lg-3 col-md-3 col-sm-3 padbot50">
 						<!-- CATEGORIES -->
+						<!-- WIDGET SEARCH -->
+						<div class="sidepanel widget_search">
+							<form class="search_form" action="{{route('public.search-blog')}}" method="get" name="search_form">
+								<input type="text" name="q" value="{{ request()->input('q') }}" placeholder="Tìm Kiếm Bài Viết" />
+							</form>
+						</div>
+						<!-- //WIDGET SEARCH -->
+
 						<div class="sidepanel widget_categories">
 							<h3>Danh Mục Sẳn Phẩm</h3>
 							<ul>
@@ -59,7 +61,6 @@
 								
 							</ul>
 						</div>
-						
 						<!-- WIDGET POPULAR POSTS -->
 						<div class="sidepanel widget_popular_posts">
 							<h3>Bài Viết Nổi Bật</h3>
@@ -70,20 +71,16 @@
 										<a class="widget_popular_post_title" href="{{ route('blog.detail', [get_category_post_by_id(get_category_by_post_id($item->id)->category_id)->slug, $item->slug]) }}" >{{$item->name}}</a>
 										<span class="widget_popular_post_date">{{ date_format($post->created_at,"d") }}<span> {{ substr(date_format($post->created_at, "F"), 0, 3) }}</span></span>
 									</li>
-									
 								@endforeach
 							</ul>
 						</div><!-- //WIDGET POPULAR POSTS -->
-						
 						<!-- WIDGET POPULAR TAGS -->
 						<div class="sidepanel widget_tags">
 							<h3>Thẻ</h3>
-							@foreach ( $tag as $item)
-								<a href="{{route('get_reset', $item->slug)}}" >{{$item->name}}</a>
+							@foreach ( $tags as $item)
+								<a href="{{route('blog.tag', $item->slug)}}" >{{$item->name}}</a>
 							@endforeach
-							
 						</div><!-- //WIDGET POPULAR TAGS -->
-						
 					</div><!-- //SIDEBAR -->
 				</div><!-- //ROW -->
 			</div><!-- //CONTAINER -->
@@ -91,7 +88,6 @@
 		
 	</div><!-- //PAGE -->
 </div>
-
 <!-- TOVAR MODAL CONTENT -->
 <div id="modal-body" class="clearfix">
 	<div id="tovar_content">

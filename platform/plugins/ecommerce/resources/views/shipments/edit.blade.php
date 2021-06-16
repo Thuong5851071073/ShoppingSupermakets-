@@ -122,7 +122,7 @@
                     <div class="shipment-actions">
                         <div class="dropdown btn-group">
                             <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="mr5">{{ trans('plugins/ecommerce::shipping.update_shipping_status') }}</span>
+                                <span class="mr5">{{ trans('Cập nhật tình trạng giao hàng') }}</span>
                                 <span class="caret"></span>
                             </button>
                             <div class="dropdown dropdown-menu dropdown-ps-left applist-style animate-scale-dropdown min-width-200-px" role="menu" aria-labelledby="dropdownfilter">
@@ -189,7 +189,7 @@
             <div class="flexbox-content flexbox-right">
                 <div class="wrapper-content">
                     <div class="pd-all-20">
-                        <label class="title-product-main text-no-bold">{{ trans('plugins/ecommerce::shipping.shipment_information') }}</label>
+                        <label class="title-product-main text-no-bold">{{ trans('Thông Tin Giao Hàng') }}</label>
                     </div>
                     <div class="pd-all-20 p-t15 p-b15 border-top-title-main ps-relative">
                         <div class="flexbox-grid-form flexbox-grid-form-no-outside-padding mb10">
@@ -232,7 +232,7 @@
                 </div>
                 <div class="wrapper-content mt20">
                     <div class="pd-all-20">
-                        <label class="title-product-main text-no-bold">{{ trans('plugins/ecommerce::shipping.customer_information') }}</label>
+                        <label class="title-product-main text-no-bold">{{ trans('Thông tin Khách Hàng') }}</label>
                     </div>
                     <div class="pd-all-20 p-t15 p-b15 border-top-title-main ps-relative">
                         <div class="form-group ws-nm mb0">

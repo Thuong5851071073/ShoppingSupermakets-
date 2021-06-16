@@ -64,6 +64,13 @@ class CartController extends PublicController
                 $dataDetailCart['cartId'] = auth('customer')->user()->getCart->id;
                 $dataDetailCart['productId'] = $input['productId'];
                 $dataDetailCart['quantityProduct'] = $input['quantityProduct'];
+                if ($dataDetailCart['quantityProduct'] > $input['qtyProduct']) {
+                    $notification = array(
+                        'message' => 'Số lượng trong kho không đủ',
+                        'alert-type' => 'warning'
+                    );
+                    return redirect()->back()->with($notification);
+                }
                 $checkDetailCart = CartDetail::getDetailcart($dataDetailCart['cartId'], $dataDetailCart['productId']);
                 if (empty($checkDetailCart)) {
                     $saveDetailCart = CartDetail::saveDetailCart($dataDetailCart);

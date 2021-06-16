@@ -23,6 +23,7 @@
                                             @csrf
                                             <input type="text" name="productId" value="{{$product->id}}" hidden>
                                             <input type="number" name="quantityProduct" value="1" hidden>
+                                            <input type="number" name="qtyProduct" value="{{ $product->quantity }}" hidden>
                                             <div class="tovar_item_btns">
                                               
                                                 <a class="add_lovelist  btn_all_item" style="font-weight: bold;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}">

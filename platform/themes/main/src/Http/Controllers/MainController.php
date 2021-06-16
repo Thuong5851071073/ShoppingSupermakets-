@@ -40,6 +40,7 @@ Use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use Platform\ACL\Models\User as PlatformUser;
 use Platform\ACL\Models\User as PlatformACLUser;
+use Platform\Blog\Models\Tag;
 use Platform\Cart\Models\Cart;
 use Platform\CartDetail\Models\CartDetail;
 use Platform\Ecommerce\Models\Customer;
@@ -446,7 +447,7 @@ class MainController extends PublicController
         $data['post_all']=$postRepository->getAllPosts(6);
         $data['categories'] = get_product_categories();
         $data['featured'] = get_featured_posts(3,[]);
-        $data['tag']=get_all_tags();
+        $data['tags']=get_all_tags();
 
         // dd(  $data['tag']);
         Theme::breadcrumb()->add(__('Tin Tức'), route('blog.index')); 
@@ -481,7 +482,7 @@ class MainController extends PublicController
         $data['contentPost'] = $postRepository->getFirstBy(['id' => $slugPost->reference_id]);
         $data['featured'] = get_featured_posts(3,[]);
         $data['categories'] = get_product_categories();
-        $data['tag']=get_all_tags();
+        $data['tags']=get_all_tags();
 
         return Theme::scope('market.blog-post', $data)->render();
 
@@ -494,8 +495,10 @@ class MainController extends PublicController
      */
      public function getViewSeach(Request $request)
     {      
-          $data['search']=getSearch();
-        
+        $data['key'] = $request['q'];
+        $data['result'] = Product::search($data['key']);
+        $data['countResult']= count($data['result']);
+
         //sliders product
            $data['sliders'] = theme_option('product_slider');
            $data['sliders'] = explode(",", $data['sliders']);
@@ -515,19 +518,42 @@ class MainController extends PublicController
         
         
     }
+     /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getViewSeachBlog( PostInterface $postRepository, Request $request)
+    {
+        $data['key'] = $request['q'];
+        $data['result'] = Post::search($data['key']);
+        $data['countResult']= count($data['result']);
+        $data['post_all']=$postRepository->getAllPosts(6);
+        $data['categories'] = get_product_categories();
+        $data['featured'] = get_featured_posts(3,[]);
+        $data['tags']=get_all_tags();
+        return Theme::scope('searchBlog',$data)->render();
+    }
+    
 
-    // /**
-    //  * @return \Illuminate\Http\Response|Response
-    //  */
-    // public function getTag($tag, PostInterface $postRepository, SlugInterface $slugRepository ,Request $request){
+   /**
+     * @return \Illuminate\Http\Response|Response
+     */
+    public function getBlogTag($slug, SlugInterface $slugRepository,PostInterface $postRepository)
+    {
         
-    //     // // dd(1);
-    //     // $tag = $slugRepository->getFirstBy(['key' => $tag, 'reference_type' => Category::class]);
-    //     // if(!$tag)
-    //     // {
-    //     //     abort('404');
-    //     // }
-
-    //     return Theme::scope('market.blog-tag')->render();
-    // }
+         $slug = $slugRepository->getFirstBy([
+            'key' => $slug,
+            'reference_type' => Tag::class,
+            'prefix' => SlugHelper::getPrefix(Tag::class),
+        ]);
+        // dd($slug);
+        if (!$slug) {
+            abort('404');
+        }
+        $data['categories'] = get_product_categories();
+        $data['featured'] = get_featured_posts(3,[]);
+        $data['tags']=get_all_tags();
+        $data['tag'] = get_tag_by_id($slug->reference_id);
+        $data['post_all'] = get_posts_by_tag($data['tag']->id);
+        return Theme::scope('market.blog',$data)->render();
+    }
 }
