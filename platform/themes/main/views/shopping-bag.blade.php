@@ -50,7 +50,7 @@
 										<td class="product-quantity">
 											<div class="number-input">
 												<button id="down" class="number-input_btn" onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
-													<input  class="quantity cart-{{ $cart->id }}" min="0" name="quantity" value="{{$cart->quantity}}" data-cart-detail-{{ $cart->id  }}={{ $cart->id }} value="{{ $cart->quantity }}" type="number">
+													<input  class="quantity cart-{{ $cart->id }}" min="1" name="quantity" value="{{$cart->quantity}}" data-cart-detail-{{ $cart->id  }}={{ $cart->id }} value="{{ $cart->quantity }}" type="number">
 													<input type="text" data-quantity-product-{{ $cart->id }}={{ $cart->id }} value="{{ $cart->getProduct->quantity  }}" hidden>
 												<button id="up" onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
 											  </div>
