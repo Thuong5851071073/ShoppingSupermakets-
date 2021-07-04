@@ -37,18 +37,18 @@
                         'view' => 'custom-menu-footer',
                     ])
                 !!}  
+
+                <div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="360" data-height="450"></div>
+
+                <script src="https://sp.zalo.me/plugins/sdk.js"></script>
             <div class="footer_item " >
                 <a href="#" class="menu_link" title="" > FanPage </a>
             
                 <div class="footer_SocialNetwork" style=" margin-top:1.5rem;">
-                    <div class="fb-page" data-href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" data-tabs="timeline"
-                        data-width="300" data-height="100" data-small-header="false" data-adapt-container-width="true"
-                        data-hide-cover="false" data-show-facepile="false">
-                        <blockquote cite="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/" class="fb-xfbml-parse-ignore"><a
-                                href="https://www.facebook.com/S&#x103;n-T&#xe2;y-108609077160950/">Săn Tây</a></blockquote>
-                    </div>
+                    <div class="fb-page" data-href="https://www.facebook.com/Shop-Th%E1%BA%AFm-T%E1%BB%B5-107570304923820" data-tabs="timeline" data-width="340" data-height="100" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/Shop-Th%E1%BA%AFm-T%E1%BB%B5-107570304923820" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Shop-Th%E1%BA%AFm-T%E1%BB%B5-107570304923820">Shop Thắm Tỵ</a></blockquote></div>
                 </div>
              </div>
+
               </div>
               <div class="copyright">
                   <h5 class="copy"> <a href="#" class="copy_item">{{ theme_option('copyright') }}</a> </h5>

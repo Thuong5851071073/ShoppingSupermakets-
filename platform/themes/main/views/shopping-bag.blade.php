@@ -105,7 +105,7 @@
 								<input type="text" name="coupon" value="Have a coupon?" onFocus="if (this.value == 'Have a coupon?') this.value = '';" onBlur="if (this.value == '') this.value = 'Have a coupon?';" />
 								<input type="submit" value="Apply">
 							</form> --}}
-							<a class="btn active" href="{{route('get_inforreship')}}" >Thanh Toán</a>
+							<a class="btn active" href="{{route('get_inforreship')}}" >Xác nhận đơn hàng</a>
 							<a class="btn inactive" href="{{route('public.index')}}" >Tiếp Tục Mua Hàng</a>
 						</div><!-- //REGISTRATION FORM -->
 					</div><!-- //SIDEBAR -->

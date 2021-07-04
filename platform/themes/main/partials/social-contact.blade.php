@@ -1,9 +1,8 @@
-<div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!"
-    data-autopopup="0" data-width="350" data-height="420">
-</div>
+<div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="360" data-height="450"></div>
+<script src="https://sp.zalo.me/plugins/sdk.js"></script>
 <ul class="sticky">
     <li class="sticky__list">
-        <a href="https://zalo.me/0969786807" target="_blank" class="sticky__list-link">
+        <a href="https://zalo.me/{!! theme_option('phone') !!}" target="_blank" class="sticky__list-link">
             <i class="sticky__list-link--icontext">Zalo</i>
             <div class="sticky__list-link--hide">Zalo: {{ theme_option('company_phonezalo') }}</div>
         </a>

@@ -171,18 +171,7 @@ theme_option()
                     ]
                 ],
             ],
-            [
-                'id' => 'Facebook',
-                'type' => 'text',
-                'label' => __('Nhập gmail'),
-                'attributes' => [
-                    'name' => 'Facebook',
-                    'value' => null,
-                    'options' => [
-                        'class' => 'form-control'
-                    ]
-                ],
-            ],
+            
             [
                 'id' => 'Phone',
                 'type' => 'text',
