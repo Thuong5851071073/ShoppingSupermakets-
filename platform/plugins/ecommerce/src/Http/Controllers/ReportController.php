@@ -72,8 +72,8 @@ class ReportController extends BaseController
         $count['revenue'] = $this->orderRepository
             ->getModel()
             ->whereDate('ec_orders.created_at', now()->toDateString())
-            ->join('payments', 'payments.order_id', '=', 'ec_orders.id')
-            ->where('payments.status', PaymentStatusEnum::COMPLETED)
+            // ->join('payments', 'payments.order_id', '=', 'ec_orders.id')
+            ->where('ec_orders.status', OrderStatusEnum::COMPLETED)
             ->sum('sub_total');
 
         $count['orders'] = $this->orderRepository
@@ -89,8 +89,7 @@ class ReportController extends BaseController
 
         $topSellingProducts = $topSellingProductsTable
             ->setAjaxUrl(route('ecommerce.report.top-selling-products'));
-
-        return view('plugins/ecommerce::reports.index', compact('count', 'topSellingProducts'));
+return view('plugins/ecommerce::reports.index', compact('count', 'topSellingProducts'));
     }
 
     /**
@@ -171,8 +170,7 @@ class ReportController extends BaseController
             ->where('created_at', '>=', $startOfMonth)
             ->where('created_at', '<=', $today)
             ->count();
-
-        $completedOrders = $this->orderRepository
+$completedOrders = $this->orderRepository
             ->getModel()
             ->where(['status' => OrderStatusEnum::COMPLETED])
             ->where('created_at', '>=', $startOfMonth)
