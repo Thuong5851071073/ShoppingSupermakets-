@@ -55,21 +55,27 @@
 														@endif
 													@endforeach
 												</div>
-												<div class="tovar_item_btns">
-													<a class="add_lovelist btn_all_item_two" style="font-weight: bold;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" data-url="{{ $product->id }}">
-														<span class="icon_two"> Xem</span>
-													</a>
-													<button class="btn_all_item_two" type="submit" >
-														<i class="fa fa-shopping-cart icon_two"></i>
-													</button>
-													<a class=" add_lovelist btn_all_item_two" href="javascript:void(0);" >
-														<i class="fa fa-heart "></i>
-													</a>
-												</div>
+												<form action="{{route('cart.add')}}" method="POST">
+													@csrf
+													<input type="text" name="productId" value="{{$product->id}}" hidden>
+													<input type="number" name="quantityProduct" value="1" hidden>
+													<input type="number" name="qtyProduct" value="{{ $product->quantity }}" hidden>
+													<div class="tovar_item_btns">
+														<a class="add_lovelist btn_all_item_two" style="font-weight: bold;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" data-url="{{ $product->id }}">
+															<span class="icon_two"> Xem</span>
+														</a>
+														<button class="btn_all_item_two" type="submit" >
+															<i class="fa fa-shopping-cart icon_two"></i>
+														</button>
+														<a class=" add_lovelist btn_all_item_two" href="javascript:void(0);" >
+															<i class="fa fa-heart "></i>
+														</a>
+													</div>
+												</form>
 											</div>
-											<div class="tovar_description clearfix">
-												<a class="tovar_title" href="product-page.html" >{{$product->name}}</a>
-												<span class="tovar_price">{{$product->price}}</span>
+											<div class="tovar_description clearfix" style=" display: flex;flex-direction: column;text-align: center;">
+												<a class="tovar_title" style="text-transform: uppercase;" href="{{ route('product.detail', [get_category_by_id(get_category_by_product($product->id)->category_id)->slug, $product->slug]) }}" >{{ $product->name }}</a>
+												<span class="tovar_price">Giá: {{number_format( $product->price )}} VNĐ</span>
 											</div>
 											<div class="tovar_content"></div>
 										</div>

@@ -6,7 +6,7 @@
                  <div class="login_wrap">
                      <div class="padding_eight_all bg-white">
                          <div class="heading_s1">
-                             <h3>{{ __('Login') }}</h3>
+                             <h3>{{ __('Đăng Nhập') }}</h3>
                             </div>
                         {{-- <div class="log-form">
                                <h2 class=" header-title">Login to your account</h2> --}}
@@ -22,11 +22,11 @@
                                   <a class="forgot" href="#">Forgot Username?</a> --}}
                                 
                                 <div class="form-group">
-                                    <input class="form-control" name="email" id="txt-email" type="email" value="{{ old('email') }}" placeholder="{{ __('Your Email') }}">
+                                    <input class="form-control" name="email" id="txt-email" type="email" value="{{ old('email') }}" placeholder="{{ __('Email của bạn') }}">
                                     
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" type="password" name="password" id="txt-password" placeholder="{{ __('Password') }}">
+                                    <input class="form-control" type="password" name="password" id="txt-password" placeholder="{{ __('Mật Khẩu') }}">
                                     
                                 </div>
                                 <div class="login_footer form-group">

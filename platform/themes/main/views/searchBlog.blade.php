@@ -26,14 +26,14 @@
 								<div class="post_content">{{ $post->description }}</div>
 								<ul class="post_meta">
 									{{-- <li><i class="fa fa-comments"></i>Commetcs <span class="sep">|</span> 15</li> --}}
-									<li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li>
+									{{-- <li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li> --}}
 								</ul>
 							</article>
 							@endforeach
 						
 						@endif
 						@if ($countResult == 0)
-							<p> Không thấy sản phẩm !</p>
+							<p> Không thấy bài viết !</p>
 						@endif
 					
 						

@@ -1,5 +1,5 @@
-<div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="360" data-height="450"></div>
-<script src="https://sp.zalo.me/plugins/sdk.js"></script>
+{{-- <div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="360" data-height="450"></div>
+<script src="https://sp.zalo.me/plugins/sdk.js"></script> --}}
 <ul class="sticky">
     <li class="sticky__list">
         <a href="https://zalo.me/{!! theme_option('phone') !!}" target="_blank" class="sticky__list-link">
@@ -8,7 +8,7 @@
         </a>
     </li>
     <li class="sticky__list">
-        <a href="m.me/108609077160950" title="" class="sticky__list-link" id="mess-fb">
+        <a href="{!! theme_option('facebook') !!}" title="" class="sticky__list-link" id="mess-fb">
             <i class="fab fa-facebook-f sticky__list-link--icon"></i>
             <div class="sticky__list-link--hide">Nhắn tin facebook</div>
         </a>

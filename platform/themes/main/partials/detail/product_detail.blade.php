@@ -62,19 +62,28 @@
                         <div class="tovar_size_select">
                            <p>Cam kết chất lượng, không hài lòng trả hàng!</p>
                            <p>Giao hàng đúng hẹn</p>
-                           <p>Được tích điểm giảm giá</p>
+                           <p>Không trầy xước</p>
                         </div>
                         <form action="{{route('cart.add')}}" method="POST">
                             @csrf
-                            <input type="text" name="productId" value="{{$product->id}}" hidden>
-                           
+                            <input type="text" name="productId" value="{{$contentProduct->id}}" hidden>
+                            <input type="number" name="quantityProduct" value="1" hidden>
+                            <input type="number" name="qtyProduct" value="{{ $contentProduct->quantity }}" hidden>
                             <div class="tovar_view_btn" style="display: flex;  flex-direction: column;" >
-                                <h5 class="" style=" font-weight: bold;">Số lượng</h5>
-                                <input class="input_title-item" type="number" value="1" id="quantity" name="quantityProduct" min="1" max="10" style=" margin-bottom: 1rem;">
                                 <button class="add_bag" type="submit" ><i class="fa fa-shopping-cart"></i>Thêm Vào giỏ</button>
-                                {{-- <a class="add_lovelist" href="javascript:void(0);" ><i class="fa fa-heart"></i></a> --}}
                             </div>
                         </form>
+                        {{-- <form action="{{route('cart.add')}}" method="POST">
+                            @csrf
+                            <input type="text" name="productId" value="{{$product->id}}" hidden>
+                            <input type="number" name="quantityProduct" value="1" hidden>
+                            <input type="number" name="qtyProduct" value="{{ $product->quantity }}" hidden>
+                            <div class="tovar_item_btns">
+                                <button  type="submit" class=" btn_all_item"> <i
+                                        class="fa fa-shopping-cart icon" ></i>
+                                </button>
+                            </div>
+                        </form> --}}
                     </div> 
                 </div><!-- //CLEARFIX -->
                 
@@ -83,7 +92,7 @@
                     <ul class="tabs clearfix">
                         <li class="current">Chi Tiết Sản Phẩm</li>
                         <li>Thông Tin Sản Phẩm</li>
-                        <li>Reviews (2)</li>
+                      
                     </ul>
                     <div class="box visible">
                         <p>{!! $contentProduct->description !!} </p>
@@ -92,60 +101,7 @@
                         {!! $contentProduct->content !!} 
                        
                     </div>
-                    <div class="box">
-                        <ul class="comments">
-                            <li>
-                                <div class="clearfix">
-                                    <p class="pull-left"><strong><a href="javascript:void(0);" >John Doe</a></strong></p>
-                                    <span class="date">2013-10-09 09:23</span>
-                                    <div class="pull-right rating-box clearfix">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                    </div>
-                                </div>
-                                <p>Ut tellus dolor, dapibus eget, elementum vel, cursus eleifend, elit. Aenean auctor wisi et urna. Aliquam erat volutpat. Duis ac turpis. Integer rutrum ante eu lacus.Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque.</p>
-                            </li>
-                            <li>
-                                <div class="clearfix">
-                                    <p class="pull-left"><strong><a href="javascript:void(0);" >John Doe</a></strong></p>
-                                    <span class="date">2013-10-09 09:23</span>
-                                    <div class="pull-right rating-box clearfix">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                </div>
-                                <p>Ut tellus dolor, dapibus eget, elementum vel, cursus eleifend, elit. Aenean auctor wisi et urna. Aliquam erat volutpat. Duis ac turpis. Integer rutrum ante eu lacus.Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque.</p>
-                                
-                                <ul>
-                                    <li>
-                                        <p><strong><a href="javascript:void(0);" >Jane Doe</a></strong></p>
-                                        <p>Ut tellus dolor, dapibus eget, elementum vel, cursus eleifend, elit. Aenean auctor wisi et urna. Aliquam erat volutpat. Duis ac turpis. Integer rutrum ante eu lacus.Vestibulum libero nisl, porta vel, scelerisque eget, malesuada at, neque.</p>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        
-                        <h3>WRITE A REVIEW</h3>
-                        <p>Now please write a (short) review....(min. 200, max. 2000 characters)</p>
-                        <div class="clearfix">
-                            <textarea id="review-textarea"></textarea>
-                            <label class="pull-left rating-box-label">Your Rate:</label>
-                            <div class="pull-left rating-box clearfix">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <input type="submit" class="dark-blue big" value="Submit a review">
-                        </div>
-                    </div>
+                   
                 </div><!-- //TOVAR INFORMATION -->
             </div><!-- //TOVAR DETAILS WRAPPER -->
         </div><!-- //ROW -->

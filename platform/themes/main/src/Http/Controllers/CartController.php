@@ -58,7 +58,6 @@ class CartController extends PublicController
                 return redirect()->back()->with($notification);
             } 
             else {
-              
                 $input = $request->all();
                 $dataDetailCart = [];
                 $dataDetailCart['cartId'] = auth('customer')->user()->getCart->id;

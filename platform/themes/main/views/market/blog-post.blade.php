@@ -29,7 +29,7 @@
 							<div class="post_title" href="blog-post.html" >{{ $contentPost->name }}</div>
 							<ul class="post_meta">
 								<li><i class="fa fa-user"></i><a href="javascript:void(0);" >{{ $contentPost->author->getFullName() }}</a></li>
-								<li><i class="fa fa-eye"></i>Lượt xem <span class="sep">|</span> 259</li>
+								{{-- <li><i class="fa fa-eye"></i>Lượt xem <span class="sep">|</span> 259</li> --}}
 							</ul>
 							<div class="post_large_image">
 								<div class="recent_post_date">{{ date_format($contentPost->created_at,"d") }}<span>{{ substr(date_format($contentPost->created_at, "F"), 0, 3) }}</span></div>

@@ -36,8 +36,8 @@
 								<a class="post_title" href="{{ route('blog.detail', [get_category_post_by_id(get_category_by_post_id($post->id)->category_id)->slug, $post->slug]) }}" >{{$post->name}}</a>
 								<div class="post_content">{{ $post->description }}</div>
 								<ul class="post_meta">
-									<li><i class="fa fa-comments"></i>Commetcs <span class="sep">|</span> 15</li>
-									<li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li>
+									{{-- <li><i class="fa fa-comments"></i>Commetcs <span class="sep">|</span> 15</li>
+									<li><i class="fa fa-eye"></i>views <span class="sep">|</span> 259</li> --}}
 								</ul>
 							</article>
 						@endforeach
