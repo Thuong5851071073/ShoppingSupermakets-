@@ -35,7 +35,7 @@ class CustomerForm extends FormAbstract
                 ],
             ])
             ->add('phone', 'number', [
-                'label'      => trans('plugins/ecommerce::customer.phone'),
+                'label'      => trans('phone'),
                 'label_attr' => ['class' => 'control-label required'],
                 'attr'       => [
                     'placeholder'  => trans('phone'),

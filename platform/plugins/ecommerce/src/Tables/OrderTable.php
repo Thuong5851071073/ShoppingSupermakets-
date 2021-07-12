@@ -56,18 +56,18 @@ class OrderTable extends TableAbstract
             ->editColumn('status', function ($item) {
                 return $item->status->toHtml();
             })
-            ->editColumn('payment_status', function ($item) {
-                return $item->payment->status->label() ? $item->payment->status->toHtml() : '&mdash;';
-            })
-            ->editColumn('payment_method', function ($item) {
-                return $item->payment->payment_channel->label() ? $item->payment->payment_channel->label() : '&mdash;';
-            })
+            // ->editColumn('payment_status', function ($item) {
+            //     return $item->payment->status->label() ? $item->payment->status->toHtml() : '&mdash;';
+            // })
+            // ->editColumn('payment_method', function ($item) {
+            //     return $item->payment->payment_channel->label() ? $item->payment->payment_channel->label() : '&mdash;';
+            // })
             ->editColumn('amount', function ($item) {
-                return format_price($item->amount, $item->currency_id);
+                return format_price($item->sub_total, $item->currency_id);
             })
-            ->editColumn('shipping_amount', function ($item) {
-                return format_price($item->shipping_amount, $item->currency_id);
-            })
+            // ->editColumn('shipping_amount', function ($item) {
+            //     return format_price($item->shipping_amount, $item->currency_id);
+            // })
             ->editColumn('user_id', function ($item) {
                 return $item->user->name ?? $item->address->name;
             })
@@ -102,6 +102,7 @@ class OrderTable extends TableAbstract
             'ec_orders.created_at',
             'ec_orders.amount',
             'ec_orders.tax_amount',
+            'ec_orders.sub_total',
             'ec_orders.currency_id',
             'ec_orders.shipping_amount',
             'ec_orders.payment_id',
@@ -129,12 +130,12 @@ class OrderTable extends TableAbstract
             ],
             'user_id'         => [
                 'name'  => 'ec_orders.user_id',
-                'title' => trans('plugins/ecommerce::order.customer_label'),
+                'title' => trans('Mã Khách Hàng'),
                 'class' => 'text-left',
             ],
             'amount'          => [
-                'name'  => 'ec_orders.amount',
-                'title' => trans('plugins/ecommerce::order.amount'),
+                'name'  => 'ec_orders.sub_total',
+                'title' => trans('Tổng Tiền'),
                 'class' => 'text-center',
             ],
         ];
@@ -148,29 +149,29 @@ class OrderTable extends TableAbstract
         }
 
         $columns += [
-            'shipping_amount' => [
-                'name'  => 'ec_orders.shipping_amount',
-                'title' => trans('plugins/ecommerce::order.shipping_amount'),
-                'class' => 'text-center',
-            ],
-            'payment_method'  => [
-                'name'  => 'ec_orders.id',
-                'title' => trans('plugins/ecommerce::order.payment_method'),
-                'class' => 'text-center',
-            ],
-            'payment_status'  => [
-                'name'  => 'ec_orders.id',
-                'title' => trans('plugins/ecommerce::order.payment_status_label'),
-                'class' => 'text-center',
-            ],
+            // 'shipping_amount' => [
+            //     'name'  => 'ec_orders.shipping_amount',
+            //     'title' => trans('plugins/ecommerce::order.shipping_amount'),
+            //     'class' => 'text-center',
+            // ],
+            // 'payment_method'  => [
+            //     'name'  => 'ec_orders.id',
+            //     'title' => trans('plugins/ecommerce::order.payment_method'),
+            //     'class' => 'text-center',
+            // ],
+            // 'payment_status'  => [
+            //     'name'  => 'ec_orders.id',
+            //     'title' => trans('plugins/ecommerce::order.payment_status_label'),
+            //     'class' => 'text-center',
+            // ],
             'status'          => [
                 'name'  => 'ec_orders.status',
-                'title' => trans('core/base::tables.status'),
+                'title' => trans('Trạng Thái'),
                 'class' => 'text-center',
             ],
             'created_at'      => [
                 'name'  => 'ec_orders.created_at',
-                'title' => trans('core/base::tables.created_at'),
+                'title' => trans('Ngày Tạo'),
                 'width' => '100px',
                 'class' => 'text-left',
             ],
