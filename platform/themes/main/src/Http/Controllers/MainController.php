@@ -56,6 +56,20 @@ class MainController extends PublicController
     {
         $slug = $slugRepository->getFirstBy(['key' => 'trang-chu', 'reference_type' => Page::class]);
         $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
+        //start SEO
+        SeoHelper::setTitle(Str::upper('TRANG CHỦ'), theme_option('seo_title', ''), '|')
+            ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('seo_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
+        // end seo
         $data = [];
         $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.trangchu')]); 
         if (!$page) {
@@ -177,6 +191,21 @@ class MainController extends PublicController
         $slug = $slugRepository->getFirstBy(['key' => 'thuong-hieu', 'reference_type' => Page::class]);
         $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
         $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.thuonghieu')]); 
+        $meta = MetaBox::getMetaData($data['page'], 'seo_meta', true);
+        //start SEO
+        SeoHelper::setTitle(Str::upper($meta['seo_title'] ?: @$page->name), theme_option('seo_title', ''), '|')
+        ->setDescription($meta['seo_description'] ?: @$page->description ?: theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
+        // end seo
         $data['A']=Brand::query()
         ->where('name','like','a%')
         ->take(7)
@@ -301,6 +330,18 @@ class MainController extends PublicController
         if (!$slug) {
             abort('404');
         }
+        SeoHelper::setTitle(Str::upper('Thuong Hieu'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
         $data['brand_slug'] = get_brand_by_id($slug->reference_id);
         $data['products'] = get_products_By_Brands_Paginate($data['brand_slug']->id, 6);
     
@@ -332,6 +373,21 @@ class MainController extends PublicController
     {
         $slug = $slugRepository->getFirstBy(['key' => 'lien-he', 'reference_type' => Page::class]);
         $data['page'] = $pageRepository->getFirstBy(['id' => $slug->reference_id, 'status' => BaseStatusEnum::PUBLISHED]); 
+        $meta = MetaBox::getMetaData($data['page'], 'seo_meta', true);
+        //start SEO
+        SeoHelper::setTitle(Str::upper($meta['seo_title'] ?: @$page->name), theme_option('seo_title', ''), '|')
+        ->setDescription($meta['seo_description'] ?: @$page->description ?: theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
+        // end seo
         $data = [];
         $page = $pageRepository->getFirstBy(['id' => config('packages.page.general.lienhe')]); 
         if (!$page) {
@@ -384,6 +440,7 @@ class MainController extends PublicController
     public function getCategory($slug, SlugInterface $slugRepository,BrandInterface $brandRepository, Request $request)
     {
 
+
         $slug = $slugRepository->getFirstBy([
             'key' => $slug,
             'reference_type' => ProductCategory::class,
@@ -392,6 +449,18 @@ class MainController extends PublicController
         if (!$slug) {
             abort('404');
         }
+        SeoHelper::setTitle(Str::upper('Danh Mục'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
         $data['category'] = get_category_by_id($slug->reference_id);
         $data['products'] = get_products_by_category($data['category']->id, 6);
         $data['categories'] = get_product_categories();
@@ -445,6 +514,18 @@ class MainController extends PublicController
     {
 
         $data['post_all']=$postRepository->getAllPosts(6);
+        SeoHelper::setTitle(Str::upper('Tin Tức'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
         $data['categories'] = get_product_categories();
         $data['featured'] = get_featured_posts(3,[]);
         $data['tags']=get_all_tags();
@@ -464,6 +545,18 @@ class MainController extends PublicController
         {
             abort('404');
         }
+        SeoHelper::setTitle(Str::upper('Bài Viết'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
         $data['tag_post']=get_posts_by_tag($slug,12);
       
         return Theme::scope('market.blog',$data)->render();
@@ -475,10 +568,27 @@ class MainController extends PublicController
      */
     public function getBlogDetail($slug, $slugPost, PostInterface $postRepository, SlugInterface $slugRepository)
     {
+
         if (!$slugPost) { 
             abort('404');
         }
+
         $slugPost = $slugRepository->getFirstBy(['key' => $slugPost, 'reference_type' => Post::class]);
+        // $meta = MetaBox::getMetaData($data['page'], 'seo_meta', true);
+        //start SEO
+        SeoHelper::setTitle(Str::upper('Chi Tiết Bài Viết'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
+        // end seo
         $data['contentPost'] = $postRepository->getFirstBy(['id' => $slugPost->reference_id]);
         $data['featured'] = get_featured_posts(3,[]);
         $data['categories'] = get_product_categories();
@@ -494,7 +604,19 @@ class MainController extends PublicController
      * @return \Illuminate\Http\Response|Response
      */
      public function getViewSeach(Request $request)
-    {      
+    {   
+        SeoHelper::setTitle(Str::upper('Tìm Kiếm Sản Phẩm'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );   
         $data['key'] = $request['q'];
         $data['result'] = Product::search($data['key']);
         $data['countResult']= count($data['result']);
@@ -523,6 +645,18 @@ class MainController extends PublicController
      */
     public function getViewSeachBlog( PostInterface $postRepository, Request $request)
     {
+        SeoHelper::setTitle(Str::upper('Tìm Kiếm Bài Viết'), theme_option('seo_title', ''), '|')
+        ->setDescription(theme_option('seo_description'))
+            ->openGraph()
+            ->setTitle(@theme_option('seo_title'))
+            ->setSiteName(@theme_option('site_title'))
+            ->setImage(RvMedia::getImageUrl(theme_option('seo_og_image'), 'og', false, RvMedia::getImageUrl(theme_option('seo_og_image'))))
+            ->addProperties(
+                [
+                    'image:width' => '1200',
+                    'image:height' => '630'
+                ]
+            );
         $data['key'] = $request['q'];
         $data['result'] = Post::search($data['key']);
         $data['countResult']= count($data['result']);
@@ -556,4 +690,5 @@ class MainController extends PublicController
         $data['post_all'] = get_posts_by_tag($data['tag']->id);
         return Theme::scope('market.blog',$data)->render();
     }
+ 
 }

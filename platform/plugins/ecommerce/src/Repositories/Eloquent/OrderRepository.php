@@ -53,4 +53,14 @@ class OrderRepository extends RepositoriesAbstract implements OrderInterface
             ->applyBeforeExecuteQuery($data)
             ->sum(DB::raw('ec_orders.sub_total'));
     }
+     /**
+     * {@inheritDoc}
+     */
+    public function GetOrderTotal($orderID,$subTotal){
+        $data =$this->model
+            ->where('id',$orderID)
+            ->where('sub_total',$subTotal);
+            return $data->first();
+                
+    }
 }

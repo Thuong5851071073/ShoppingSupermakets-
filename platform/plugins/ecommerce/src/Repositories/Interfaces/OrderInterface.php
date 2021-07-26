@@ -23,4 +23,6 @@ interface OrderInterface extends RepositoryInterface
      * @return Builder[]|Collection
      */
     public function countRevenueByDateRange($startDate, $endDate);
+
+    
 }

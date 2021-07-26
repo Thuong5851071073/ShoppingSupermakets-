@@ -57,13 +57,15 @@ return [
             $theme->asset()->container('after_header')->add('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css'); //bootstrap
             $theme->asset()->container('after_header')->add('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
             $theme->asset()->container('after_header')->usePath()->add('style', 'templates/css/style.css');
-            
+            // $theme->asset()->container('after_header')->usePath()->add('boostrapVNP', 'assets/bootstrap.min.css');
+            // $theme->asset()->container('after_header')->usePath()->add('jum', 'assets/jumbotron-narrow.css');
             $theme->asset()->container('after_header')->usePath()->add('aos_animation', 'templates/css/animate.css');
             $theme->asset()->container('after_header')->usePath()->add('fancySelect', 'templates/css/fancySelect.css');
             $theme->asset()->container('after_header')->usePath()->add('flexslider', 'templates/css/flexslider.css');
             $theme->asset()->container('after_header')->usePath()->add('flipclock', 'templates/css/flipclock.css');
             $theme->asset()->container('after_header')->usePath()->add('animate', 'templates/css/animate.css');
-            $theme->asset()->add('swiper_css', 'https://unpkg.com/swiper/swiper-bundle.min.css'); //swiper
+            $theme->asset()->add('swiper_css', 'https://unpkg.com/swiper/swiper-bundle.min.css'); //swiper 
+            // $theme->asset()->add('VNPay_css', 'https://pay.vnpay.vn/lib/vnpay/vnpay.css');
             $theme->asset()->add('swiper_codebean', 'https://use.fontawesome.com/releases/v5.5.0/css/all.css'); //swiper
             $theme->asset()->container('after_header')->usePath()->add('toartcss', 'templates/toastr/css/toastr.min.css');
 
@@ -85,11 +87,12 @@ return [
             $theme->asset()->container('footer')->usePath()->add('superfish', 'templates/js/superfish.min.js'); //js
             $theme->asset()->container('footer')->usePath()->add('animate', 'templates/js/animate.js'); //js
             $theme->asset()->container('footer')->usePath()->add('toartsJs', 'templates/toastr/js/toastr.min.js'); //js
+            // $theme->asset()->container('footer')->usePath()->add('jsVnpay', 'assets/jquery-1.11.3.min.js'); //js
             $theme->asset()->container('footer')->add('jqueryboostrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-          
+         
             $theme->asset()->container('footer')->add('swiper_js', 'https://unpkg.com/swiper/swiper-bundle.min.js');
-            $theme->asset()->container('footer')->add('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11'); //js
-
+            $theme->asset()->container('footer')->add('sweetalert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11'); //js 
+            $theme->asset()->container('footer')->add('VNpay_js', 'https://pay.vnpay.vn/lib/vnpay/vnpay.js');
             $theme->asset()->container('footer')->usePath()->add('common', 'js/common.js'); //js
 
             if (function_exists('shortcode')) {

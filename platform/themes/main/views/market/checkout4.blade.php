@@ -38,36 +38,29 @@
 						<div class="checkout_confirm_orded clearfix">
 							<div class="checkout_confirm_orded_bordright clearfix">
 								<div class="billing_information">
-									<p class="checkout_title margbot10">Địa chỉ nhận hàng</p>
-									
+									<p class="checkout_title margbot10">Địa chỉ cửa hàng</p>
 									<div class="billing_information_content margbot40">
-										
-										<span>{{ auth('customer')->user()->name  }}</span>
-										<span>{{ auth('customer')->user()->email }}</span>
-										<span>{{ auth('customer')->user()->phone }}</span>
-										<span>{{ $orderAddress->address }}</span>
-										<span>{{ $orderAddress->getProvince->ten_tinh }}</span>
+										<span>Tên cửa hàng: {!! theme_option('name_shop') !!}</span>
+										<span>Số điện thoại: {!! theme_option('phone') !!}</span>
+										<span>Địa chỉ: {!! theme_option('address_shop_sonha') !!}</span>
+										<span>{!! theme_option('address_shop_Tinh') !!}</span>
+										<span>Mail: {!! theme_option('Email') !!}</span>
 									</div>
 									
-									{{-- <p class="checkout_title margbot10">Địa chỉ nhận</p>
-									
-									<div class="billing_information_content margbot40">
-										<span>Balashova Anna</span>
-										<span>New York Street name 55</span>
-										<span>841 11 Bratislava</span>
-										<span>USA</span>
-										<span>mymail@glammy.com</span>
-									</div> --}}
 								</div>
 								
 								<div class="payment_delivery">
-									<p class="checkout_title margbot10">Thanh toán và giao hàng</p>
+									<p class="checkout_title margbot10">Địa chỉ nhận hàng</p>
+									<div class="billing_information_content margbot40">
+										<span>Tên khách hàng: {{ auth('customer')->user()->name  }}</span>
+										<span>Số diện thoại: {{ auth('customer')->user()->phone }} </span>
+										<span>Địa chỉ nhận: {{ $orderAddress->address }} {{ $orderAddress->getProvince->ten_tinh }}  </span>
+										<span>Mail: {{ auth('customer')->user()->email }} </span>
+									</div>
+									{{-- <p class="checkout_title margbot10">Thanh toán và giao hàng</p>
 									
-									<p><span>Thanh toán:<span> Thanh toán khi nhận hàng</p>
-									{{-- <img src="images/paypal.jpg" alt="" /> --}}
-									
-									{{-- <p><span>Delivery:</span> FedEx Express</p> --}}
-									{{-- <img src="images/premium_post.jpg" alt="" /> --}}
+									<p><span>Thanh toán:<span>Thanh toán khi nhận hàng</p>
+									 --}}
 								</div>
 							</div>
 							
@@ -96,9 +89,9 @@
 					<div class="col-lg-3 col-md-3 padbot60">
 						
 						<!-- BAG TOTALS -->
+						<div class="sidepanel widget_bag_totals your_order_block">
 						<form action="{{route('public.waypay')}}" method="POST">
 							@csrf
-							<div class="sidepanel widget_bag_totals your_order_block">
 								<h3>Hóa Đơn Của Bạn</h3>
 								<table class="bag_total">
 									<tr class="cart-subtotal clearfix">
@@ -107,17 +100,19 @@
 									</tr>
 									<tr class="shipping clearfix">
 										<th>Giao hàng</th>
-										<td>Miễn phí 1 Km</td>
+										<td>Miễn phí giao hàng</td>
 									</tr>
 									<tr class="total clearfix">
 										<th>Tổng Tiền</th>
 										<td>{{number_format($money)}} VNĐ</td>
 									</tr>
 								</table>
-								<button class="btn active" type="submit" >Xác nhận thông tin</button>
-								<a class="btn inactive" href="public.index" >Tiếp tục mua sắm </a>
-							</div>
-						</form><!-- //REGISTRATION FORM -->
+								<button class="btn active" type="submit" >Thanh Toán Sau</button>
+							</form><!-- //REGISTRATION FORM -->
+							{{-- <form action="" method="POST"> --}}
+								<a class="btn inactive" href="{{route('paymet.Getonline', $orderId)}}" type="button" >Thanh Toán Online</a>	
+							{{-- </form> --}}
+						</div>
 					</div><!-- //SIDEBAR -->
 				</div><!-- //ROW -->
 			</div><!-- //CONTAINER -->

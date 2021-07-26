@@ -45,4 +45,14 @@ if (!function_exists('get_order_id_from_order_code')) {
 
         return (int)$orderId;
     }
+    function Randstring($lenght)
+    {
+        $chars = "asdfghjklzxcvbnmqwertyuiopASDFGHJKLZXCVBNMQWERTYUIOP0123456789";
+        $str = "";
+        $size = strlen($chars);
+        for ( $i = 0; $i <= $lenght; $i++){
+            $str .= $chars[rand(0, $size - 1)];
+        }
+        return $str;
+    }
 }

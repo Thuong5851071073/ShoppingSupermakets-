@@ -45,7 +45,6 @@
 							<select name="city" class="basic">
 								@foreach ($get_city as $value )
 									<option value="{{$value->ma_tinh}}">{{$value->ten_tinh}}</option>
-									
 								@endforeach
 							
 							</select>
@@ -53,7 +52,7 @@
 						<div class="checkout_form_input sity">
 							
 							<label>Quốc gia <span class="color_red">*</span></label>
-							<input type="text" name="country" value="" placeholder=" Việt Nam" />
+							<input type="text" name="country" value="Việt Nam" placeholder="Việt Nam" />
 							@if ($errors->has('country'))
 								<span class="text-danger">{{ $errors->first('country') }}</span>
 							@endif
