@@ -16,9 +16,11 @@
 
   <div class="container">
         <div class="header clearfix">
-            <h3 class="text-muted" style="margin-top: 2rem; ">Thanh toán VNPay</h3>
+            <h3 class="text-muted" style="margin-top:40px;margin-bottom: 2rem;font-size: 15px;
+            font-weight: bold;
+            text-align: center;">Thanh toán VNPay</h3>
         </div>
-        <h3 style="margin-top: 2rem; ">Tạo mới đơn hàng</h3>
+        <h3 style="margin-top: 2rem;font-size: 15px; ">Tạo mới đơn hàng</h3>
         <p>
             &nbsp;
         </p>
@@ -30,7 +32,8 @@
             <div class="col-4">
                 <div class="form-group">
                     <label for="language">Hình thức thanh toán </label>
-                    <input name="order_type" id="order_type" type="text" value="Thanh toán qua VNPay" >
+                    <input name="order_name" type="text" value="Thanh toán qua Vnpay" disabled>
+                    <input type="text" name="order_type" value="billpayment" hidden>
                 </div>
                 <div class="form-group">
                     <label for="order_id">Mã hóa đơn</label>
@@ -174,9 +177,11 @@
                 --}}
 
                 <button type="submit" class="btn btn-primary" id="btnPopup">Xác Nhận Thanh Toán</button>
-                <button type="submit" name="redirect" id="redirect" class="btn btn-default">Quay lại</button>
+               
 
             </form>
+            {{-- <a class="btn inactive" href="{{route('public.index')}}" >Quay Lại</a> --}}
+
         </div>
         <p>
             &nbsp;

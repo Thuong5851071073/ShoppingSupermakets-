@@ -49,7 +49,7 @@ Route::group(['namespace' => 'Theme\Main\Http\Controllers', 'middleware' => ['we
             Route::post('/hinh-thuc-thanh-toan', 'CartController@waypay')->name('public.waypay');
             Route::get('/thanh-toan-online/{order}','CartController@GetPayonline')->name('paymet.Getonline');
             Route::post('/thanh-toan-online','CartController@Payonline')->name('paymet.online');
-            Route::get('/VNPay/return','CartController@Payonline')->name('VNPay.return');
+            Route::get('/VNPay/return','CartController@VNPayreturn')->name('VNPay.return');
         });
 
         Route::prefix('san-pham')->group(function() {

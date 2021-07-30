@@ -30,7 +30,7 @@
 					</ul>
 					<form class="checkout_form clearfix" action="{{route('puplic.post_inforreship')}}" method="post">
 						@csrf
-				
+
 						<input type="text" name="amountOrder" value="{{ $money }}" hidden>
 						@if ($message = Session::get('success'))
 							<div class="alert alert-success" role="alert">
@@ -96,7 +96,7 @@
 						<div class="clear"></div>
 						
 						<div class="checkout_form_note">Toàn bộ trường không được để trống (<span class="color_red">*</span>)</div>
-						
+					
 						<button type="submit" class="btn active pull-right" >Lưu Thông Tin</button>
 						{{-- <a class="btn active pull-right" href="checkout2.html" >Tiếp Tục Thanh Toán</a> --}}
 					</form>

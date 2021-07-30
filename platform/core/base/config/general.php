@@ -31,7 +31,7 @@ return [
     ],
     'enable_https_support'      => env('ENABLE_HTTPS_SUPPORT', false),
     'date_format'               => [
-        'date'      => 'Y-m-d',
+        'date'      => 'H:i:s d-m-Y',
         'date_time' => 'Y-m-d H:i:s',
         'js'        => [
             'date'      => 'yyyy-mm-dd',
