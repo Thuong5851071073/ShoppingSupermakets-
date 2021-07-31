@@ -71,14 +71,14 @@ class ReportController extends BaseController
         $count = [];
         $count['revenue'] = $this->orderRepository
             ->getModel()
-            ->whereDate('ec_orders.created_at', now()->toDateString())
+            ->whereDate('ec_orders.purchased_at', now()->toDateString())
             // ->join('payments', 'payments.order_id', '=', 'ec_orders.id')
             ->where('ec_orders.status', OrderStatusEnum::COMPLETED)
             ->sum('sub_total');
 
         $count['orders'] = $this->orderRepository
             ->getModel()
-            ->whereDate('created_at', now()->toDateString())
+            ->whereDate('purchased_at', now()->toDateString())
             ->count();
 
         $count['products'] = $this->productRepository->count([
