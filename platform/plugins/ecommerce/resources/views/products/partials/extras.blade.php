@@ -1,4 +1,4 @@
-<div id="product-extras" class="widget meta-boxes">
+{{-- <div id="product-extras" class="widget meta-boxes">
     <div class="widget-title">
         <h4><span>{{ trans('plugins/ecommerce::products.related_products') }}</span></h4>
     </div>
@@ -82,4 +82,4 @@
             </a>
         </td>
     </tr>
-</script>
+</script> --}}

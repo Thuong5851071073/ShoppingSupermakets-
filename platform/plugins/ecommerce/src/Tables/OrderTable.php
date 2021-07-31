@@ -172,12 +172,7 @@ class OrderTable extends TableAbstract
                 'width' => '200px',
                 'class' => 'text-center',
             ],
-            'created_at'      => [
-                'name'  => 'ec_orders.created_at',
-                'title' => 'Ngày tạo',
-                'width' => '150px',
-                'class' => 'text-center',
-            ],
+           
             'purchased_at'      => [
                 'name'  => 'ec_orders.purchased_at',
                 'title' => 'Ngày thanh toán',
